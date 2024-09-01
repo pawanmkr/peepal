@@ -43,3 +43,6 @@ Thumbs.db
 
 # nx
 nx-cloud.env
+
+# backend
+apps/backend/.env

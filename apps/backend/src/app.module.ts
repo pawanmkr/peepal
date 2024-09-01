@@ -4,6 +4,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { AppController } from './app.controller';
 import { env } from './config/env.config';
 import chalk from 'chalk';
+import { UserModule } from './modules/user/user.module';
 
 // // Workaround for dynamic import
 async function getChalk(): Promise<typeof chalk> {
@@ -47,6 +48,7 @@ async function getChalk(): Promise<typeof chalk> {
 				retryDelay: 10000,
 			}),
 		}),
+		UserModule,
 	],
 	controllers: [AppController],
 	providers: [],

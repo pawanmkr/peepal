@@ -6,6 +6,7 @@ const envSchema = z.object({
 	APP_VERSION: z.string().regex(/^\d+\.\d+\.\d+$/),
 	APP_HOST: z.string().min(3),
 	APP_PORT: z.string().transform(Number),
+	APP_URL: z.string().url(),
 
 	// SESSION_SECRET: z.string().min(8).max(100),
 
