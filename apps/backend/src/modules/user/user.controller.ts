@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, Logger } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './user.model'; // Adjust the import path accordingly
+import { User } from './user.model';
+import { UUID } from 'node:crypto';
 
 @ApiTags('User')
 @Controller('user')
 export class UserController {
+	private readonly logger = new Logger(UserController.name);
 	constructor(private readonly userService: UserService) { }
 
 	@ApiOperation({ summary: 'Create a new user' })
@@ -19,6 +21,7 @@ export class UserController {
 	@ApiResponse({ status: 400, description: 'Bad request.' })
 	@Post()
 	create(@Body() dto: CreateUserDto) {
+		this.logger.debug('Creating a new user');
 		return this.userService.create(dto);
 	}
 
@@ -28,17 +31,14 @@ export class UserController {
 		description: 'List of all users.',
 		type: [User],
 	})
-	@ApiResponse({
-		status: 404,
-		description: 'Users not found.',
-	})
+	@ApiResponse({ status: 404, description: 'Users not found.' })
 	@Get()
 	findAll() {
 		return this.userService.findAll();
 	}
 
 	@ApiOperation({ summary: 'Get a user by ID' })
-	@ApiParam({ name: 'id', description: 'User ID', type: String })
+	@ApiParam({ name: 'id', description: 'User ID', type: String, format: 'uuid' })
 	@ApiResponse({
 		status: 200,
 		description: 'User details.',
@@ -46,12 +46,12 @@ export class UserController {
 	})
 	@ApiResponse({ status: 404, description: 'User not found.' })
 	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.userService.findOne(+id);
+	findOne(@Param('id') id: UUID) {
+		return this.userService.findOne(id);
 	}
 
 	@ApiOperation({ summary: 'Update a user by ID' })
-	@ApiParam({ name: 'id', description: 'User ID', type: String })
+	@ApiParam({ name: 'id', description: 'User ID', type: String, format: 'uuid' })
 	@ApiResponse({
 		status: 200,
 		description: 'The user has been successfully updated.',
@@ -60,12 +60,12 @@ export class UserController {
 	@ApiResponse({ status: 400, description: 'Bad request.' })
 	@ApiResponse({ status: 404, description: 'User not found.' })
 	@Patch(':id')
-	update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
-		return this.userService.update(+id, dto);
+	update(@Param('id') id: UUID, @Body() dto: UpdateUserDto) {
+		return this.userService.update(id, dto);
 	}
 
 	@ApiOperation({ summary: 'Delete a user by ID' })
-	@ApiParam({ name: 'id', description: 'User ID', type: String })
+	@ApiParam({ name: 'id', description: 'User ID', type: String, format: 'uuid' })
 	@ApiResponse({
 		status: 204,
 		description: 'The user has been successfully deleted.',
@@ -73,7 +73,7 @@ export class UserController {
 	@ApiResponse({ status: 404, description: 'User not found.' })
 	@HttpCode(204)
 	@Delete(':id')
-	remove(@Param('id') id: string) {
-		return this.userService.remove(+id);
+	remove(@Param('id') id: UUID) {
+		return this.userService.remove(id);
 	}
 }

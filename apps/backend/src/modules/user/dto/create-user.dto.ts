@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsEmail, IsOptional, IsDate, IsNotEmpty } from 'class-validator';
+import { regexPattern } from 'apps/backend/src/common/regex.patter';
+import { IsString, IsEmail, IsOptional, IsNotEmpty, IsUrl, Matches } from 'class-validator';
 
 export class CreateUserDto {
 	@ApiProperty({
@@ -31,6 +32,7 @@ export class CreateUserDto {
 
 	@ApiProperty({
 		description: 'Email address',
+		example: 'johndoe@email.com',
 		type: 'string',
 	})
 	@IsEmail()
@@ -39,20 +41,21 @@ export class CreateUserDto {
 
 	@ApiPropertyOptional({
 		description: 'Avatar URL',
+		example: 'https://example.com/avatar.jpg',
 		type: 'string',
 	})
 	@IsOptional()
-	@IsString()
+	@IsUrl()
 	declare avatar?: string;
 
 	@ApiPropertyOptional({
-		description: 'Date of birth',
+		description: 'Date of birth (YYYY-MM-DD)',
 		type: 'string',
 		example: '1990-01-01',
 	})
 	@IsOptional()
-	@IsDate()
-	declare dob?: Date;
+	@Matches(regexPattern.date)
+	declare dob?: string;
 
 	@ApiPropertyOptional({
 		description: 'Phone number country code',

@@ -1,10 +1,12 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 
 import { AppController } from './app.controller';
 import { env } from './config/env.config';
 import chalk from 'chalk';
 import { UserModule } from './modules/user/user.module';
+import { TutorModule } from './modules/tutor/tutor.module';
+import { LoggerMiddleware } from './middewares/http-logger.middleware';
 
 // // Workaround for dynamic import
 async function getChalk(): Promise<typeof chalk> {
@@ -28,6 +30,12 @@ async function getChalk(): Promise<typeof chalk> {
 					},
 				},
 				models: [],
+				pool: {
+					max: 64,
+					min: 0,
+					acquire: 30000,
+					idle: 10000,
+				},
 				define: {
 					underscored: true,
 					timestamps: true,
@@ -49,8 +57,13 @@ async function getChalk(): Promise<typeof chalk> {
 			}),
 		}),
 		UserModule,
+		TutorModule,
 	],
 	controllers: [AppController],
 	providers: [],
 })
-export class AppModule { }
+export class AppModule {
+	configure(consumer: MiddlewareConsumer) {
+		consumer.apply(LoggerMiddleware).forRoutes('*');
+	}
+}

@@ -1,12 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
-import { v7 as uuidv7 } from 'uuid';
-import * as bcrypt from 'bcrypt';
+import { Column, DataType, HasOne, Model, Table } from 'sequelize-typescript';
 
-export enum UserRole {
-	TUTOR = 'tutor',
-	USER = 'user',
-}
+import { UserRole } from './user.enum';
+import { UUID } from 'node:crypto';
+import { Tutor } from '../tutor/models/tutor.model';
 
 @Table({ tableName: 'users' })
 export class User extends Model<User> {
@@ -17,23 +14,14 @@ export class User extends Model<User> {
 		format: 'uuid',
 	})
 	@Column({ type: DataType.UUID, primaryKey: true })
-	declare id: string;
+	declare id: UUID;
 
 	@ApiProperty({
 		description: 'Username',
-		example: 'johndoe',
 		type: 'string',
 	})
 	@Column({ type: DataType.STRING, allowNull: false, unique: true })
 	declare username: string;
-
-	@ApiProperty({
-		description: 'Slug',
-		example: 'john-doe',
-		type: 'string',
-	})
-	@Column({ type: DataType.STRING, allowNull: false, unique: true })
-	declare slug: string;
 
 	@ApiProperty({
 		description: 'First name',
@@ -71,7 +59,7 @@ export class User extends Model<User> {
 		example: '1990-01-01',
 	})
 	@Column({ type: DataType.DATEONLY, allowNull: true })
-	declare dob: Date;
+	declare dob: string;
 
 	@ApiProperty({
 		description: 'Phone number country code',
@@ -101,13 +89,6 @@ export class User extends Model<User> {
 	@Column({ type: DataType.STRING, allowNull: false })
 	declare role: UserRole;
 
-	beforeCreate() {
-		this.id = uuidv7();
-		this.slug = `${this.firstName.toLowerCase()}-${this.lastName.toLowerCase()}`;
-		this.role = UserRole.USER;
-
-		// Hash the password before saving it to the database
-		const hash = bcrypt.hashSync(this.password, 10);
-		this.password = hash;
-	}
+	@HasOne(() => Tutor)
+	declare tutor: Tutor;
 }
