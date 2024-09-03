@@ -8,20 +8,28 @@ export class LoggerMiddleware implements NestMiddleware {
 
     use(request: Request, response: Response, next: NextFunction): void {
         const { ip, method, originalUrl } = request;
-        // const userAgent = request.get('user-agent') || '';
+        const startTime = process.hrtime(); // High-resolution time
         const date = new Date();
-        const requestId = `rid${date.getDate()}${date.getMonth()}${date.getFullYear()}.${nanoid(8)}`;
+        const requestId = `rid${date.getDate()}${date.getMonth() + 1}${date.getFullYear()}.${nanoid(
+            8
+        )}`; // Month is 0-based
 
         request.requestId = requestId;
         // Log immediately when the request is received
-        // this.logger.log(`${requestId} ${method} ${originalUrl} - ${ip}`);
+        this.logger.log(`${requestId} ${method} ${originalUrl} - ${ip}`);
+
         response.on('finish', () => {
             const { statusCode } = response;
-            // const contentLength = response.get('content-length');
+            const diff = process.hrtime(startTime);
+            const elapsedMs = diff[0] * 1000 + diff[1] / 1e6; // Convert to milliseconds
+            const elapsedSec = (elapsedMs / 1000).toFixed(2); // Convert to seconds with 2 decimal places
+
             this.logger.log(
-                `${requestId} ${method} ${originalUrl} ${statusCode} ${statusCode == 201 ? 'CREATED' : ''}`,
+                `${requestId} ${method} ${originalUrl} ${statusCode} - ` +
+                    `${elapsedMs.toFixed(2)}ms (${elapsedSec}sec)`
             );
         });
+
         next();
     }
 }

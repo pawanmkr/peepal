@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, DataType, HasOne, Model, Table } from 'sequelize-typescript';
 
-import { UserRole } from './user.enum';
+import { UserRole } from '../../common/common.enum';
 import { UUID } from 'node:crypto';
 import { Tutor } from '../tutor/models/tutor.model';
 

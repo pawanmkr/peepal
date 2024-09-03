@@ -1,47 +1,45 @@
 {
-  "root": true,
-  "ignorePatterns": [
-    "**/*"
-  ],
-  "plugins": [
-    "@nx"
-  ],
-  "overrides": [
-    {
-      "files": [
-        "*.ts",
-        "*.tsx"
-      ],
-      "extends": [
-        "plugin:@nx/typescript"
-        ],
-      "rules": {
-		// Note: you must disable the base rule as it can report incorrect errors
-		"no-empty-function": "off",
-		"@typescript-eslint/no-empty-function": "off"
-	  }
-    },
-    {
-      "files": [
-        "*.js",
-        "*.jsx"
-      ],
-      "extends": [
-        "plugin:@nx/javascript"
-      ],
-      "rules": {}
-    },
-    {
-      "files": [
-        "*.spec.ts",
-        "*.spec.tsx",
-        "*.spec.js",
-        "*.spec.jsx"
-      ],
-      "env": {
-        "jest": true
-      },
-      "rules": {}
-    }
-  ]
+    "root": true,
+    "ignorePatterns": ["**/*"],
+    "plugins": ["@nx", "prettier"],
+    "extends": [
+        "plugin:@nx/typescript",
+        "plugin:prettier/recommended" // Ensures that Prettier rules are included and conflicts are resolved
+    ],
+    "overrides": [
+        {
+            "files": ["*.ts", "*.tsx"],
+            "extends": ["plugin:@nx/typescript"],
+            "rules": {
+                "no-empty-function": "off",
+                "@typescript-eslint/no-empty-function": "off",
+                "@typescript-eslint/no-unused-vars": "warn",
+                "indent": ["error", 4], // Ensures consistent indentation
+                "prettier/prettier": [
+                    "error",
+                    {
+                        "printWidth": 100 // Configures Prettier's print width
+                    }
+                ]
+            }
+        },
+        {
+            "files": ["*.js", "*.jsx"],
+            "extends": ["plugin:@nx/javascript"],
+            "rules": {
+                "prettier/prettier": [
+                    "error",
+                    {
+                        "printWidth": 100 // Configures Prettier's print width for JavaScript files
+                    }
+                ]
+            }
+        },
+        {
+            "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
+            "env": {
+                "jest": true
+            }
+        }
+    ]
 }
