@@ -8,6 +8,7 @@ import { UserModule } from './modules/user/user.module';
 import { TutorModule } from './modules/tutor/tutor.module';
 import { LoggerMiddleware } from './middewares/http-logger.middleware';
 import { SlotModule } from './modules/slot/slot.module';
+import { SessionModule } from './modules/session/session.module';
 
 // // Workaround for dynamic import
 async function getChalk(): Promise<typeof chalk> {
@@ -60,6 +61,7 @@ async function getChalk(): Promise<typeof chalk> {
         UserModule,
         TutorModule,
         SlotModule,
+        SessionModule,
     ],
     controllers: [AppController],
     providers: [],
