@@ -56,12 +56,12 @@ export class TutorController {
         type: 'number',
         description: 'Limit of the list',
         required: true,
-        example: 1000,
+        example: 10,
     })
     @ApiResponse({ status: 200, description: 'List of all tutors', type: [Tutor] })
     @ApiResponse({ status: 404, description: 'No tutors found' })
     @Get()
-    findAll(@Query('offset') offset: number, @Query('limit') limit: number) {
+    findAll(@Query('offset') offset: number, @Query('limit') limit: number = 10) {
         return this.tutorService.findAll(offset, limit);
     }
 

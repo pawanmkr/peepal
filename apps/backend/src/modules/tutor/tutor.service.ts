@@ -9,6 +9,7 @@ import { CreateTutorDto } from './dto/create-tutor.dto';
 import { UpdateTutorDto } from './dto/update-tutor.dto';
 import { FormalEducation } from './models/formal-education.model';
 import { UserService } from '../user/user.service';
+import { User } from '../user/user.model';
 
 @Injectable()
 export class TutorService {
@@ -18,8 +19,12 @@ export class TutorService {
                 model: FormalEducation,
                 attributes: { exclude: ['tutorId', 'createdAt', 'updatedAt', 'deletedAt'] },
             },
+            {
+                model: User,
+                attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] },
+            },
         ],
-        attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] },
+        attributes: { exclude: ['userId', 'createdAt', 'updatedAt', 'deletedAt'] },
     };
     private readonly logger = new Logger(TutorService.name);
     constructor(
@@ -63,7 +68,7 @@ export class TutorService {
     }
 
     findAll(offset: number, limit: number) {
-        return this.tutorModel.findAll(this.queryConfig);
+        return this.tutorModel.findAll({ ...this.queryConfig, offset, limit });
     }
 
     findOne(id: UUID): Promise<Tutor | null> {
