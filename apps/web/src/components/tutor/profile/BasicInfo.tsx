@@ -1,10 +1,10 @@
-import { TutorData } from '../../pages/TutorProfile';
 import { InfoItem } from './InfoItem';
-import { Rating } from './Rating';
+import { Rating } from '../common/Rating';
+import { TutorData } from 'apps/web/src/pages/TutorProfile';
 
 export const BasicInfo: React.FC<{ tutor: TutorData }> = ({ tutor }) => (
     <div className="bg-white shadow rounded-lg mb-6 p-4">
-        <div className="flex items-center space-x-4 mb-4">
+        <div className="flex space-x-4 mb-4">
             <img
                 src={tutor.user.avatar}
                 alt={`${tutor.user.firstName} ${tutor.user.lastName}`}
