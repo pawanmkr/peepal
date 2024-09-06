@@ -18,6 +18,7 @@ export function App() {
           {/* Added container */}
           <Routes>
             <Route path="/home" element={<Homepage />} />
+            <Route path="" element={<Homepage />} />
             <Route path="/tutor" element={<TutorProfile />} />
             <Route path="/tutor/search" element={<TutorSearch />} />
           </Routes>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import "./PostScroll.css";
 
 type Tutor = {
   id: string;
@@ -97,6 +96,25 @@ const PostScroll: React.FC = () => {
       startTime: "10:00:00",
       endTime: "05:00:00",
     },
+    {
+      id: "5",
+      userId: "tutor5",
+      description: "Biology tutor with a focus on genetics and biotechnology.",
+      experience: 8,
+      skills: "Genetics, Biotechnology, Research",
+      rating: 4.6,
+      video: "https://www.youtube.com/embed/9bZkp7q19f0",
+      location: "Pune, India",
+      languages: "English, Marathi",
+      availability: "Weekdays",
+      currency: "INR",
+      charge: 80,
+      chargeType: "hourly",
+      days: "Monday to Friday",
+      startTime: "09:00:00",
+      endTime: "05:00:00",
+    },
+    // Add more demo data here
   ];
 
   const loadMorePosts = () => {
@@ -104,13 +122,26 @@ const PostScroll: React.FC = () => {
   };
 
   return (
-    <div className="card post-scroll-card shadow-sm">
-      <div className="card-body">
+    <div className="relative h-screen">
+      {/* Scrollable Post Section */}
+      <div
+        id="scrollableDiv"
+        className="overflow-y-scroll h-full"
+        style={{
+          scrollbarWidth: "none", /* Firefox */
+          msOverflowStyle: "none", /* Internet Explorer 10+ */
+        }}
+      >
         <InfiniteScroll
           dataLength={currentPosts}
           next={loadMorePosts}
           hasMore={currentPosts < posts.length}
-          loader={<h4>Loading...</h4>}
+          scrollableTarget="scrollableDiv"
+          loader={
+            <div className="flex justify-center my-4">
+              <div className="loader border-t-2 border-b-2 border-gray-500 w-6 h-6 rounded-full animate-spin"></div>
+            </div>
+          }
         >
           {posts.slice(0, currentPosts).map((post, index) => (
             <div key={index} className="post-card mb-4">
