@@ -1,7 +1,6 @@
 import React from "react";
-import { format } from "date-fns"; // For date formatting
-import { rrulestr } from "rrule"; // For RRULE parsing
-
+import { format } from "date-fns";
+import { rrulestr } from "rrule";
 import "./UserProfile.css";
 
 type UserProfileProps = {
@@ -26,7 +25,6 @@ type UserProfileProps = {
   }[];
 };
 
-// Function to extract next session date from RRULE
 const getNextSessionDate = (rulestr: string) => {
   const rule = rrulestr(rulestr);
   const nextDate = rule.after(new Date());
@@ -44,46 +42,31 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, sessions }) => {
           alt="User Avatar"
         />
         <div className="ml-4">
-          <h2 className="text-xl text-gray-800 m-0">
-            {user.firstName} {user.lastName}
-          </h2>
-          <p className="text-gray-500 m-0 hover:cursor-pointer font-semibold text-sm">
-            @{user.username}
-          </p>
+          <h2 className="text-xl font-semibold">{user.firstName} {user.lastName}</h2>
+          <p className="text-gray-600">@{user.username}</p>
         </div>
       </div>
 
-      {/* Sessions Info */}
-      <div className="px-6 py-4 bg-gray-100">
-        <h3 className="text-lg font-semibold text-gray-800">
-          Upcoming Sessions
-        </h3>
-        {sessions.length > 0 ? (
-          sessions.slice(0, 3).map((session, index) => (
-            <div key={index} className="border-b border-gray-300 py-2">
-              <h4 className="font-semibold">{session.name}</h4>
-              <p className="text-sm text-gray-700">{session.description}</p>
-              <p className="text-sm text-gray-500">
-                Cost: ${session.cost} | Duration: {session.duration} min
-              </p>
-              <p className="text-sm text-gray-500">
-                Next Session: {getNextSessionDate(session.rule)}
-              </p>
-            </div>
-          ))
-        ) : (
-          <p className="text-sm text-gray-500">No upcoming sessions</p>
-        )}
+      {/* User Details */}
+      <div className="px-6 py-4">
+        <p className="text-gray-800">Email: {user.email}</p>
+        <p className="text-gray-800">Date of Birth: {format(new Date(user.dob), "dd MMM yyyy")}</p>
+        <p className="text-gray-800">Phone: {user.phoneCode} {user.phoneNumber}</p>
+        <p className="text-gray-800">Role: {user.role}</p>
       </div>
 
-      {/* Action Button */}
+      {/* Sessions */}
       <div className="px-6 py-4">
-        <a
-          href={`mailto:${user.email}`}
-          className="bg-blue-500 text-white px-4 py-2 rounded block text-center hover:bg-blue-600"
-        >
-          Contact User
-        </a>
+        <h3 className="text-lg font-semibold mb-2">Upcoming Sessions</h3>
+        {sessions.map((session) => (
+          <div key={session.name} className="mb-2">
+            <h4 className="font-semibold">{session.name}</h4>
+            <p>{session.description}</p>
+            <p>Cost: ${session.cost}</p>
+            <p>Duration: {session.duration} minutes</p>
+            <p>Next Session: {getNextSessionDate(session.rule) || "No upcoming sessions"}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
