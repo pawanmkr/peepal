@@ -1,25 +1,19 @@
-import React from 'react';
-import './Header.css';
-import { FaUserCircle, FaBell } from 'react-icons/fa'; // Import Font Awesome icons
+import React from "react";
+import Logo from "./Logo";
+import SearchBar from "./SearchBar";
+import NotificationIcon from "./NotificationIcon";
+import UserProfileIcon from "./UserProfileIcon";
 
 const Header: React.FC = () => {
   return (
-    <header className="header-container">
-      <div className="header-left">
-        {/* Default Logo */}
-        <div className="logo">LOGO</div>
-        
-        {/* Add some distance between the logo and search bar */}
-        <input type="text" className="search-bar" placeholder="Search..." />
-      </div>
-      <div className="header-right">
-        {/* Notification Icon */}
-        <div className="notification-icon">
-          <FaBell />
-        </div>
-        {/* User Profile Icon */}
-        <div className="profile-icon">
-          <FaUserCircle />
+    <header className="w-full bg-white border-b border-gray-300 py-2 px-6 fixed top-0 left-0 z-50">
+      {/* Limit width and center header content */}
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <Logo />
+        <SearchBar />
+        <div className="flex items-center">
+          <NotificationIcon />
+          <UserProfileIcon />
         </div>
       </div>
     </header>
@@ -27,4 +21,3 @@ const Header: React.FC = () => {
 };
 
 export default Header;
-

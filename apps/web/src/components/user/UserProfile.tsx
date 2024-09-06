@@ -1,20 +1,89 @@
-import React from 'react';
-import './UserProfile.css';
+import React from "react";
+import { format } from "date-fns"; // For date formatting
+import { rrulestr } from "rrule"; // For RRULE parsing
 
-const UserProfile: React.FC = () => {
+import "./UserProfile.css";
+
+type UserProfileProps = {
+  user: {
+    id: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    avatar: string;
+    dob: string;
+    phoneCode: string;
+    phoneNumber: string;
+    role: string;
+  };
+  sessions: {
+    name: string;
+    description: string;
+    cost: number;
+    duration: number;
+    rule: string;
+  }[];
+};
+
+// Function to extract next session date from RRULE
+const getNextSessionDate = (rulestr: string) => {
+  const rule = rrulestr(rulestr);
+  const nextDate = rule.after(new Date());
+  if (nextDate) return format(nextDate, "dd MMM yyyy");
+};
+
+const UserProfile: React.FC<UserProfileProps> = ({ user, sessions }) => {
   return (
-    <div className="card shadow-sm">
-      <div className="card-body">
-        <div className="text-center">
-          <img src="https://via.placeholder.com/100" alt="User Profile" className="rounded-circle" />
+    <div className="max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+      {/* User Info */}
+      <div className="flex items-center px-6 py-4">
+        <img
+          className="w-16 h-16 rounded-full object-cover"
+          src={user.avatar || "https://i.pravatar.cc/300"}
+          alt="User Avatar"
+        />
+        <div className="ml-4">
+          <h2 className="text-xl text-gray-800 m-0">
+            {user.firstName} {user.lastName}
+          </h2>
+          <p className="text-gray-500 m-0 hover:cursor-pointer font-semibold text-sm">
+            @{user.username}
+          </p>
         </div>
-        <h5 className="card-title text-center mt-3">John Doe</h5>
-        <p className="card-text text-center">@johndoe</p>
-        <p className="card-text text-center">Developer</p>
-        <p className="card-text text-center">College Name</p>
-        <p className="card-text text-center">Company Name</p>
-        <p className="card-text text-center">Location</p>
-        <a href="https://linkedin.com" className="btn btn-primary btn-block">LinkedIn Profile</a>
+      </div>
+
+      {/* Sessions Info */}
+      <div className="px-6 py-4 bg-gray-100">
+        <h3 className="text-lg font-semibold text-gray-800">
+          Upcoming Sessions
+        </h3>
+        {sessions.length > 0 ? (
+          sessions.slice(0, 3).map((session, index) => (
+            <div key={index} className="border-b border-gray-300 py-2">
+              <h4 className="font-semibold">{session.name}</h4>
+              <p className="text-sm text-gray-700">{session.description}</p>
+              <p className="text-sm text-gray-500">
+                Cost: ${session.cost} | Duration: {session.duration} min
+              </p>
+              <p className="text-sm text-gray-500">
+                Next Session: {getNextSessionDate(session.rule)}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p className="text-sm text-gray-500">No upcoming sessions</p>
+        )}
+      </div>
+
+      {/* Action Button */}
+      <div className="px-6 py-4">
+        <a
+          href={`mailto:${user.email}`}
+          className="bg-blue-500 text-white px-4 py-2 rounded block text-center hover:bg-blue-600"
+        >
+          Contact User
+        </a>
       </div>
     </div>
   );

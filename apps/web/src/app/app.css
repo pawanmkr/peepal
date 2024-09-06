@@ -1,79 +1,26 @@
 /* General Styles for the App */
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* Light gray background */
-  }
-  
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  
-  /* Main Content Layout */
-  .main-content {
-    display: flex;
-    padding: 20px;
-    gap: 20px;
-  }
-  
-  /* Left Sidebar (Profile) */
-  .user-profile-container {
-    flex: 0 0 300px; /* Fixed width for the profile section */
-  }
-  
-  /* Center (Post Scroll) */
-  .content-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .post-scroll {
-    flex: 1;
-  }
-  
-  /* Right Sidebar (Trending Skills and Tutors) */
-  .right-side {
-    flex: 0 0 300px; /* Fixed width for the right sidebar */
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .trending-skills,
-  .trending-tutors {
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    padding: 16px;
-  }
-  
-  .trending-tutors {
-    /* Additional styling for trending tutors if needed */
-  }
-  
-  /* Media Queries for Responsiveness */
-  @media (max-width: 1024px) {
-    .main-content {
-      flex-direction: column;
-    }
-    
-    .user-profile-container,
-    .right-side {
-      width: 100%;
-    }
-  
-    .content-container {
-      width: 100%;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .post-scroll iframe {
-      height: 200px; /* Adjust video height for smaller screens */
-    }
-  }
-  
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4; /* Light gray background */
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* App.css */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+}
+
+.app-content {
+  flex-grow: 1; /* Take up remaining space */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding-top: 70px; /* Space for the fixed header */
+  background-color: #f9f9f9;
+}

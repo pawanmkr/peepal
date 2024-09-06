@@ -84,7 +84,7 @@ const tutor = {
     },
 };
 
-export const TutorProfile: React.FC = () => {
+const TutorProfile: React.FC = () => {
     return (
         <div className="max-w-3xl mx-auto p-4">
             <BasicInfo tutor={tutor} />
@@ -94,3 +94,5 @@ export const TutorProfile: React.FC = () => {
         </div>
     );
 };
+
+export default TutorProfile;

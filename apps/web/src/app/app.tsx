@@ -1,45 +1,30 @@
-import { Route, Routes } from 'react-router-dom';
-import { TutorProfile } from '../pages/TutorProfile';
-import { TutorSearch } from '../pages/TutorSearch';
-import UserProfile from '../components/user/UserProfile';
-import Header from '../components/header/Header';
-import PostScroll from '../components/home/PostScroll';
-import TrendingSkills from '../components/home/TrendingSkills';
-import TrendingTutors from '../components/home/TrendingTutors';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Route, Routes } from "react-router-dom";
+import Header from "../components/header/Header";
+import Homepage from "../pages/Homepage";
+import TutorProfile from "../pages/TutorProfile";
+import TutorSearch from "../pages/TutorSearch";
 
 export function App() {
-    return (
-        <>
-            <Header />
-            <div className="container-fluid mt-4">
-                <div className="row">
-                    {/* Profile Section */}
-                    <div className="col-lg-3 mb-4">
-                        <UserProfile />
-                    </div>
+  return (
+    <div className="flex flex-col h-screen">
+      {/* Fixed Header */}
+      <Header />
 
-                    {/* Post Scroll Section */}
-                    <div className="col-lg-6 mb-4">
-                        <PostScroll />
-                    </div>
-
-                    {/* Trending Skills and Tutors */}
-                    <div className="col-lg-3">
-                        <TrendingSkills />
-                        <TrendingTutors />
-                    </div>
-                </div>
-            </div>
-
-            <Routes>
-                <Route path="/tutor" element={<TutorProfile />} />
-                <Route path="/tutor/search" element={<TutorSearch />} />
-                <Route path="/user/profile" element={<UserProfile />} />
-            </Routes>
-        </>
-    );
+      {/* Limit width and center content */}
+      <div className="flex-grow overflow-y-auto pt-16 bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4">
+          {" "}
+          {/* Added container */}
+          <Routes>
+            <Route path="/home" element={<Homepage />} />
+            <Route path="/tutor" element={<TutorProfile />} />
+            <Route path="/tutor/search" element={<TutorSearch />} />
+          </Routes>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default App;
