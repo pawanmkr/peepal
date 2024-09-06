@@ -1,0 +1,26 @@
+/* General Styles for the App */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4; /* Light gray background */
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* App.css */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+}
+
+.app-content {
+  flex-grow: 1; /* Take up remaining space */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding-top: 70px; /* Space for the fixed header */
+  background-color: #f9f9f9;
+}

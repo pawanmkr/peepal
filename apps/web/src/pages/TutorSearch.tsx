@@ -17,7 +17,7 @@ export interface TutorBasicInfo {
 
 const TUTORS_PER_PAGE = 25;
 
-export const TutorSearch: React.FC = () => {
+const TutorSearch: React.FC = () => {
     const [tutors, setTutors] = useState<TutorBasicInfo[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalResults, setTotalResults] = useState(0);
@@ -103,3 +103,5 @@ export const TutorSearch: React.FC = () => {
         </div>
     );
 };
+
+export default TutorSearch;
