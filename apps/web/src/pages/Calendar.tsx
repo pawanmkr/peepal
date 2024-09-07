@@ -40,7 +40,7 @@ const Calendar: React.FC<CalendarProps> = ({ availability }) => {
 
     return (
         <div className="bg-white p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-4">Select a Date</h2>
+            <h2 className="text-lg font-semibold mb-4">Book your session with me</h2>
             <div className="grid grid-cols-7 gap-2">
                 {weekDates.map((date) => (
                     <button
