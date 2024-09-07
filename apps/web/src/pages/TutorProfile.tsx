@@ -1,8 +1,9 @@
 import React from 'react';
 import { Availability } from '../components/tutor/profile/Availability';
 import { BasicInfo } from '../components/tutor/profile/BasicInfo';
-import { FormalEducation, Education } from '../components/tutor/profile/Education';
+import { Education, FormalEducation } from '../components/tutor/profile/Education';
 import { SkillsExperience } from '../components/tutor/profile/SkillExperience';
+import Calendar from './Calendar'; // Import the Calendar component
 
 export interface User {
     id: string;
@@ -26,7 +27,7 @@ export interface TutorData {
     video: string;
     location: string;
     languages: string;
-    availability: string;
+    availability: { [key: string]: { time: string; status: 'Available' | 'Booked' }[] };
     currency: string;
     charge: string;
     chargeType: string;
@@ -39,20 +40,40 @@ export interface TutorData {
 
 const tutor = {
     id: '0191adea-3163-777b-86ad-2806f0f73302',
-    description: `I am a highly skilled and experienced tutor with over 10 years of professional experience in teaching a wide range of subjects including Mathematics, Physics, and Chemistry.
-        Having worked with students of diverse backgrounds and learning styles, I have developed a deep understanding of how to tailor my teaching methods to meet individual needs. I am passionate about helping students excel in their academic journey and equipping them with the tools needed for long-term success.`,
-    experience: 10, // Updated to reflect the years mentioned in the description
+    description: `I am a highly skilled and experienced tutor with over 10 years of professional experience in teaching a wide range of subjects including Mathematics, Physics, and Chemistry.`,
+    experience: 10,
     skills: 'Problem solving, Communication, Patience, Adaptability, Time management',
-    rating: '4.7', // Increased rating to reflect higher competence and experience
-    video: 'https://example.com/demo-video.mp4', // Updated video link for clarity
-    location: 'Madhubani, Bihar, India', // More specific location
+    rating: '4.7',
+    video: 'https://example.com/demo-video.mp4',
+    location: 'Madhubani, Bihar, India',
     languages: 'Maithili, Hindi, English, Punjabi',
-    availability: 'Available on weekdays and weekends for flexible scheduling',
+    availability: {
+        Monday: [
+            { time: '09:00', status: 'Available' },
+            { time: '10:00', status: 'Booked' },
+            { time: '11:00', status: 'Available' },
+        ],
+        Wednesday: [
+            { time: '09:00', status: 'Booked' },
+            { time: '10:00', status: 'Available' },
+            { time: '11:00', status: 'Available' },
+        ],
+        Friday: [
+            { time: '09:00', status: 'Available' },
+            { time: '10:00', status: 'Booked' },
+            { time: '11:00', status: 'Available' },
+        ],
+        Sunday: [
+            { time: '09:00', status: 'Available' },
+            { time: '10:00', status: 'Booked' },
+            { time: '11:00', status: 'Available' },
+        ],
+    },
     currency: 'INR',
-    charge: '100.00', // Increased to reflect higher experience
+    charge: '100.00',
     chargeType: 'hourly',
-    days: 'Monday, Wednesday, Friday, Saturday', // Added an extra day for flexibility
-    startTime: '09:00:00', // Slightly adjusted times for better flow
+    days: 'Monday, Wednesday, Friday, Saturday',
+    startTime: '09:00:00',
     endTime: '18:00:00',
     formalEducation: [
         {
@@ -80,17 +101,24 @@ const tutor = {
         dob: '1990-01-01',
         phoneCode: '+91',
         phoneNumber: '9876543210',
-        role: 'tutor', // Updated to clarify role
+        role: 'tutor',
     },
 };
 
 const TutorProfile: React.FC = () => {
     return (
-        <div className="max-w-3xl mx-auto p-4">
-            <BasicInfo tutor={tutor} />
-            <Availability tutor={tutor} />
-            <SkillsExperience tutor={tutor} />
-            <Education education={tutor.formalEducation} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto p-4">
+            {/* Left side: Tutor Profile */}
+            <div className="bg-white p-6 rounded-lg shadow-md">
+                <BasicInfo tutor={tutor} />
+                <SkillsExperience tutor={tutor} />
+                <Education education={tutor.formalEducation} />
+            </div>
+
+            {/* Right side: Calendar */}
+            <div className="bg-white p-6 rounded-lg shadow-md">
+                <Calendar availability={tutor.availability} />
+            </div>
         </div>
     );
 };
