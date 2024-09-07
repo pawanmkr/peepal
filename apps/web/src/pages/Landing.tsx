@@ -1,10 +1,10 @@
 import React from "react";
 
-import FeaturesSection from "./Features";
-import Hero from "../landing/Hero";
-import Testimonial from "../landing/Testimonial";
-import CallToAction from "../landing/CallToAction";
-import Footer from "../landing/Footer";
+import FeaturesSection from "../components/landing/Features";
+import Hero from "../components/landing/Hero";
+import Testimonial from "../components/landing/Testimonial";
+import CallToAction from "../components/landing/CallToAction";
+import Footer from "../components/landing/Footer";
 
 const Landing: React.FC = () => {
   return (

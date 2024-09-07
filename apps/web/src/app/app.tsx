@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Homepage from "../pages/Homepage";
 import TutorProfile from "../pages/TutorProfile";
 import TutorSearch from "../pages/TutorSearch";
-import Landing from "../components/home/Landing";
+import Landing from "../pages/Landing";
 import Layout from "../components/layout/Layout";
 
 export function App() {
