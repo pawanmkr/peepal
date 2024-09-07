@@ -1,28 +1,29 @@
-import PostScroll from "../components/home/PostScroll";
-import TrendingSkills from "../components/home/TrendingSkills";
-import TrendingTutors from "../components/home/TrendingTutors";
+import PostScroll from "../components/home/post/PostScroll";
+import TopSearches from "../components/home/TopSearches";
+import SkillOfTheDay from "../components/home/TopicOfTheDay";
 import UserProfile from "../components/user/UserProfile";
 
+import { posts } from "../components/home/post/dummy-data";
 import { dummyUser, dummySessions } from "./dummy-data";
 
 export default function Homepage() {
   return (
-    <div className="container-fluid mt-4">
-      <div className="row">
-        {/* User Profile Card */}
+    <div className="container-fluid h-full">
+      <div className="row h-full">
+        {/* User Profile Card - Fixed Position */}
         <div className="col-lg-3 mb-4">
           <UserProfile user={dummyUser} sessions={dummySessions} />
         </div>
 
-        {/* Post Scroll Section */}
+        {/* Post Scroll Section - Scrollable */}
         <div className="col-lg-6 mb-4">
-          <PostScroll />
+          <PostScroll posts={posts} />
         </div>
 
-        {/* Trending Skills and Tutors */}
+        {/* Trending Skills and Tutors - Fixed Position */}
         <div className="col-lg-3">
-          <TrendingSkills />
-          <TrendingTutors />
+          <SkillOfTheDay />
+          <TopSearches />
         </div>
       </div>
     </div>

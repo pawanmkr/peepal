@@ -2,6 +2,8 @@ import React from "react";
 import { format } from "date-fns"; // For date formatting
 import { rrulestr } from "rrule"; // For RRULE parsing
 
+// this component should show the upcoming 3 sessions of a user, with the following details: [user, duration, time, sesstion-title]
+
 import "./UserProfile.css";
 
 type UserProfileProps = {
@@ -27,17 +29,20 @@ type UserProfileProps = {
 };
 
 // Function to extract next session date from RRULE
-const getNextSessionDate = (rulestr: string) => {
-  const rule = rrulestr(rulestr);
-  const nextDate = rule.after(new Date());
-  if (nextDate) return format(nextDate, "dd MMM yyyy");
-};
+// const getNextSessionDate = (rulestr: string) => {
+//   const rule = rrulestr(rulestr);
+//   console.log(rule);
+//   const nextDate = rule.after(new Date());
+//   console.log(nextDate);
+//   if (nextDate) return nextDate.toISOString();
+//   return " No upcoming sessions";
+// };
 
 const UserProfile: React.FC<UserProfileProps> = ({ user, sessions }) => {
   return (
-    <div className="max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+    <div className="max-w-sm mx-auto bg-white rounded-lg overflow-hidden border shadow-sm">
       {/* User Info */}
-      <div className="flex items-center px-6 py-4">
+      <div className="flex items-center px-3 py-3">
         <img
           className="w-16 h-16 rounded-full object-cover"
           src={user.avatar || "https://i.pravatar.cc/300"}
@@ -54,7 +59,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, sessions }) => {
       </div>
 
       {/* Sessions Info */}
-      <div className="px-6 py-4 bg-gray-100">
+      <div className="px-3 py-3 bg-gray-100">
         <h3 className="text-lg font-semibold text-gray-800">
           Upcoming Sessions
         </h3>
@@ -64,10 +69,8 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, sessions }) => {
               <h4 className="font-semibold">{session.name}</h4>
               <p className="text-sm text-gray-700">{session.description}</p>
               <p className="text-sm text-gray-500">
-                Cost: ${session.cost} | Duration: {session.duration} min
-              </p>
-              <p className="text-sm text-gray-500">
-                Next Session: {getNextSessionDate(session.rule)}
+                {session.duration} min
+                {/* {getNextSessionDate(session.rule)} */}
               </p>
             </div>
           ))
@@ -77,7 +80,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, sessions }) => {
       </div>
 
       {/* Action Button */}
-      <div className="px-6 py-4">
+      <div className="px-6 py-3">
         <a
           href={`mailto:${user.email}`}
           className="bg-blue-500 text-white px-4 py-2 rounded block text-center hover:bg-blue-600"
