@@ -1,9 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
 import { Route, Routes } from "react-router-dom";
+
 import Homepage from "../pages/Homepage";
 import TutorProfile from "../pages/TutorProfile";
-import TutorSearch from "../pages/TutorSearch";
 import Landing from "../pages/Landing";
 import Layout from "../components/layout/Layout";
 import { AuthProvider } from "../components/contexts/AuthContext";
@@ -33,10 +32,10 @@ export function App() {
           }
         />
         <Route
-          path="/tutor/search"
+          path="/search"
           element={
             <Layout>
-              <TutorSearch />
+              <Homepage />
             </Layout>
           }
         />

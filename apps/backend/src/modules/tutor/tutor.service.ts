@@ -2,6 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { UUID } from 'crypto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
+import { Op } from 'sequelize';
 import { v7 as uuidv7 } from 'uuid';
 
 import { Tutor } from './models/tutor.model';
@@ -73,6 +74,39 @@ export class TutorService {
 
     findOne(id: UUID): Promise<Tutor | null> {
         return this.tutorModel.findByPk(id, this.queryConfig);
+    }
+
+    async search(query: string, offset: number, limit: number) {
+        this.logger.debug(`Searching for tutors with query: ${query}`);
+        const res = await this.tutorModel.findAll({
+            where: {
+                [Op.or]: [
+                    { skills: { [Op.iLike]: `%${query}%` } },
+                    { description: { [Op.iLike]: `%${query}%` } },
+                ],
+            },
+            offset,
+            limit,
+            include: [
+                {
+                    model: FormalEducation,
+                    attributes: { exclude: ['tutorId', 'createdAt', 'updatedAt', 'deletedAt'] },
+                },
+                {
+                    model: User,
+                    where: {
+                        [Op.or]: [
+                            { firstName: { [Op.iLike]: `%${query}%` } },
+                            { lastName: { [Op.iLike]: `%${query}%` } },
+                        ],
+                    },
+                    attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] },
+                },
+            ],
+            attributes: { exclude: ['userId', 'createdAt', 'updatedAt', 'deletedAt'] },
+        });
+        this.logger.debug(`Found ${res.length} tutors with query: ${query}`);
+        return res;
     }
 
     async update(id: UUID, dto: UpdateTutorDto) {

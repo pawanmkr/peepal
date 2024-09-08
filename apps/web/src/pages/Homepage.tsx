@@ -1,21 +1,33 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
+import { useLocation } from "react-router-dom";
 
-import PostScroll from "../components/home/post/PostScroll";
 import TopSearches from "../components/home/TopSearches";
 import SkillOfTheDay from "../components/home/TopicOfTheDay";
 import UserProfile from "../components/user/UserProfile";
-import { posts } from "../components/home/post/dummy-data";
 import { dummyUser, dummySessions } from "./dummy-data";
 import { AuthContext } from "../components/contexts/AuthContext";
 import AuthComponent from "../components/home/login-register/AuthComponent";
+import TutorSearch from "../components/home/TutorSearch";
+import PostFeed from "../components/home/post/PostFeed";
 
 const Homepage: React.FC = () => {
-  const { user } = useContext(AuthContext);
+  const user = useContext(AuthContext);
+  const location = useLocation();
+
+  // Helper function to get query parameters from URL
+  const getQueryParams = (search: string) => {
+    return new URLSearchParams(search);
+  };
+
+  // Extract query parameters
+  const queryParams = getQueryParams(location.search);
+  const query = queryParams.get("q");
+  const post = queryParams.get("post") === "true";
 
   return (
     <div className="container-fluid h-full">
       <div className="row h-full">
-        {/* User Profile Card - Fixed Position */}
+        {/* User Profile Card */}
         <div className="col-lg-3 mb-4">
           {user ? (
             <UserProfile user={dummyUser} sessions={dummySessions} />
@@ -24,12 +36,20 @@ const Homepage: React.FC = () => {
           )}
         </div>
 
-        {/* Post Scroll Section - Scrollable */}
+        {/* Conditional rendering based on query */}
         <div className="col-lg-6 mb-4">
-          <PostScroll posts={posts} />
+          {location.pathname === "/search" && query ? (
+            post ? (
+              <PostFeed query={query} />
+            ) : (
+              <TutorSearch query={query} />
+            )
+          ) : (
+            <PostFeed query={undefined} />
+          )}
         </div>
 
-        {/* Trending Skills and Tutors - Fixed Position */}
+        {/* Trending Skills and Tutors */}
         <div className="col-lg-3">
           <SkillOfTheDay />
           <TopSearches />

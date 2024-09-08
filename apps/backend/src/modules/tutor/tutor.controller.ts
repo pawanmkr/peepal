@@ -65,6 +65,39 @@ export class TutorController {
         return this.tutorService.findAll(offset, limit);
     }
 
+    @ApiOperation({ summary: 'Search for Tutors' })
+    @ApiQuery({
+        name: 'q',
+        type: 'string',
+        description: 'Search query',
+        required: true,
+        example: 'math',
+    })
+    @ApiQuery({
+        name: 'offset',
+        type: 'number',
+        description: 'Offset of the list',
+        required: false,
+        example: 0,
+    })
+    @ApiQuery({
+        name: 'limit',
+        type: 'number',
+        description: 'Limit of the list',
+        required: false,
+        example: 10,
+    })
+    @ApiResponse({ status: 200, description: 'List of tutors', type: [Tutor] })
+    @Get('search')
+    search(
+        @Query('q') query: string,
+        @Query('offset') offset: number = 0,
+        @Query('limit') limit: number = 10
+    ) {
+        console.log(query, offset, limit);
+        return this.tutorService.search(query, offset, limit);
+    }
+
     @ApiOperation({ summary: 'Retrieve a tutor by ID' })
     @ApiParam({ name: 'id', type: 'string', description: 'Unique identifier of the tutor' })
     @ApiResponse({ status: 200, description: 'The tutor details', type: Tutor })

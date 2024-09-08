@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { TutorBasicInfo } from "apps/web/src/pages/TutorSearch";
-import { Rating } from "../common/Rating";
 
-export const TutorCard: React.FC<{ tutor: TutorBasicInfo }> = ({ tutor }) => {
+import { Rating } from "../common/Rating";
+import { Tutor } from "apps/web/src/api/tutor";
+
+export const TutorCard: React.FC<{ tutor: Tutor }> = ({ tutor }) => {
   const navigate = useNavigate();
 
   const openTutorProfile = () => {
@@ -19,14 +20,14 @@ export const TutorCard: React.FC<{ tutor: TutorBasicInfo }> = ({ tutor }) => {
         onClick={openTutorProfile}
       >
         <img
-          src={tutor.avatar}
-          alt={`${tutor.firstName} ${tutor.lastName}`}
+          src={tutor.user.avatar}
+          alt={`${tutor.user.firstName} ${tutor.user.lastName}`}
           className="w-16 h-16 rounded-full"
         />
         <div className="w-full">
           <div className="flex justify-between">
             <h2 className="text-2xl font-bold">
-              {tutor.firstName} {tutor.lastName}
+              {tutor.user.firstName} {tutor.user.lastName}
             </h2>
             <Rating rating={tutor.rating} />
           </div>

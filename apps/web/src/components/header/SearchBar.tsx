@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { Loader } from "lucide-react";
-import { FaSearch } from "react-icons/fa"; // Import search icon from react-icons
+import { FaSearch } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar: React.FC = () => {
   const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSearch = () => {
     if (searchValue.trim() !== "") {
       setLoading(true);
-      console.log("Searching:", searchValue); // Replace with actual search logic
-
-      // Simulate a search request with a timeout
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000); // Simulate a 2-second search
+      navigate(`/search?q=${searchValue}`);
     }
   };
 
