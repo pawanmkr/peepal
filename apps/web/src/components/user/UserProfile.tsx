@@ -49,12 +49,10 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, sessions }) => {
           alt="User Avatar"
         />
         <div className="ml-4">
-          <h2 className="text-xl text-gray-800 m-0">
+          <h2 className="text-xl font-semibold">
             {user.firstName} {user.lastName}
           </h2>
-          <p className="text-gray-500 m-0 hover:cursor-pointer font-semibold text-sm">
-            @{user.username}
-          </p>
+          <p className="text-gray-600">@{user.username}</p>
         </div>
       </div>
 

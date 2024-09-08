@@ -39,7 +39,7 @@ const TopicOfTheDay: React.FC = () => {
               >
                 <FaInfoCircle />
                 {showTooltip && (
-                  <div className="absolute -top-2 right-full mt-2 p-2 w-64 bg-gray-700 text-white text-sm rounded-lg shadow-lg">
+                  <div className="absolute -top-2 right-full mt-2 p-2 w-64 bg-gray-700 text-white text-sm rounded-lg shadow-md">
                     {topic.description}
                   </div>
                 )}

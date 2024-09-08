@@ -1,18 +1,27 @@
+import { useContext } from "react";
+
 import PostScroll from "../components/home/post/PostScroll";
 import TopSearches from "../components/home/TopSearches";
 import SkillOfTheDay from "../components/home/TopicOfTheDay";
 import UserProfile from "../components/user/UserProfile";
-
 import { posts } from "../components/home/post/dummy-data";
 import { dummyUser, dummySessions } from "./dummy-data";
+import { AuthContext } from "../components/contexts/AuthContext";
+import AuthComponent from "../components/home/login-register/AuthComponent";
 
-export default function Homepage() {
+const Homepage: React.FC = () => {
+  const { user } = useContext(AuthContext);
+
   return (
     <div className="container-fluid h-full">
       <div className="row h-full">
         {/* User Profile Card - Fixed Position */}
         <div className="col-lg-3 mb-4">
-          <UserProfile user={dummyUser} sessions={dummySessions} />
+          {user ? (
+            <UserProfile user={dummyUser} sessions={dummySessions} />
+          ) : (
+            <AuthComponent />
+          )}
         </div>
 
         {/* Post Scroll Section - Scrollable */}
@@ -28,4 +37,6 @@ export default function Homepage() {
       </div>
     </div>
   );
-}
+};
+
+export default Homepage;

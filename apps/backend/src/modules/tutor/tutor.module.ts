@@ -8,10 +8,8 @@ import { UserService } from '../user/user.service';
 import { User } from '../user/user.model';
 
 @Module({
-	imports: [
-		SequelizeModule.forFeature([Tutor, FormalEducation, User]),
-	],
-	controllers: [TutorController],
-	providers: [TutorService, UserService],
+    imports: [SequelizeModule.forFeature([Tutor, FormalEducation, User])],
+    controllers: [TutorController],
+    providers: [TutorService, UserService],
 })
-export class TutorModule { }
+export class TutorModule {}

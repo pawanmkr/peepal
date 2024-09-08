@@ -4,7 +4,6 @@ import {
   FaCalendarCheck,
   FaLightbulb,
   FaComments,
-  FaCheckCircle,
 } from "react-icons/fa";
 
 const FeaturesSection: React.FC = () => {

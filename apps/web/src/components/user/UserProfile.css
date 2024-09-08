@@ -1,13 +1,12 @@
 .user-profile-container {
   width: 30%; /* Increase the width of the profile card */
   background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
   border-radius: 8px;
-  
+
   padding: 16px;
   margin-right: 20px; /* Space between profile and post scroll */
 }
-
 
 .user-profile-image {
   flex-shrink: 0;

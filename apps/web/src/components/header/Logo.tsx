@@ -16,7 +16,7 @@ const Logo: React.FC<LogoProps> = ({ className }) => {
 
   return (
     <div
-      className={`text-2xl font-bold cursor-pointer flex items-center justify-center ${className}`}
+      className={`text-2xl font-extrabold cursor-pointer flex items-center justify-center ${className}`}
       onClick={gotoHome}
     >
       {showLeaf && (
