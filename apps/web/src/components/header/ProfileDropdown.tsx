@@ -5,7 +5,10 @@ interface ProfileDropdownProps {
   onClose: () => void;
 }
 
-const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ isOpen, onClose }) => {
+const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
+  isOpen,
+  onClose,
+}) => {
   if (!isOpen) return null;
 
   return (

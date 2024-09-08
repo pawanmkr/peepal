@@ -5,7 +5,10 @@ interface NotificationIconProps {
   onClick: () => void;
 }
 
-const NotificationIcon: React.FC<NotificationIconProps> = ({ unseenCount, onClick }) => {
+const NotificationIcon: React.FC<NotificationIconProps> = ({
+  unseenCount,
+  onClick,
+}) => {
   return (
     <div className="relative">
       {/* Bell Icon */}

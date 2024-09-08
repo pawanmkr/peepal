@@ -13,7 +13,12 @@ interface NotificationDropdownProps {
   unseenCount: number;
 }
 
-const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ isOpen, onClose, notifications, unseenCount }) => {
+const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
+  isOpen,
+  onClose,
+  notifications,
+  unseenCount,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -29,7 +34,9 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ isOpen, onC
           {notifications.map((notification) => (
             <div
               key={notification.id}
-              className={`p-3 border-b last:border-b-0 ${notification.seen ? 'text-gray-700' : 'bg-yellow-100'}`}
+              className={`p-3 border-b last:border-b-0 ${
+                notification.seen ? "text-gray-700" : "bg-yellow-100"
+              }`}
             >
               {notification.message}
             </div>

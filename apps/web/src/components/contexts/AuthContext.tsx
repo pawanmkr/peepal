@@ -1,6 +1,5 @@
 import React, { createContext, useState, ReactNode } from "react";
 
-
 type User = {
   email: string;
   name: string;

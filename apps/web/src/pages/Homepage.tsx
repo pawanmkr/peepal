@@ -1,19 +1,21 @@
-import React, { useContext } from "react";
-import PostScroll from "../components/home/PostScroll";
-import TrendingSkills from "../components/home/TrendingSkills";
-import TrendingTutors from "../components/home/TrendingTutors";
-import AuthComponent from "../components/tutor/common/AuthComponent";
+import PostScroll from "../components/home/post/PostScroll";
+import TopSearches from "../components/home/TopSearches";
+import SkillOfTheDay from "../components/home/TopicOfTheDay";
 import UserProfile from "../components/user/UserProfile";
-import { AuthContext } from "../components/contexts/AuthContext"; // Make sure the path is correct
+
+import { posts } from "../components/home/post/dummy-data";
 import { dummyUser, dummySessions } from "./dummy-data";
+import AuthComponent from "../components/tutor/common/AuthComponent";
+import { AuthContext } from "../components/contexts/AuthContext";
+import { useContext } from "react";
 
 const Homepage: React.FC = () => {
   const { user } = useContext(AuthContext);
 
   return (
-    <div className="container-fluid mt-4">
-      <div className="row">
-        {/* Conditional Rendering */}
+    <div className="container-fluid h-full">
+      <div className="row h-full">
+        {/* User Profile Card - Fixed Position */}
         <div className="col-lg-3 mb-4">
           {user ? (
             <UserProfile user={dummyUser} sessions={dummySessions} />
@@ -22,15 +24,15 @@ const Homepage: React.FC = () => {
           )}
         </div>
 
-        {/* Post Scroll Section */}
+        {/* Post Scroll Section - Scrollable */}
         <div className="col-lg-6 mb-4">
-          <PostScroll />
+          <PostScroll posts={posts} />
         </div>
 
-        {/* Trending Skills and Tutors */}
+        {/* Trending Skills and Tutors - Fixed Position */}
         <div className="col-lg-3">
-          <TrendingSkills />
-          <TrendingTutors />
+          <SkillOfTheDay />
+          <TopSearches />
         </div>
       </div>
     </div>

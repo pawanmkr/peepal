@@ -42,7 +42,10 @@ const LoginForm: React.FC = () => {
       <h2 className="text-2xl font-semibold mb-4">Login</h2>
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="email">
+        <label
+          className="block text-gray-700 text-sm font-semibold mb-2"
+          htmlFor="email"
+        >
           Email
         </label>
         <input
@@ -55,7 +58,10 @@ const LoginForm: React.FC = () => {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="password">
+        <label
+          className="block text-gray-700 text-sm font-semibold mb-2"
+          htmlFor="password"
+        >
           Password
         </label>
         <input

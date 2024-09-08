@@ -10,7 +10,7 @@ const RegisterForm: React.FC = () => {
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match!");
       return;
@@ -24,7 +24,10 @@ const RegisterForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleRegister} className="bg-white p-6 rounded-lg shadow-md">
+    <form
+      onSubmit={handleRegister}
+      className="bg-white p-6 rounded-lg shadow-md"
+    >
       <h2 className="text-2xl font-semibold mb-4">Register</h2>
 
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
