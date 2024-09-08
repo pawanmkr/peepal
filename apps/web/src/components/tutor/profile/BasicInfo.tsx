@@ -3,7 +3,7 @@ import { Rating } from "../common/Rating";
 import { TutorData } from "apps/web/src/pages/TutorProfile";
 
 export const BasicInfo: React.FC<{ tutor: TutorData }> = ({ tutor }) => (
-  <div className="bg-white shadow rounded-lg mb-6 p-4">
+  <div className="bg-white shadow-md rounded-lg mb-6 p-4">
     <div className="flex space-x-4 mb-4">
       <img
         src={tutor.user.avatar}

@@ -32,7 +32,7 @@ export class Slot extends Model<Slot> {
     declare id: UUID;
 
     @ApiProperty({
-        example: 'FREQ=WEEKLY;BYDAY=MO,TU,WE,FR',
+        example: 'FREQ=WEEKLY;BYDAY=MO,TU,WE,FR;BYHOUR=9;BYMINUTE=0',
         description: 'Recurring rule in iCalendar format (RFC 5545).',
         type: String,
         minLength: 5,

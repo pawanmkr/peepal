@@ -14,7 +14,7 @@ export const Education: React.FC<{ education: FormalEducation[] }> = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="bg-white shadow rounded-lg p-4">
+    <div className="bg-white shadow-md rounded-lg p-4">
       <div className="flex justify-between items-center">
         <h3 className="text-xl font-semibold mb-2">Education</h3>
         <button

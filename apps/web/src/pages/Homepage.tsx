@@ -1,13 +1,13 @@
+import { useContext } from "react";
+
 import PostScroll from "../components/home/post/PostScroll";
 import TopSearches from "../components/home/TopSearches";
 import SkillOfTheDay from "../components/home/TopicOfTheDay";
 import UserProfile from "../components/user/UserProfile";
-
 import { posts } from "../components/home/post/dummy-data";
 import { dummyUser, dummySessions } from "./dummy-data";
-import AuthComponent from "../components/tutor/common/AuthComponent";
 import { AuthContext } from "../components/contexts/AuthContext";
-import { useContext } from "react";
+import AuthComponent from "../components/home/login-register/AuthComponent";
 
 const Homepage: React.FC = () => {
   const { user } = useContext(AuthContext);

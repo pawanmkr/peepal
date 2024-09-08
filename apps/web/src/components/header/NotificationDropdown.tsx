@@ -23,7 +23,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
 
   return (
     <div
-      className="absolute top-full right-0 mt-2 w-64 bg-white border border-gray-300 rounded-md shadow-lg z-50"
+      className="absolute top-full right-0 mt-2 w-64 bg-white border border-gray-300 rounded-md shadow-md z-50"
       onMouseLeave={onClose} // Close dropdown when mouse leaves
     >
       <div className="px-4 py-2 font-semibold border-b border-gray-300 bg-gray-50">

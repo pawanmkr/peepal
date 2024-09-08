@@ -13,7 +13,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
 
   return (
     <div
-      className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-50"
+      className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-md z-50"
       onMouseLeave={onClose} // Close when mouse leaves the dropdown
     >
       <ul className="py-2">

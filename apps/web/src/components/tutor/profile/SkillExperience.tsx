@@ -5,7 +5,7 @@ export const SkillsExperience: React.FC<{ tutor: TutorData }> = ({ tutor }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="bg-white shadow rounded-lg mb-6 p-4">
+    <div className="bg-white shadow-md rounded-lg mb-6 p-4">
       <div className="flex justify-between items-center">
         <h3 className="text-xl font-semibold mb-2">Skills & Experience</h3>
         <button
