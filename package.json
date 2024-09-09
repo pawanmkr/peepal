@@ -6,6 +6,7 @@
     "scripts": {
         "start:web": "nx serve web",
         "start:backend": "nx serve backend",
+        "watch:backend": "nx serve backend --watch",
         "build:web": "nx build web",
         "build:backend": "nx build backend",
         "test:web": "nx test web",

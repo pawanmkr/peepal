@@ -46,3 +46,4 @@ nx-cloud.env
 
 # backend
 apps/backend/.env
+apps/web/.env

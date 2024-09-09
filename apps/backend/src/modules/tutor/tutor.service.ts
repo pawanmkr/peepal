@@ -2,6 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { UUID } from 'crypto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
+import { Op } from 'sequelize';
 import { v7 as uuidv7 } from 'uuid';
 
 import { Tutor } from './models/tutor.model';
@@ -73,6 +74,63 @@ export class TutorService {
 
     findOne(id: UUID): Promise<Tutor | null> {
         return this.tutorModel.findByPk(id, this.queryConfig);
+    }
+
+    async search(
+        keyword: string,
+        offset: number,
+        limit: number
+    ): Promise<{ tutors: Tutor[]; total: number }> {
+        // Step 1: Get matching tutor IDs
+        const matchingTutorIds = await this.tutorModel.findAll({
+            attributes: ['id'],
+            include: [
+                {
+                    model: User,
+                    as: 'user',
+                    attributes: [],
+                },
+                {
+                    model: FormalEducation,
+                    as: 'formalEducation',
+                    attributes: [],
+                },
+            ],
+            where: {
+                [Op.or]: [
+                    { skills: { [Op.iLike]: `%${keyword}%` } },
+                    { description: { [Op.iLike]: `%${keyword}%` } },
+                    { '$user.first_name$': { [Op.iLike]: `%${keyword}%` } },
+                    { '$user.last_name$': { [Op.iLike]: `%${keyword}%` } },
+                    { '$formalEducation.subjects$': { [Op.iLike]: `%${keyword}%` } },
+                    { '$formalEducation.institution$': { [Op.iLike]: `%${keyword}%` } },
+                ],
+            },
+            subQuery: false,
+        });
+        const tutorIds = matchingTutorIds.map((tutor) => tutor.id);
+        // Step 2: Fetch full tutor data with associations
+        const tutors = await this.tutorModel.findAll({
+            include: [
+                {
+                    model: User,
+                    as: 'user',
+                },
+                {
+                    model: FormalEducation,
+                    as: 'formalEducation',
+                },
+            ],
+            where: {
+                id: {
+                    [Op.in]: tutorIds,
+                },
+            },
+            offset,
+            limit,
+        });
+
+        return { tutors, total: matchingTutorIds.length };
     }
 
     async update(id: UUID, dto: UpdateTutorDto) {
