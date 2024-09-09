@@ -71,8 +71,12 @@ export const tutorApi = {
     query: string,
     offset: number,
     limit: number
-  ): Promise<Tutor[]> => {
-    return http.get<Tutor[]>("/tutor/search", { q: query, offset, limit });
+  ): Promise<{ tutors: Tutor[]; total: number }> => {
+    return http.get<{ tutors: Tutor[]; total: number }>("/tutor/search", {
+      q: query,
+      offset,
+      limit,
+    });
   },
 
   updateTutor: (id: string, data: UpdateTutor): Promise<Tutor> => {

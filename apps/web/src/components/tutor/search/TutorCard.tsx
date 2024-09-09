@@ -14,21 +14,18 @@ export const TutorCard: React.FC<{ tutor: Tutor }> = ({ tutor }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 mb-4">
-      <div
-        className="flex items-center space-x-4 mb-4 cursor-pointer"
-        onClick={openTutorProfile}
-      >
+    <div className="bg-white shadow-md rounded-lg p-3 mb-3 border-1">
+      <div className="flex space-x-4 cursor-pointer" onClick={openTutorProfile}>
         <img
           src={tutor.user.avatar}
           alt={`${tutor.user.firstName} ${tutor.user.lastName}`}
-          className="w-16 h-16 rounded-full"
+          className="w-12 h-12 rounded-full mt-1"
         />
         <div className="w-full">
-          <div className="flex justify-between">
-            <h2 className="text-2xl font-bold">
+          <div className="flex justify-between items-center">
+            <p className="text-2xl m-0">
               {tutor.user.firstName} {tutor.user.lastName}
-            </h2>
+            </p>
             <Rating rating={tutor.rating} />
           </div>
           <p className="text-sm text-gray-500">{tutor.description}</p>
@@ -48,7 +45,7 @@ export const TutorCard: React.FC<{ tutor: Tutor }> = ({ tutor }) => {
               </span>
             ))}
         </div>
-        <p className="text-lg font-semibold">
+        <p className="text-base m-0">
           {tutor.charge} {tutor.currency} ({tutor.chargeType})
         </p>
       </div>

@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 
 export interface SearchResultReportProps {
-  totalResults: number;
+  totalResultsFound: number;
   query: string;
   postParam: boolean;
 }
 
 const SearchResultReport = ({
-  totalResults,
+  totalResultsFound,
   query,
   postParam,
 }: SearchResultReportProps) => {
@@ -22,10 +22,10 @@ const SearchResultReport = ({
   };
 
   return (
-    <div className="card border-1 bg-white rounded-lg py-2 px-4 mb-4 shadow-sm">
+    <div className="card border-1 bg-white rounded-lg p-3 mb-4 shadow-sm">
       <p className="text-gray-600">
-        Found <span className="font-bold">{totalResults}</span> results for "
-        <span className="italic">{query}</span>"
+        Found <span className="font-bold">{totalResultsFound}</span> results for
+        "<span className="italic">{query}</span>"
       </p>
 
       <div className="inline-flex gap-x-4 mb-2">

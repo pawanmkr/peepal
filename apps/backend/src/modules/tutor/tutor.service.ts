@@ -76,37 +76,61 @@ export class TutorService {
         return this.tutorModel.findByPk(id, this.queryConfig);
     }
 
-    async search(query: string, offset: number, limit: number) {
-        this.logger.debug(`Searching for tutors with query: ${query}`);
-        const res = await this.tutorModel.findAll({
+    async search(
+        keyword: string,
+        offset: number,
+        limit: number
+    ): Promise<{ tutors: Tutor[]; total: number }> {
+        // Step 1: Get matching tutor IDs
+        const matchingTutorIds = await this.tutorModel.findAll({
+            attributes: ['id'],
+            include: [
+                {
+                    model: User,
+                    as: 'user',
+                    attributes: [],
+                },
+                {
+                    model: FormalEducation,
+                    as: 'formalEducation',
+                    attributes: [],
+                },
+            ],
             where: {
                 [Op.or]: [
-                    { skills: { [Op.iLike]: `%${query}%` } },
-                    { description: { [Op.iLike]: `%${query}%` } },
+                    { skills: { [Op.iLike]: `%${keyword}%` } },
+                    { description: { [Op.iLike]: `%${keyword}%` } },
+                    { '$user.first_name$': { [Op.iLike]: `%${keyword}%` } },
+                    { '$user.last_name$': { [Op.iLike]: `%${keyword}%` } },
+                    { '$formalEducation.subjects$': { [Op.iLike]: `%${keyword}%` } },
+                    { '$formalEducation.institution$': { [Op.iLike]: `%${keyword}%` } },
                 ],
+            },
+            subQuery: false,
+        });
+        const tutorIds = matchingTutorIds.map((tutor) => tutor.id);
+        // Step 2: Fetch full tutor data with associations
+        const tutors = await this.tutorModel.findAll({
+            include: [
+                {
+                    model: User,
+                    as: 'user',
+                },
+                {
+                    model: FormalEducation,
+                    as: 'formalEducation',
+                },
+            ],
+            where: {
+                id: {
+                    [Op.in]: tutorIds,
+                },
             },
             offset,
             limit,
-            include: [
-                {
-                    model: FormalEducation,
-                    attributes: { exclude: ['tutorId', 'createdAt', 'updatedAt', 'deletedAt'] },
-                },
-                {
-                    model: User,
-                    where: {
-                        [Op.or]: [
-                            { firstName: { [Op.iLike]: `%${query}%` } },
-                            { lastName: { [Op.iLike]: `%${query}%` } },
-                        ],
-                    },
-                    attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] },
-                },
-            ],
-            attributes: { exclude: ['userId', 'createdAt', 'updatedAt', 'deletedAt'] },
         });
-        this.logger.debug(`Found ${res.length} tutors with query: ${query}`);
-        return res;
+
+        return { tutors, total: matchingTutorIds.length };
     }
 
     async update(id: UUID, dto: UpdateTutorDto) {

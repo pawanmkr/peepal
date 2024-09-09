@@ -87,14 +87,22 @@ export class TutorController {
         required: false,
         example: 10,
     })
-    @ApiResponse({ status: 200, description: 'List of tutors', type: [Tutor] })
+    @ApiResponse({
+        status: 200,
+        description: 'List of tutors',
+        schema: {
+            properties: {
+                tutors: { type: 'array', items: { $ref: '#/components/schemas/Tutor' } },
+                total: { type: 'number' },
+            },
+        },
+    })
     @Get('search')
     search(
         @Query('q') query: string,
         @Query('offset') offset: number = 0,
         @Query('limit') limit: number = 10
-    ) {
-        console.log(query, offset, limit);
+    ): Promise<{ tutors: Tutor[]; total: number }> {
         return this.tutorService.search(query, offset, limit);
     }
 

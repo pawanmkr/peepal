@@ -5,42 +5,59 @@ import { Loader } from "lucide-react";
 import SearchResultReport from "./SearchResultReport";
 import { TutorList } from "../tutor/search/TutorList";
 import { Tutor, tutorApi } from "../../api/tutor";
-
-const LIMIT = 25;
+import Pagination from "./Pagination"; // Import the modern pagination component
 
 const TutorSearch: React.FC<{ query: string }> = ({ query }) => {
-  const [tutors, setTutors] = useState<Tutor[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalResults, setTotalResults] = useState(0);
-  const location = useLocation();
-  const [loading, setLoading] = useState(false);
+  const LIMIT = 25; // Number of results per page
+  const [tutors, setTutors] = useState<Tutor[]>([]); // State to store the list of tutors
+  const [currentPage, setCurrentPage] = useState(1); // State to keep track of the current page
+  const [totalResultsFound, setTotalResultsFound] = useState(0); // State to store the total number of results
+  const location = useLocation(); // Hook to access location object
+  const [loading, setLoading] = useState(false); // State to handle loading status
 
   // Function to handle the search
   const handleSearch = async (searchQuery: string) => {
-    setLoading(true);
+    setLoading(true); // Set loading to true when starting the search
     const response = await tutorApi.searchTutors(
       searchQuery,
-      (currentPage - 1) * LIMIT,
-      LIMIT
+      (currentPage - 1) * LIMIT, // Calculate offset for pagination
+      LIMIT // Limit the number of results per page
     );
-    console.log(response);
-    setTutors(response);
-    setTotalResults(response.length);
-    setLoading(false);
+    console.log(response); // Log the response for debugging
+    if (response) {
+      setTutors(
+        response.tutors.map((t) => {
+          return {
+            ...t,
+            rating: (Math.random() * 5).toString(), // Dummy rating
+            currency: "INR",
+            user: {
+              ...t.user,
+              // Dummy avatar from internet
+              avatar: `https://i.pravatar.cc/150?u=${t.user.email}`,
+            },
+          };
+        })
+      );
+      setTotalResultsFound(response.total); // Update total results found
+    }
+    setLoading(false); // Set loading to false when search is complete
   };
 
   useEffect(() => {
-    if (query) handleSearch(query);
+    if (query) handleSearch(query); // Perform search when query or page changes
   }, [query, currentPage]);
 
-  const pageCount = Math.ceil(totalResults / LIMIT);
+  // Calculate the total number of pages
+  const pageCount = Math.ceil(totalResultsFound / LIMIT);
 
+  // Function to handle page change
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     window.scrollTo(0, 0); // Scroll to the top when changing pages
   };
 
-  // Extract query parameters
+  // Extract query parameters from the URL
   const queryParams = new URLSearchParams(location.search);
   const postParam = queryParams.get("post") === "true";
 
@@ -50,40 +67,29 @@ const TutorSearch: React.FC<{ query: string }> = ({ query }) => {
         {/* Search results */}
         {location.pathname === "/search" && query && (
           <SearchResultReport
-            totalResults={totalResults}
+            totalResultsFound={totalResultsFound}
             query={query}
             postParam={postParam}
           />
         )}
 
+        {/* Display loader while data is being fetched */}
         {loading ? (
           <div className="flex justify-center my-4">
             <Loader className="animate-spin" size={24} />
           </div>
         ) : (
-          <TutorList tutors={tutors} />
-        )}
-
-        {pageCount > 1 && (
-          <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 mt-8">
-            <div className="max-w-3xl mx-auto flex justify-center space-x-2">
-              {Array.from({ length: pageCount }, (_, i) => i + 1).map(
-                (page) => (
-                  <button
-                    key={page}
-                    onClick={() => handlePageChange(page)}
-                    className={`px-3 py-1 rounded ${
-                      currentPage === page
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                )
-              )}
-            </div>
-          </div>
+          <>
+            <TutorList tutors={tutors} /> {/* Display the list of tutors */}
+            {/* Conditionally render pagination only if there are more results than fit on one page */}
+            {totalResultsFound > LIMIT && (
+              <Pagination
+                currentPage={currentPage}
+                pageCount={pageCount}
+                onPageChange={handlePageChange}
+              />
+            )}
+          </>
         )}
       </div>
     </div>
