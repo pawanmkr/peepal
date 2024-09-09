@@ -24,7 +24,7 @@ export function App() {
           }
         />
         <Route
-          path="/tutor"
+          path="/tutor/:id"
           element={
             <Layout>
               <TutorProfile />

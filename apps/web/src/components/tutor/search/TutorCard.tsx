@@ -8,9 +8,7 @@ export const TutorCard: React.FC<{ tutor: Tutor }> = ({ tutor }) => {
   const navigate = useNavigate();
 
   const openTutorProfile = () => {
-    // Navigate to the tutor profile page, e.g., /tutor/{tutorId}
-    // navigate(`/tutor/${tutor.id}`);
-    navigate(`/tutor`);
+    navigate(`/tutor/${tutor.id}`);
   };
 
   return (

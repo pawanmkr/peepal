@@ -1,12 +1,12 @@
 import { InfoItem } from "./InfoItem";
 import { Rating } from "../common/Rating";
-import { TutorData } from "apps/web/src/pages/TutorProfile";
+import { Tutor } from "apps/web/src/api/tutor";
 
-export const BasicInfo: React.FC<{ tutor: TutorData }> = ({ tutor }) => (
+export const BasicInfo: React.FC<{ tutor: Tutor }> = ({ tutor }) => (
   <div className="bg-white shadow-md rounded-lg mb-6 p-4">
     <div className="flex space-x-4 mb-4">
       <img
-        src={tutor.user.avatar}
+        src="https://i.pravatar.cc/300"
         alt={`${tutor.user.firstName} ${tutor.user.lastName}`}
         className="w-20 h-20 rounded-full"
       />
@@ -15,13 +15,13 @@ export const BasicInfo: React.FC<{ tutor: TutorData }> = ({ tutor }) => (
           <h2 className="text-2xl font-bold">
             {tutor.user.firstName} {tutor.user.lastName}
           </h2>
-          <Rating rating={tutor.rating} />
+          <Rating rating={(Math.random() * 5).toString()} />
         </div>
         <p className="text-sm text-gray-500">{tutor.description}</p>
       </div>
     </div>
 
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-y-2">
       <InfoItem
         icon="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
         text={tutor.location}
@@ -33,7 +33,11 @@ export const BasicInfo: React.FC<{ tutor: TutorData }> = ({ tutor }) => (
       <InfoItem
         icon="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"
         text={
-          <a href={tutor.video} className="text-blue-500 hover:underline">
+          <a
+            href={tutor.video}
+            target="_blank"
+            className="text-blue-500 hover:underline"
+          >
             Watch Intro Video
           </a>
         }
