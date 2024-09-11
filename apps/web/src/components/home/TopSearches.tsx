@@ -1,33 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { Loader } from "lucide-react";
+import { fetchTopSearches } from "../../api/misc";
+import { useNavigate } from "react-router-dom";
 
 const TopSearches: React.FC = () => {
   const [searches, setSearches] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
-    const fetchTopSearches = () => {
-      setTimeout(() => {
-        // Simulating a more general set of searches
-        setSearches([
-          "Public Speaking",
-          "Photography",
-          "Yoga",
-          "Guitar Lessons",
-          "Cooking Classes",
-          "Digital Marketing",
-          "Fitness Training",
-          "Creative Writing",
-          "Painting",
-          "French Language",
-        ]);
-        setLoading(false);
-      }, 5000); // Simulate network delay of 2 seconds
+    const fetch = async () => {
+      let keywords = await fetchTopSearches();
+      const uniqueKeywords = Array.from(new Set(keywords));
+      keywords = [];
+      for (let i = 0; i < 10; i++) {
+        keywords.push(uniqueKeywords[i]);
+      }
+      setSearches(keywords);
+      setLoading(false);
     };
-
-    fetchTopSearches();
+    fetch();
   }, []);
+
+  function handleKeywordClick(keyword: string) {
+    // Navigate to the search results page with the clicked keyword
+    navigate(`/search?q=${encodeURIComponent(keyword)}`);
+  }
 
   return (
     <div className="card shadow-sm mb-4 bg-white rounded-lg">
@@ -47,6 +46,7 @@ const TopSearches: React.FC = () => {
                 className={`py-2 flex items-center text-sm cursor-pointer ${
                   index < searches.length - 1 ? "border-b border-gray-200" : ""
                 }`}
+                onClick={() => handleKeywordClick(search)} // Call handleKeywordClick with the clicked keyword
               >
                 <span className="font-bold text-gray-500 mr-3">
                   {index + 1}.

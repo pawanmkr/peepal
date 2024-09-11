@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Loader } from "lucide-react";
+
 import { registerUser } from "../../../api/auth";
 
 const RegisterForm: React.FC = () => {
@@ -9,9 +11,11 @@ const RegisterForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match!");
@@ -27,6 +31,7 @@ const RegisterForm: React.FC = () => {
     if (errorMessage && errorMessage.length > 0) {
       setErrorMessage(errorMessage);
     }
+    setLoading(false);
   };
 
   return (
@@ -94,7 +99,7 @@ const RegisterForm: React.FC = () => {
         type="submit"
         className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-colors"
       >
-        Register
+        {loading ? <Loader className="animate-spin" size={16} /> : "Register"}
       </button>
     </form>
   );

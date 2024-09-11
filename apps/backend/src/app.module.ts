@@ -10,6 +10,7 @@ import { LoggerMiddleware } from './middewares/http-logger.middleware';
 import { SlotModule } from './modules/slot/slot.module';
 import { SessionModule } from './modules/session/session.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { Cache } from './common/redis.cache';
 
 // // Workaround for dynamic import
 async function getChalk(): Promise<typeof chalk> {
@@ -66,7 +67,7 @@ async function getChalk(): Promise<typeof chalk> {
         SessionModule,
     ],
     controllers: [AppController],
-    providers: [],
+    providers: [Cache],
 })
 export class AppModule {
     configure(consumer: MiddlewareConsumer) {

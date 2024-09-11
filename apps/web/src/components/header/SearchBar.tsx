@@ -12,17 +12,16 @@ const SearchBar: React.FC = () => {
     if (searchValue.trim() !== "") {
       setLoading(true);
       navigate(`/search?q=${searchValue}`);
+      setLoading(false);
     }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      handleSearch();
-    }
+    if (event.key === "Enter") handleSearch();
   };
 
   return (
-    <div className="relative w-full max-w-xl mx-auto">
+    <div className="relative w-full max-w-3xl mx-auto">
       <input
         type="text"
         value={searchValue}

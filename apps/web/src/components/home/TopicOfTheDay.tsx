@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FaLightbulb,
   FaCheckCircle,
@@ -11,12 +12,18 @@ const TopicOfTheDay: React.FC = () => {
   const [topic, setTopic] = useState<Topic | null>(null);
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const infoIconRef = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Randomly pick a topic from the data every day (simulate daily topic)
     const todayTopic = topics[Math.floor(Math.random() * topics.length)];
     setTopic(todayTopic);
   }, []);
+
+  function handleTopicClick(keyword: string) {
+    // Navigate to the search results page with the clicked keyword
+    navigate(`/search?q=${encodeURIComponent(keyword)}`);
+  }
 
   return (
     <div className="card shadow-sm mb-4 bg-white rounded-lg">
@@ -59,7 +66,10 @@ const TopicOfTheDay: React.FC = () => {
                 </li>
               ))}
             </ul>
-            <div className="mt-4 flex items-center text-blue-500 hover:underline cursor-pointer">
+            <div
+              className="mt-4 flex items-center text-blue-500 hover:underline cursor-pointer"
+              onClick={() => handleTopicClick(topic.name)}
+            >
               <FaArrowRight className="mr-2" /> Find experts
             </div>
           </>

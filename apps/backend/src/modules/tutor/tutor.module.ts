@@ -6,10 +6,11 @@ import { FormalEducation } from './models/formal-education.model';
 import { Tutor } from './models/tutor.model';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user.model';
+import { Cache } from '../../common/redis.cache';
 
 @Module({
     imports: [SequelizeModule.forFeature([Tutor, FormalEducation, User])],
     controllers: [TutorController],
-    providers: [TutorService, UserService],
+    providers: [TutorService, UserService, Cache],
 })
 export class TutorModule {}
