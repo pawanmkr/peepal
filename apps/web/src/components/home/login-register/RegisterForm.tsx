@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { registerUser } from "../../../api/auth";
 
 const RegisterForm: React.FC = () => {
   const [firstName, setFirstName] = useState("");
@@ -9,18 +10,23 @@ const RegisterForm: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match!");
       return;
     }
-
-    setErrorMessage("");
-
-    // Handle registration logic here
-    console.log("Registering with:", { firstName, lastName, email, password });
+    const errorMessage = await registerUser({
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+    });
+    if (errorMessage && errorMessage.length > 0) {
+      setErrorMessage(errorMessage);
+    }
   };
 
   return (

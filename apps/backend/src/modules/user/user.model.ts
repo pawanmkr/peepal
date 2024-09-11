@@ -5,7 +5,7 @@ import { UserRole } from '../../common/common.enum';
 import { UUID } from 'node:crypto';
 import { Tutor } from '../tutor/models/tutor.model';
 
-@Table({ tableName: 'users' })
+@Table({ tableName: 'user' })
 export class User extends Model<User> {
     @ApiProperty({
         description: 'Unique identifier',

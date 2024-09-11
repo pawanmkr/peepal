@@ -8,7 +8,8 @@ const envSchema = z.object({
     APP_PORT: z.string().transform(Number),
     APP_URL: z.string().url(),
 
-    // SESSION_SECRET: z.string().min(8).max(100),
+    // JWT
+    JWT_SECRET: z.string().min(1),
 
     FRONTEND_URL: z.string().min(1),
 

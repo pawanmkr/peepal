@@ -7,6 +7,11 @@ interface LogoProps {
 }
 
 const gotoHome = () => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    window.location.href = "/home";
+    return;
+  }
   window.location.href = "/";
 };
 

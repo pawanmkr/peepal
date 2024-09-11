@@ -1,18 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import TopSearches from "../components/home/TopSearches";
 import SkillOfTheDay from "../components/home/TopicOfTheDay";
 import UserProfile from "../components/user/UserProfile";
 import { dummyUser, dummySessions } from "./dummy-data";
-import { AuthContext } from "../components/contexts/AuthContext";
 import AuthComponent from "../components/home/login-register/AuthComponent";
 import TutorSearch from "../components/home/TutorSearch";
 import PostFeed from "../components/home/post/PostFeed";
 
 const Homepage: React.FC = () => {
-  const user = useContext(AuthContext);
   const location = useLocation();
+  let jwt = localStorage.getItem("token");
 
   // Helper function to get query parameters from URL
   const getQueryParams = (search: string) => {
@@ -29,7 +28,7 @@ const Homepage: React.FC = () => {
       <div className="row h-full">
         {/* User Profile Card */}
         <div className="col-lg-3 mb-4">
-          {user ? (
+          {jwt ? (
             <UserProfile user={dummyUser} sessions={dummySessions} />
           ) : (
             <AuthComponent />

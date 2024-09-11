@@ -15,7 +15,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Slot } from '../slot/models/slot.model';
 import { Tutor } from '../tutor/models/tutor.model';
 
-@Table({ tableName: 'sessions' })
+@Table({ tableName: 'session' })
 export class Session extends Model<Session> {
     @ApiProperty({
         example: 'f3g4h5i6-j7k8-l9m10-n11o12-p13q14r15s16',
