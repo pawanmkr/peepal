@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { RRule, rrulestr } from "rrule";
-import { format, addMinutes } from "date-fns";
+import { format, addMinutes, isPast, isToday, addDays } from "date-fns";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
-// Define the types for the session slot
 type Slot = {
   rule: string;
   isAvailable: boolean;
-  duration: number; // Duration in minutes
+  duration: number;
   sessionDetails: {
     name: string;
     description: string;
@@ -16,54 +15,82 @@ type Slot = {
 
 type CalendarViewProps = {
   slots: Slot[];
+  onSlotClick?: (slot: Slot) => void; // Event handler for clicking a slot
 };
 
-const CalendarView: React.FC<CalendarViewProps> = ({ slots }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [visibleSlots, setVisibleSlots] = useState<Slot[]>([]);
+const CalendarView: React.FC<CalendarViewProps> = ({ slots, onSlotClick }) => {
+  const [startDate, setStartDate] = useState(new Date());
+  const [visibleSlots, setVisibleSlots] = useState<{ [key: string]: Slot[] }>(
+    {}
+  );
 
   // Change date helper
   const changeDate = (days: number) => {
-    setSelectedDate((prev) => new Date(prev.setDate(prev.getDate() + days)));
+    setStartDate((prev) => {
+      const newStartDate = addDays(prev, days);
+      return new Date(newStartDate.setHours(0, 0, 0, 0)); // Reset time to midnight
+    });
   };
 
   // Format date
   const formatDate = (date: Date) => format(date, "MMM d, yyyy (EEEE)");
 
-  const getSlotsForDate = (date: Date) => {
-    const startOfDay = new Date(date.setHours(0, 0, 0, 0));
-    const endOfDay = new Date(date.setHours(23, 59, 59, 999));
+  // Get today's status (today, tomorrow, etc.)
+  const getDayStatus = (date: Date) => {
+    const today = new Date();
+    const diff = Math.ceil(
+      (date.getTime() - today.getTime()) / (1000 * 3600 * 24)
+    );
 
-    const selectedDateSlots = slots.filter((slot) => {
+    if (isToday(date)) return "Today";
+    if (diff === 1) return "Tomorrow";
+    if (diff === -1) return "Yesterday";
+    return format(date, "EEEE");
+  };
+
+  const getSlotsForDateRange = (startDate: Date) => {
+    const endDate = addDays(startDate, 1); // Two dates: today and tomorrow
+
+    return slots.reduce<{ [key: string]: Slot[] }>((acc, slot) => {
       const rule = rrulestr(slot.rule);
-      const occurrences = rule.between(startOfDay, endOfDay, true);
-      return occurrences.length > 0;
-    });
+      const occurrences = rule.between(startDate, endDate, true);
 
-    return selectedDateSlots;
+      occurrences.forEach((occurrence) => {
+        const dateKey = format(new Date(occurrence), "MMM d, yyyy");
+        if (!acc[dateKey]) acc[dateKey] = [];
+        acc[dateKey].push(slot);
+      });
+
+      return acc;
+    }, {});
   };
 
   useEffect(() => {
-    setVisibleSlots(getSlotsForDate(selectedDate));
-  }, [selectedDate, slots]);
+    setVisibleSlots(getSlotsForDateRange(startDate));
+  }, [startDate, slots]);
 
   return (
-    <div className="max-w-lg mx-auto p-4 border rounded-lg shadow-md">
+    <div className="min-w-96 mx-auto p-4 border rounded-lg shadow-sm bg-white">
       {/* Header */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-2">
+        {/* Date Navigation */}
         <button
           className="text-blue-500 hover:text-blue-600"
           onClick={() => changeDate(-1)}
         >
           <FiChevronLeft size={24} />
         </button>
+
+        {/* Date Info */}
         <div className="text-center">
-          <div className="font-bold">{formatDate(selectedDate)}</div>
-          <div className="text-sm text-gray-500">
-            Tomorrow:{" "}
-            {format(new Date(selectedDate.getTime() + 86400000), "EEEE, MMM d")}
+          <div className="text-xl">{formatDate(startDate)}</div>
+          {/* Time Zone Info */}
+          <div className="text-sm text-gray-500 text-center mb-2">
+            Timezone: {Intl.DateTimeFormat().resolvedOptions().timeZone}
           </div>
         </div>
+
+        {/* Date Navigation */}
         <button
           className="text-blue-500 hover:text-blue-600"
           onClick={() => changeDate(1)}
@@ -72,57 +99,90 @@ const CalendarView: React.FC<CalendarViewProps> = ({ slots }) => {
         </button>
       </div>
 
+      {/* Label */}
+      <h2 className="text-xl font-semibold mb-4 text-center text-red-600">
+        Hurry up, Slots are Available!
+      </h2>
+
       {/* Body: Time Slots */}
-      <div className="space-y-4">
-        {visibleSlots.length > 0 ? (
-          visibleSlots.map((slot, index) => {
-            const rule = rrulestr(slot.rule);
-            const nextOccurrence = rule.after(selectedDate, true);
-            if (!nextOccurrence) return null;
+      <div className="max-h-[560px] overflow-y-auto bg-white">
+        {Object.keys(visibleSlots).length > 0 ? (
+          Object.entries(visibleSlots).map(([date, slots]) => (
+            <div key={date} className="mb-6">
+              {slots.length > 0 ? (
+                slots.map((slot, index) => {
+                  const rule = rrulestr(slot.rule);
+                  const nextOccurrence = rule.after(startDate, true);
+                  if (!nextOccurrence) return null;
 
-            const startTime = format(new Date(nextOccurrence), "h:mm a");
-            const endTime = format(
-              addMinutes(new Date(nextOccurrence), slot.duration),
-              "h:mm a"
-            );
+                  const startTime = format(new Date(nextOccurrence), "h:mm a");
+                  const endTime = format(
+                    addMinutes(new Date(nextOccurrence), slot.duration),
+                    "h:mm a"
+                  );
 
-            return (
-              <div
-                key={index}
-                className={`p-4 rounded-lg border ${
-                  slot.isAvailable
-                    ? "bg-green-50 border-green-300"
-                    : "bg-red-50 border-red-300"
-                }`}
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <div className="font-bold text-lg">
-                      {slot.sessionDetails.name}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      {slot.sessionDetails.description}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-blue-500 font-bold">
-                      {startTime} - {endTime}
-                    </div>
+                  const isPastSlot = isPast(new Date(nextOccurrence));
+                  const isCurrentSlot = isToday(new Date(nextOccurrence));
+
+                  return (
                     <div
-                      className={`text-sm ${
-                        slot.isAvailable ? "text-green-600" : "text-red-600"
+                      key={index}
+                      className={`px-3 py-2 rounded-lg border cursor-pointer mb-4 ${
+                        isPastSlot
+                          ? "bg-gray-100 border-gray-300"
+                          : slot.isAvailable
+                          ? "bg-green-50 border-green-300 hover:bg-green-100"
+                          : "bg-red-50 border-red-300 hover:bg-red-100"
                       }`}
+                      onClick={() => onSlotClick && onSlotClick(slot)}
                     >
-                      {slot.isAvailable ? "Available" : "Not Available"}
+                      <div className="">
+                        {/* Slot session name */}
+                        <div className="ftext-lg">
+                          {slot.sessionDetails.name}
+                        </div>
+
+                        {/* session description */}
+                        <div className="text-sm text-gray-600 mb-3">
+                          {slot.sessionDetails.description}
+                        </div>
+
+                        {/* Slot Time */}
+                        <div className={`w-full flex justify-between`}>
+                          {startTime} - {endTime}
+                          <span className="font-semibold">
+                            {slot.duration}m
+                          </span>
+                        </div>
+
+                        {/* Slot Status */}
+                        <div
+                          className={`text-sm ${
+                            slot.isAvailable ? "text-green-600" : "text-red-600"
+                          } ${isPastSlot ? "text-gray-500" : ""}`}
+                        >
+                          {isPastSlot
+                            ? ""
+                            : slot.isAvailable
+                            ? "Available"
+                            : "Not Available"}
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  );
+                })
+              ) : (
+                <div className="text-center text-gray-500 mt-4">
+                  <p className="text-xl">No slots available for {date}.</p>
+                  <p>Check back later or try another date.</p>
                 </div>
-              </div>
-            );
-          })
+              )}
+            </div>
+          ))
         ) : (
-          <div className="text-center text-gray-500">
-            No slots available for this date.
+          <div className="text-center text-gray-500 mt-4">
+            <p className="text-xl">No slots available for selected dates.</p>
+            <p>Check back later or try another date range.</p>
           </div>
         )}
       </div>

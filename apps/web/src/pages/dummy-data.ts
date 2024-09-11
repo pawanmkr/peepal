@@ -62,3 +62,36 @@ export const dummySessions = [
     rule: "DTSTART:20240125T070000Z\nRRULE:FREQ=WEEKLY;COUNT=5",
   },
 ];
+
+export const slots = [
+  {
+    rule: "FREQ=DAILY;DTSTART=20240911T143000Z", // RRULE without DURATION
+    isAvailable: true,
+    duration: 60, // 60 minutes duration
+    sessionDetails: { name: "Math Class", description: "Basic Algebra" },
+  },
+  {
+    rule: "FREQ=DAILY;DTSTART=20240911T173000Z",
+    isAvailable: false,
+    duration: 90, // 90 minutes duration
+    sessionDetails: { name: "Science Class", description: "Physics - Motion" },
+  },
+  {
+    rule: "FREQ=DAILY;DTSTART=20240911T193000Z",
+    isAvailable: true,
+    duration: 60, // 60 minutes duration
+    sessionDetails: { name: "English Class", description: "Grammar" },
+  },
+  {
+    rule: "FREQ=DAILY;DTSTART=20240911T203000Z",
+    isAvailable: true,
+    duration: 60, // 60 minutes duration
+    sessionDetails: { name: "History Class", description: "World War II" },
+  },
+  {
+    rule: "FREQ=DAILY;DTSTART=20240911T213000Z",
+    isAvailable: false,
+    duration: 60, // 60 minutes duration
+    sessionDetails: { name: "Geography Class", description: "World Map" },
+  },
+];

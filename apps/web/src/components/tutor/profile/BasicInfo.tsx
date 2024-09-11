@@ -3,12 +3,12 @@ import { Rating } from "../common/Rating";
 import { Tutor } from "apps/web/src/api/tutor";
 
 export const BasicInfo: React.FC<{ tutor: Tutor }> = ({ tutor }) => (
-  <div className="bg-white shadow-md rounded-lg mb-6 p-4">
+  <div className="bg-white shadow-md rounded-lg p-4">
     <div className="flex space-x-4 mb-4">
       <img
         src="https://i.pravatar.cc/300"
         alt={`${tutor.user.firstName} ${tutor.user.lastName}`}
-        className="w-20 h-20 rounded-full"
+        className="w-20 h-20 rounded-full border-5 border-gray-300"
       />
       <div>
         <div className="flex gap-x-4">

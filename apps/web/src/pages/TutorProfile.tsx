@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { Loader } from "lucide-react";
 import { useParams } from "react-router-dom";
+
+import CalendarView from "../components/tutor/profile/CalendarView";
 import { BasicInfo } from "../components/tutor/profile/BasicInfo";
 import { Education } from "../components/tutor/profile/Education";
 import { SkillsExperience } from "../components/tutor/profile/SkillExperience";
 import { Tutor, tutorApi } from "../api/tutor";
-import { Loader } from "lucide-react";
-import CalendarView from "../components/tutor/profile/CalendarView";
+import { slots } from "./dummy-data";
+import { Reviews } from "../components/tutor/profile/Reviews";
 
 // Simple 404 page component
 const NotFound: React.FC = () => (
@@ -13,21 +16,6 @@ const NotFound: React.FC = () => (
     <h1 className="text-4xl font-bold">404 - Tutor Not Found</h1>
   </div>
 );
-
-const slots = [
-  {
-    rule: "FREQ=DAILY;DTSTART=20240911T143000Z", // RRULE without DURATION
-    isAvailable: true,
-    duration: 60, // 60 minutes duration
-    sessionDetails: { name: "Math Class", description: "Basic Algebra" },
-  },
-  {
-    rule: "FREQ=DAILY;DTSTART=20240911T173000Z",
-    isAvailable: false,
-    duration: 90, // 90 minutes duration
-    sessionDetails: { name: "Science Class", description: "Physics - Motion" },
-  },
-];
 
 const TutorProfile: React.FC = () => {
   const [tutor, setTutor] = useState<Tutor | null>(null);
@@ -46,7 +34,6 @@ const TutorProfile: React.FC = () => {
     const fetchTutor = async () => {
       try {
         const response = await tutorApi.getTutorById(id);
-        console.log(response);
         if (response) {
           setTutor(response);
           setError(false);
@@ -72,21 +59,17 @@ const TutorProfile: React.FC = () => {
     );
   }
 
-  if (error) {
-    return <NotFound />;
-  }
-
-  if (!tutor) {
-    return <NotFound />;
-  }
+  if (error) return <NotFound />;
+  if (!tutor) return <NotFound />;
 
   return (
-    <div className="max-w-3xl flex gap-x-8 mx-auto">
+    <div className="max-w-6xl flex gap-x-8 mx-auto mb-32">
       {/* Left side: Tutor Profile */}
-      <div className="w-full">
+      <div className="w-full flex flex-col gap-y-6">
         <BasicInfo tutor={tutor} />
         <SkillsExperience tutor={tutor} />
         <Education education={tutor.formalEducation} />
+        <Reviews />
       </div>
 
       {/* Right side: Calendar */}
