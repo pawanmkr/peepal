@@ -1,10 +1,13 @@
 import React, { createContext, useState, ReactNode } from "react";
 
+enum UserRole {
+  TUTOR = "tutor",
+  USER = "user",
+}
 type User = {
-  email: string;
-  name: string;
+  id: string;
+  role: UserRole;
 };
-
 type AuthContextType = {
   user: User | null;
   login: (user: User) => void;

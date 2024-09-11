@@ -1,18 +1,18 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import TopSearches from "../components/home/TopSearches";
 import SkillOfTheDay from "../components/home/TopicOfTheDay";
 import UserProfile from "../components/user/UserProfile";
 import { dummyUser, dummySessions } from "./dummy-data";
-import { AuthContext } from "../components/contexts/AuthContext";
 import AuthComponent from "../components/home/login-register/AuthComponent";
 import TutorSearch from "../components/home/TutorSearch";
 import PostFeed from "../components/home/post/PostFeed";
 
 const Homepage: React.FC = () => {
-  const user = useContext(AuthContext);
   const location = useLocation();
+  const [isMobile, setIsMobile] = useState(false);
+  let jwt = localStorage.getItem("token");
 
   // Helper function to get query parameters from URL
   const getQueryParams = (search: string) => {
@@ -24,20 +24,38 @@ const Homepage: React.FC = () => {
   const query = queryParams.get("q");
   const post = queryParams.get("post") === "true";
 
+  // Detect if the screen size is mobile
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // Adjust the width for mobile devices
+    };
+
+    // Set initial screen size
+    handleResize();
+
+    // Add event listener for screen resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup listener on unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div className="container-fluid h-full">
       <div className="row h-full">
-        {/* User Profile Card */}
-        <div className="col-lg-3 mb-4">
-          {user ? (
-            <UserProfile user={dummyUser} sessions={dummySessions} />
-          ) : (
-            <AuthComponent />
-          )}
-        </div>
+        {/* User Profile Card - Hidden on mobile */}
+        {!isMobile && (
+          <div className="col-lg-3 mb-4">
+            {jwt ? (
+              <UserProfile user={dummyUser} sessions={dummySessions} />
+            ) : (
+              <AuthComponent />
+            )}
+          </div>
+        )}
 
         {/* Conditional rendering based on query */}
-        <div className="col-lg-6 mb-4">
+        <div className={isMobile ? "col-12 mb-4" : "col-lg-6 mb-4"}>
           {location.pathname === "/search" && query ? (
             post ? (
               <PostFeed query={query} />
@@ -49,11 +67,13 @@ const Homepage: React.FC = () => {
           )}
         </div>
 
-        {/* Trending Skills and Tutors */}
-        <div className="col-lg-3">
-          <SkillOfTheDay />
-          <TopSearches />
-        </div>
+        {/* Trending Skills and Tutors - Hidden on mobile */}
+        {!isMobile && (
+          <div className="col-lg-3">
+            <SkillOfTheDay />
+            <TopSearches />
+          </div>
+        )}
       </div>
     </div>
   );

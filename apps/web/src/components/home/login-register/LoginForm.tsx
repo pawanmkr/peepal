@@ -1,10 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Loader } from "lucide-react";
-import { AuthContext } from "../../contexts/AuthContext";
+
+import { loginUser } from "../../../api/auth";
 
 const LoginForm: React.FC = () => {
-  const authContext = useContext(AuthContext);
-  const [email, setEmail] = useState("");
+  const [emailUsername, setEmailUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -13,17 +13,19 @@ const LoginForm: React.FC = () => {
     e.preventDefault();
     setLoading(true);
 
-    if (!authContext) {
-      setErrorMessage("Auth context is not available");
+    try {
+      const error = await loginUser({
+        emailUsername,
+        password,
+      });
+      if (error) {
+        setErrorMessage(error);
+      }
+    } catch (err) {
+      setErrorMessage("An error occurred. Please try again.");
+    } finally {
       setLoading(false);
-      return;
     }
-
-    // Simulate login logic with a 2-second delay
-    setTimeout(() => {
-      authContext.login({ email, name: "Test User" });
-      setLoading(false);
-    }, 2000);
   };
 
   return (
@@ -38,8 +40,8 @@ const LoginForm: React.FC = () => {
           type="text"
           id="email_username"
           placeholder="Email or Username"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={emailUsername}
+          onChange={(e) => setEmailUsername(e.target.value)}
           required
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
         />

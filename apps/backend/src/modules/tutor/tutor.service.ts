@@ -11,6 +11,7 @@ import { UpdateTutorDto } from './dto/update-tutor.dto';
 import { FormalEducation } from './models/formal-education.model';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user.model';
+import { Cache } from '../../common/redis.cache';
 
 @Injectable()
 export class TutorService {
@@ -34,7 +35,8 @@ export class TutorService {
         @InjectModel(FormalEducation)
         private readonly formalEducationModel: typeof FormalEducation,
         private readonly sequelize: Sequelize,
-        private readonly userService: UserService
+        private readonly userService: UserService,
+        private readonly cache: Cache
     ) {}
 
     async create(dto: CreateTutorDto, userId: UUID) {
@@ -81,6 +83,7 @@ export class TutorService {
         offset: number,
         limit: number
     ): Promise<{ tutors: Tutor[]; total: number }> {
+        await this.cache.addKeyword(keyword);
         // Step 1: Get matching tutor IDs
         const matchingTutorIds = await this.tutorModel.findAll({
             attributes: ['id'],

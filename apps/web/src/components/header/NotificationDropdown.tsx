@@ -5,7 +5,6 @@ interface Notification {
   message: string;
   seen: boolean;
 }
-
 interface NotificationDropdownProps {
   isOpen: boolean;
   onClose: () => void;
