@@ -5,6 +5,7 @@ import { Education } from "../components/tutor/profile/Education";
 import { SkillsExperience } from "../components/tutor/profile/SkillExperience";
 import { Tutor, tutorApi } from "../api/tutor";
 import { Loader } from "lucide-react";
+import CalendarView from "../components/tutor/profile/CalendarView";
 
 // Simple 404 page component
 const NotFound: React.FC = () => (
@@ -12,6 +13,21 @@ const NotFound: React.FC = () => (
     <h1 className="text-4xl font-bold">404 - Tutor Not Found</h1>
   </div>
 );
+
+const slots = [
+  {
+    rule: "FREQ=DAILY;DTSTART=20240911T143000Z", // RRULE without DURATION
+    isAvailable: true,
+    duration: 60, // 60 minutes duration
+    sessionDetails: { name: "Math Class", description: "Basic Algebra" },
+  },
+  {
+    rule: "FREQ=DAILY;DTSTART=20240911T173000Z",
+    isAvailable: false,
+    duration: 90, // 90 minutes duration
+    sessionDetails: { name: "Science Class", description: "Physics - Motion" },
+  },
+];
 
 const TutorProfile: React.FC = () => {
   const [tutor, setTutor] = useState<Tutor | null>(null);
@@ -74,9 +90,9 @@ const TutorProfile: React.FC = () => {
       </div>
 
       {/* Right side: Calendar */}
-      {/* <div className="shadow-md h-max">
-        <Calendar availability={tutor.availability} />
-      </div> */}
+      <div className="shadow-md h-max">
+        <CalendarView slots={slots} />
+      </div>
     </div>
   );
 };
