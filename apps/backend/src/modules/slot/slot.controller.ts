@@ -36,16 +36,16 @@ export class SlotController {
     create(
         @Body() dto: CreateSlotDto,
         @Query('userId') userId?: string,
-        @Query('tutorId') tutorId?: string
+        @Query('professionalId') professionalId?: string
     ) {
-        if (dto.userType === UserRole.TUTOR && isValidUUID(tutorId)) {
-            dto.tutorId = tutorId;
+        if (dto.userType === UserRole.TUTOR && isValidUUID(professionalId)) {
+            dto.professionalId = professionalId;
             dto.userId = null;
         } else if (dto.userType === UserRole.USER && isValidUUID(userId)) {
             dto.userId = userId;
-            dto.tutorId = null;
+            dto.professionalId = null;
         } else {
-            throw new BadRequestException('Invalid user or tutor ID');
+            throw new BadRequestException('Invalid user or professional ID');
         }
         return this.slotService.create(dto);
     }

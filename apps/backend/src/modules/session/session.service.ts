@@ -21,7 +21,7 @@ export class SessionService {
         private readonly slotModel: typeof Slot
     ) {}
 
-    create(dto: CreateSessionDto, userId: UUID, tutorId: UUID) {
+    create(dto: CreateSessionDto, userId: UUID, professionalId: UUID) {
         this.logger.log('Creating a new session');
         return this.sequelize.transaction(async (transaction) => {
             const slot = await this.slotModel.create(
@@ -31,7 +31,7 @@ export class SessionService {
                     isAvailable: false,
                     userType: UserRole.USER,
                     userId,
-                    tutorId,
+                    professionalId,
                 },
                 { transaction }
             );
@@ -42,10 +42,10 @@ export class SessionService {
         });
     }
 
-    findAll(tutorId?: UUID, userId?: UUID) {
+    findAll(professionalId?: UUID, userId?: UUID) {
         return this.sessionModel.findAll({
             where: {
-                slot: { userId, tutorId },
+                slot: { userId, professionalId },
             },
         });
     }

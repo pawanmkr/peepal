@@ -14,7 +14,7 @@ export default function PostMeta({ post }: PostMetaProps) {
     const [showComments, setShowComments] = useState(false);
 
     const gotoTutorProfile = (id: string) => {
-        navigate(`/tutor/${id}`);
+        navigate(`/professional/${id}`);
     };
 
     return (
@@ -46,9 +46,9 @@ export default function PostMeta({ post }: PostMetaProps) {
                 <div className="flex gap-x-4 items-center">
                     <p
                         className="cursor-pointer m-0"
-                        onClick={() => gotoTutorProfile(post.tutor.id)}
+                        onClick={() => gotoTutorProfile(post.professional.id)}
                     >
-                        @{post.tutor.user.username}
+                        @{post.professional.user.username}
                     </p>
                     <p className="m-0">{dayjs().diff(post.date, "day")}d ago</p>
                     <p className="m-0">

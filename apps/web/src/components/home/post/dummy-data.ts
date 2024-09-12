@@ -11,7 +11,7 @@ export interface User {
     role: string;
 }
 
-export interface Tutor {
+export interface Professional {
     id: string;
     description: string;
     experience: number;
@@ -36,7 +36,7 @@ export interface Post {
     description: string; // Post description field
     date: string;
     views: number;
-    tutor: Tutor;
+    professional: Professional;
 }
 
 export const users: User[] = [
@@ -50,7 +50,7 @@ export const users: User[] = [
         dob: "1985-04-23",
         phoneCode: "+91",
         phoneNumber: "1234567890",
-        role: "Tutor",
+        role: "Professional",
     },
     {
         id: "user2",
@@ -62,16 +62,16 @@ export const users: User[] = [
         dob: "1990-03-18",
         phoneCode: "+91",
         phoneNumber: "9876543210",
-        role: "Tutor",
+        role: "Professional",
     },
     // Add more users as needed
 ];
 
-export const tutors: Tutor[] = [
+export const professionals: Professional[] = [
     {
         id: "1",
         description:
-            "Experienced tutor specializing in problem-solving skills.",
+            "Experienced professional specializing in problem-solving skills.",
         experience: 10,
         skills: "Problem solving, Communication",
         rating: 4.8,
@@ -105,7 +105,7 @@ export const tutors: Tutor[] = [
         endTime: "18:00:00",
         user: users[1],
     },
-    // Add more tutors as needed
+    // Add more professionals as needed
 ];
 
 export const posts: Post[] = [
@@ -116,7 +116,7 @@ export const posts: Post[] = [
             "Join this session to enhance your problem-solving techniques.",
         date: "2024-09-04",
         views: 1200,
-        tutor: tutors[0],
+        professional: professionals[0],
     },
     {
         id: "post2",
@@ -124,7 +124,7 @@ export const posts: Post[] = [
         description: "Get a deep dive into advanced mathematical concepts.",
         date: "2024-08-12",
         views: 1500,
-        tutor: tutors[1],
+        professional: professionals[1],
     },
     {
         id: "post3",
@@ -133,7 +133,7 @@ export const posts: Post[] = [
             "An introductory session to start your journey in Data Science.",
         date: "2024-07-15",
         views: 980,
-        tutor: tutors[0],
+        professional: professionals[0],
     },
     {
         id: "post4",
@@ -142,7 +142,7 @@ export const posts: Post[] = [
             "Learn the art of effective communication in professional environments.",
         date: "2024-06-21",
         views: 1100,
-        tutor: tutors[1],
+        professional: professionals[1],
     },
     {
         id: "post5",
@@ -151,7 +151,7 @@ export const posts: Post[] = [
             "A session focused on understanding and solving basic algorithms.",
         date: "2024-08-30",
         views: 1350,
-        tutor: tutors[0],
+        professional: professionals[0],
     },
     {
         id: "post6",
@@ -160,7 +160,7 @@ export const posts: Post[] = [
             "Get familiar with basic calculus concepts in this session.",
         date: "2024-07-10",
         views: 920,
-        tutor: tutors[1],
+        professional: professionals[1],
     },
     {
         id: "post7",
@@ -169,7 +169,7 @@ export const posts: Post[] = [
             "Develop techniques to improve your speed in solving problems.",
         date: "2024-08-22",
         views: 1600,
-        tutor: tutors[0],
+        professional: professionals[0],
     },
     {
         id: "post8",
@@ -178,7 +178,7 @@ export const posts: Post[] = [
             "Explore advanced concepts in geometry with practical examples.",
         date: "2024-09-01",
         views: 1050,
-        tutor: tutors[1],
+        professional: professionals[1],
     },
     {
         id: "post9",
@@ -187,7 +187,7 @@ export const posts: Post[] = [
             "Enhance your logical reasoning by solving complex puzzles.",
         date: "2024-07-20",
         views: 1450,
-        tutor: tutors[0],
+        professional: professionals[0],
     },
     {
         id: "post10",
@@ -195,7 +195,7 @@ export const posts: Post[] = [
         description: "Master basic arithmetic in a simple and fun way.",
         date: "2024-06-30",
         views: 750,
-        tutor: tutors[1],
+        professional: professionals[1],
     },
 ];
 

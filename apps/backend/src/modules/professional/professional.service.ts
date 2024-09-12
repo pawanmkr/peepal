@@ -5,21 +5,21 @@ import { Sequelize } from 'sequelize-typescript';
 import { Op } from 'sequelize';
 import { v7 as uuidv7 } from 'uuid';
 
-import { Tutor } from './models/tutor.model';
-import { CreateTutorDto } from './dto/create-tutor.dto';
-import { UpdateTutorDto } from './dto/update-tutor.dto';
+import { Professional } from './models/professional.model';
+import { CreateProfessionalDto } from './dto/create-professional.dto';
+import { UpdateProfessionalDto } from './dto/update-professional.dto';
 import { FormalEducation } from './models/formal-education.model';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user.model';
 import { Cache } from '../../common/redis.cache';
 
 @Injectable()
-export class TutorService {
+export class ProfessionalService {
     private readonly queryConfig = {
         include: [
             {
                 model: FormalEducation,
-                attributes: { exclude: ['tutorId', 'createdAt', 'updatedAt', 'deletedAt'] },
+                attributes: { exclude: ['professionalId', 'createdAt', 'updatedAt', 'deletedAt'] },
             },
             {
                 model: User,
@@ -28,10 +28,10 @@ export class TutorService {
         ],
         attributes: { exclude: ['userId', 'createdAt', 'updatedAt', 'deletedAt'] },
     };
-    private readonly logger = new Logger(TutorService.name);
+    private readonly logger = new Logger(ProfessionalService.name);
     constructor(
-        @InjectModel(Tutor)
-        private readonly tutorModel: typeof Tutor,
+        @InjectModel(Professional)
+        private readonly professionalModel: typeof Professional,
         @InjectModel(FormalEducation)
         private readonly formalEducationModel: typeof FormalEducation,
         private readonly sequelize: Sequelize,
@@ -39,53 +39,53 @@ export class TutorService {
         private readonly cache: Cache
     ) {}
 
-    async create(dto: CreateTutorDto, userId: UUID) {
+    async create(dto: CreateProfessionalDto, userId: UUID) {
         const user = await this.userService.findOne(userId);
         if (!user) {
             throw new NotFoundException(`User with id: ${userId} not found`);
         }
-        this.logger.debug(`Creating tutor for user with id: ${userId}`);
+        this.logger.debug(`Creating professional for user with id: ${userId}`);
         return this.sequelize.transaction(async (t) => {
-            const tutor = await this.tutorModel.create(
+            const professional = await this.professionalModel.create(
                 {
                     id: uuidv7(),
                     ...dto,
                     userId,
-                } as Tutor,
+                } as Professional,
                 { transaction: t }
             );
-            this.logger.debug(`Created tutor with id: ${tutor.id}`);
-            tutor.formalEducation = await this.formalEducationModel.bulkCreate(
+            this.logger.debug(`Created professional with id: ${professional.id}`);
+            professional.formalEducation = await this.formalEducationModel.bulkCreate(
                 dto.formalEducation.map((education) => ({
                     ...education,
                     id: uuidv7() as UUID,
-                    tutorId: tutor.id as UUID,
+                    professionalId: professional.id as UUID,
                 })),
                 { transaction: t }
             );
             this.logger.debug(
-                `Created ${tutor.formalEducation.length} formal education records for tutor with id: ${tutor.id}`
+                `Created ${professional.formalEducation.length} formal education records for professional with id: ${professional.id}`
             );
-            return await this.findOne(tutor.id as UUID);
+            return await this.findOne(professional.id as UUID);
         });
     }
 
     findAll(offset: number, limit: number) {
-        return this.tutorModel.findAll({ ...this.queryConfig, offset, limit });
+        return this.professionalModel.findAll({ ...this.queryConfig, offset, limit });
     }
 
-    findOne(id: UUID): Promise<Tutor | null> {
-        return this.tutorModel.findByPk(id, this.queryConfig);
+    findOne(id: UUID): Promise<Professional | null> {
+        return this.professionalModel.findByPk(id, this.queryConfig);
     }
 
     async search(
         keyword: string,
         offset: number,
         limit: number
-    ): Promise<{ tutors: Tutor[]; total: number }> {
+    ): Promise<{ professionals: Professional[]; total: number }> {
         await this.cache.addKeyword(keyword);
-        // Step 1: Get matching tutor IDs
-        const matchingTutorIds = await this.tutorModel.findAll({
+        // Step 1: Get matching professional IDs
+        const matchingTutorIds = await this.professionalModel.findAll({
             attributes: ['id'],
             include: [
                 {
@@ -111,9 +111,9 @@ export class TutorService {
             },
             subQuery: false,
         });
-        const tutorIds = matchingTutorIds.map((tutor) => tutor.id);
-        // Step 2: Fetch full tutor data with associations
-        const tutors = await this.tutorModel.findAll({
+        const professionalIds = matchingTutorIds.map((professional) => professional.id);
+        // Step 2: Fetch full professional data with associations
+        const professionals = await this.professionalModel.findAll({
             include: [
                 {
                     model: User,
@@ -126,61 +126,61 @@ export class TutorService {
             ],
             where: {
                 id: {
-                    [Op.in]: tutorIds,
+                    [Op.in]: professionalIds,
                 },
             },
             offset,
             limit,
         });
 
-        return { tutors, total: matchingTutorIds.length };
+        return { professionals, total: matchingTutorIds.length };
     }
 
-    async update(id: UUID, dto: UpdateTutorDto) {
-        const tutor = await this.findOne(id);
-        if (!tutor) {
-            throw new NotFoundException(`Tutor with id: ${id} not found`);
+    async update(id: UUID, dto: UpdateProfessionalDto) {
+        const professional = await this.findOne(id);
+        if (!professional) {
+            throw new NotFoundException(`Professional with id: ${id} not found`);
         }
-        this.logger.debug(`Updating tutor with id: ${tutor.id}`);
+        this.logger.debug(`Updating professional with id: ${professional.id}`);
         // Use a transaction to ensure that all operations are atomic
         await this.sequelize.transaction(async (transaction) => {
-            // Automatically assign all fields from the DTO to the tutor model
-            Object.assign(tutor, dto);
-            await tutor.update({ ...dto } as Tutor, { transaction });
-            this.logger.debug(`Updated tutor with id: ${tutor.id}`);
-            // Delete all formal education records associated with the tutor and create new ones
+            // Automatically assign all fields from the DTO to the professional model
+            Object.assign(professional, dto);
+            await professional.update({ ...dto } as Professional, { transaction });
+            this.logger.debug(`Updated professional with id: ${professional.id}`);
+            // Delete all formal education records associated with the professional and create new ones
             if (dto.formalEducation && dto.formalEducation.length > 0) {
                 this.logger.debug(
-                    `Found ${dto.formalEducation.length} formal education records for tutor with id: ${tutor.id}`
+                    `Found ${dto.formalEducation.length} formal education records for professional with id: ${professional.id}`
                 );
                 await this.formalEducationModel.destroy({
                     where: {
-                        tutorId: tutor.id,
+                        professionalId: professional.id,
                     },
                     force: true,
                     transaction,
                 });
                 this.logger.debug(
-                    `Deleted all formal education records for tutor with id: ${tutor.id}`
+                    `Deleted all formal education records for professional with id: ${professional.id}`
                 );
-                tutor.formalEducation = await this.formalEducationModel.bulkCreate(
+                professional.formalEducation = await this.formalEducationModel.bulkCreate(
                     dto.formalEducation.map((education) => ({
                         id: uuidv7() as UUID,
                         ...education,
-                        tutorId: tutor.id as UUID,
+                        professionalId: professional.id as UUID,
                     })),
                     { transaction }
                 );
                 this.logger.debug(
-                    `Updated ${tutor.formalEducation.length} formal education records for tutor with id: ${tutor.id}`
+                    `Updated ${professional.formalEducation.length} formal education records for professional with id: ${professional.id}`
                 );
             }
-            return tutor;
+            return professional;
         });
         return await this.findOne(id);
     }
 
     remove(id: UUID) {
-        return this.tutorModel.destroy({ where: { id } });
+        return this.professionalModel.destroy({ where: { id } });
     }
 }

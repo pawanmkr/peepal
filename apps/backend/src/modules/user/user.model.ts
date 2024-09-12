@@ -3,7 +3,7 @@ import { Column, DataType, HasOne, Model, Table } from 'sequelize-typescript';
 
 import { UserRole } from '../../common/common.enum';
 import { UUID } from 'node:crypto';
-import { Tutor } from '../tutor/models/tutor.model';
+import { Professional } from '../professional/models/professional.model';
 
 @Table({ tableName: 'user' })
 export class User extends Model<User> {
@@ -89,6 +89,6 @@ export class User extends Model<User> {
     @Column({ type: DataType.STRING, allowNull: false })
     declare role: UserRole;
 
-    @HasOne(() => Tutor)
-    declare tutor: Tutor;
+    @HasOne(() => Professional)
+    declare professional: Professional;
 }

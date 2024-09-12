@@ -7,38 +7,38 @@ import Landing from "../pages/Landing";
 import Layout from "../components/layout/Layout";
 
 export function App() {
-  return (
-    <Routes>
-      {/* Landing Page without header and full width */}
-      <Route path="/" element={<Landing />} />
+    return (
+        <Routes>
+            {/* Landing Page without header and full width */}
+            <Route path="/" element={<Landing />} />
 
-      {/* Routes with header and limited width */}
-      <Route
-        path="/home"
-        element={
-          <Layout>
-            <Homepage />
-          </Layout>
-        }
-      />
-      <Route
-        path="/tutor/:id"
-        element={
-          <Layout>
-            <TutorProfile />
-          </Layout>
-        }
-      />
-      <Route
-        path="/search"
-        element={
-          <Layout>
-            <Homepage />
-          </Layout>
-        }
-      />
-    </Routes>
-  );
+            {/* Routes with header and limited width */}
+            <Route
+                path="/home"
+                element={
+                    <Layout>
+                        <Homepage />
+                    </Layout>
+                }
+            />
+            <Route
+                path="/professional/:id"
+                element={
+                    <Layout>
+                        <TutorProfile />
+                    </Layout>
+                }
+            />
+            <Route
+                path="/search"
+                element={
+                    <Layout>
+                        <Homepage />
+                    </Layout>
+                }
+            />
+        </Routes>
+    );
 }
 
 export default App;

@@ -8,14 +8,14 @@ import {
     IsOptional,
     ValidateNested,
 } from 'class-validator';
-import { TutorChargeType } from '../tutor.enum';
+import { TutorChargeType } from '../professional.enum';
 import { CreateFormalEducationDto } from './create-formal-education.dto';
 import { Type } from 'class-transformer';
 
-export class CreateTutorDto {
+export class CreateProfessionalDto {
     @ApiProperty({
-        description: 'Tutor description',
-        example: 'I am a professional tutor with 10 years of experience',
+        description: 'Professional description',
+        example: 'I am a professional professional with 10 years of experience',
         type: 'string',
     })
     @IsString()
@@ -23,7 +23,7 @@ export class CreateTutorDto {
     description: string;
 
     @ApiProperty({
-        description: 'Tutor experience in years',
+        description: 'Professional experience in years',
         example: 3,
         type: 'number',
     })
@@ -32,7 +32,7 @@ export class CreateTutorDto {
     experience: number;
 
     @ApiProperty({
-        description: 'Tutor skills',
+        description: 'Professional skills',
         example: 'Problem solving, Communication, Patience',
         type: 'string',
     })
@@ -41,7 +41,7 @@ export class CreateTutorDto {
     skills: string;
 
     @ApiProperty({
-        description: 'Tutor video URL',
+        description: 'Professional video URL',
         example: 'https://example.com/video.mp4',
         type: 'string',
     })
@@ -50,7 +50,7 @@ export class CreateTutorDto {
     video: string;
 
     @ApiProperty({
-        description: 'Tutor location',
+        description: 'Professional location',
         example: 'Madhubani, India',
         type: 'string',
     })
@@ -59,7 +59,7 @@ export class CreateTutorDto {
     location: string;
 
     @ApiProperty({
-        description: 'Languages known by the tutor',
+        description: 'Languages known by the professional',
         example: 'Maithili, Hindi, English, Punjabi',
         type: 'string',
     })
@@ -68,7 +68,7 @@ export class CreateTutorDto {
     languages: string;
 
     @ApiProperty({
-        description: 'Tutor availability',
+        description: 'Professional availability',
         example: 'Available on weekdays',
         type: 'string',
     })
@@ -77,7 +77,7 @@ export class CreateTutorDto {
     availability: string;
 
     @ApiProperty({
-        description: 'Tutor charge currency',
+        description: 'Professional charge currency',
         example: 'INR',
         type: 'string',
     })
@@ -86,7 +86,7 @@ export class CreateTutorDto {
     currency: string;
 
     @ApiProperty({
-        description: 'Tutor charge amount',
+        description: 'Professional charge amount',
         example: '50.00',
         type: 'string',
     })
@@ -105,7 +105,7 @@ export class CreateTutorDto {
     chargeType: TutorChargeType;
 
     @ApiProperty({
-        description: 'Available days for tutoring',
+        description: 'Available days for professionaling',
         example: 'Monday, Wednesday, Friday',
         type: 'string',
     })

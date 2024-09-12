@@ -1,16 +1,17 @@
+import chalk from 'chalk';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 
 import { AppController } from './app.controller';
 import { env } from './config/env.config';
-import chalk from 'chalk';
 import { UserModule } from './modules/user/user.module';
-import { TutorModule } from './modules/tutor/tutor.module';
+import { ProfessionalModule } from './modules/professional/professional.module';
 import { LoggerMiddleware } from './middewares/http-logger.middleware';
 import { SlotModule } from './modules/slot/slot.module';
 import { SessionModule } from './modules/session/session.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { Cache } from './common/redis.cache';
+import { ReviewModule } from './module/review/review.module';
 
 // // Workaround for dynamic import
 async function getChalk(): Promise<typeof chalk> {
@@ -62,9 +63,10 @@ async function getChalk(): Promise<typeof chalk> {
         }),
         AuthModule,
         UserModule,
-        TutorModule,
+        ProfessionalModule,
         SlotModule,
         SessionModule,
+        ReviewModule,
     ],
     controllers: [AppController],
     providers: [Cache],

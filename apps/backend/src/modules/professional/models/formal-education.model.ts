@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, DataType, Model, Table, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { Tutor } from './tutor.model';
+import { Professional } from './professional.model';
 import { UUID } from 'crypto';
 
 @Table({ tableName: 'formal_education' })
@@ -15,17 +15,17 @@ export class FormalEducation extends Model<FormalEducation> {
     declare id: UUID;
 
     @ApiProperty({
-        description: 'Unique identifier of the tutor associated with this education',
+        description: 'Unique identifier of the professional associated with this education',
         example: 'c56f6e7f-0f82-4e3f-8f1d-0e3d0f1b8e0b',
         type: 'string',
         format: 'uuid',
     })
-    @ForeignKey(() => Tutor)
+    @ForeignKey(() => Professional)
     @Column({ type: DataType.UUID, allowNull: false })
-    declare tutorId: UUID;
+    declare professionalId: UUID;
 
     @ApiProperty({
-        description: 'Tutor qualification',
+        description: 'Professional qualification',
         example: 'Masters in Mathematics',
         type: 'string',
     })
@@ -56,6 +56,6 @@ export class FormalEducation extends Model<FormalEducation> {
     @Column({ type: DataType.STRING, allowNull: false })
     declare subjects: string;
 
-    @BelongsTo(() => Tutor)
-    declare tutor: Tutor;
+    @BelongsTo(() => Professional)
+    declare professional: Professional;
 }

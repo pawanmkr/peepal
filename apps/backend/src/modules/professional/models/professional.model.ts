@@ -9,13 +9,13 @@ import {
     BelongsTo,
 } from 'sequelize-typescript';
 import { User } from '../../user/user.model';
-import { TutorChargeType } from '../tutor.enum';
+import { TutorChargeType } from '../professional.enum';
 import { FormalEducation } from './formal-education.model';
 
-@Table({ tableName: 'tutor' })
-export class Tutor extends Model<Tutor> {
+@Table({ tableName: 'professional' })
+export class Professional extends Model<Professional> {
     @ApiProperty({
-        description: 'Unique identifier of the tutor',
+        description: 'Unique identifier of the professional',
         example: 'c56f6e7f-0f82-4e3f-8f1d-0e3d0f1b8e0b',
         type: 'string',
         format: 'uuid',
@@ -24,7 +24,7 @@ export class Tutor extends Model<Tutor> {
     declare id: string;
 
     @ApiProperty({
-        description: 'Unique identifier of the user associated with this tutor',
+        description: 'Unique identifier of the user associated with this professional',
         example: 'c56f6e7f-0f82-4e3f-8f1d-0e3d0f1b8e0b',
         type: 'string',
         format: 'uuid',
@@ -34,15 +34,15 @@ export class Tutor extends Model<Tutor> {
     declare userId: string;
 
     @ApiProperty({
-        description: 'Tutor description',
-        example: 'I am a professional tutor with 10 years of experience',
+        description: 'Professional description',
+        example: 'I am a professional professional with 10 years of experience',
         type: 'string',
     })
     @Column({ type: DataType.STRING, allowNull: false })
     declare description: string;
 
     @ApiProperty({
-        description: 'Tutor experience in years',
+        description: 'Professional experience in years',
         example: 3,
         type: 'number',
     })
@@ -50,7 +50,7 @@ export class Tutor extends Model<Tutor> {
     declare experience: number;
 
     @ApiProperty({
-        description: 'Tutor skills',
+        description: 'Professional skills',
         example: 'Problem solving, Communication, Patience',
         type: 'string',
     })
@@ -58,7 +58,7 @@ export class Tutor extends Model<Tutor> {
     declare skills: string;
 
     @ApiProperty({
-        description: 'Tutor rating',
+        description: 'Professional rating',
         example: 4.5,
         type: 'number',
     })
@@ -66,7 +66,7 @@ export class Tutor extends Model<Tutor> {
     declare rating: number;
 
     @ApiProperty({
-        description: 'Tutor video URL',
+        description: 'Professional video URL',
         example: 'https://example.com/video.mp4',
         type: 'string',
     })
@@ -74,7 +74,7 @@ export class Tutor extends Model<Tutor> {
     declare video: string;
 
     @ApiProperty({
-        description: 'Tutor location',
+        description: 'Professional location',
         example: 'Madhubani, India',
         type: 'string',
     })
@@ -82,7 +82,7 @@ export class Tutor extends Model<Tutor> {
     declare location: string;
 
     @ApiProperty({
-        description: 'Languages known by the tutor',
+        description: 'Languages known by the professional',
         example: 'Maithili, Hindi, English, Punjabi',
         type: 'string',
     })
@@ -90,7 +90,7 @@ export class Tutor extends Model<Tutor> {
     declare languages: string;
 
     @ApiProperty({
-        description: 'Tutor availability',
+        description: 'Professional availability',
         example: 'Available on weekdays',
         type: 'string',
     })
@@ -98,7 +98,7 @@ export class Tutor extends Model<Tutor> {
     declare availability: string;
 
     @ApiProperty({
-        description: 'Tutor charge currency',
+        description: 'Professional charge currency',
         example: 'INR',
         type: 'string',
     })
@@ -106,7 +106,7 @@ export class Tutor extends Model<Tutor> {
     declare currency: string;
 
     @ApiProperty({
-        description: 'Tutor charge amount',
+        description: 'Professional charge amount',
         example: 50.0,
         type: 'number',
     })
@@ -123,7 +123,7 @@ export class Tutor extends Model<Tutor> {
     declare chargeType: TutorChargeType;
 
     @ApiProperty({
-        description: 'Available days for tutoring',
+        description: 'Available days for professionaling',
         example: 'Monday, Wednesday, Friday',
         type: 'string',
     })

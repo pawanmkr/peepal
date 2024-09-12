@@ -3,7 +3,7 @@ import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateFormalEducationDto {
     @ApiProperty({
-        description: 'Tutor qualification',
+        description: 'Professional qualification',
         example: 'Masters in Mathematics',
         type: 'string',
     })
