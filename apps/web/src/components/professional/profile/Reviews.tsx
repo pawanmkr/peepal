@@ -1,121 +1,150 @@
-import React, { useState } from "react";
+import { getLoggedInUser } from "../../../utils/user";
+import {
+    addReview,
+    getReviewsByProfessional,
+    Review,
+} from "../../../api/review";
+import React, { useEffect, useState } from "react";
+import { Loader } from "lucide-react";
 
-type Review = {
-    reviewer: string;
-    timestamp: string;
-    content: string;
-    rating: number; // Add rating field
-};
+interface ReviewProps {
+    professionalId: string;
+}
+const LIMIT = 5;
 
-const dummyReviews = [
-    {
-        reviewer: "John Doe",
-        timestamp: new Date().toISOString(),
-        content: "Great professional! Very knowledgeable and helpful.",
-        rating: 5,
-    },
-    {
-        reviewer: "Jane Smith",
-        timestamp: new Date().toISOString(),
-        content: "The sessions were well-structured and engaging.",
-        rating: 4,
-    },
-    // Add more dummy reviews as needed
-];
-
-export const Reviews: React.FC = () => {
-    const [reviews, setReviews] = useState<Review[]>(dummyReviews);
+export const Reviews = ({ professionalId }: ReviewProps) => {
+    const [reviews, setReviews] = useState<Review[]>([]);
     const [newReview, setNewReview] = useState("");
-    const [rating, setRating] = useState(1); // Rating state
-    const [showMore, setShowMore] = useState(reviews.length > 0 ? true : false);
+    const [rating, setRating] = useState(1);
+    const [totalReviews, setTotalReviews] = useState(0);
+    const [showMore, setShowMore] = useState(false);
+    const [offset, setOffset] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-    // Load more reviews functionality
-    const handleLoadMore = () => {
-        // Assuming you fetch more reviews from API
-        // Here we just simulate loading more reviews by slicing the array
-        const moreReviews = dummyReviews.slice(
-            reviews.length,
-            reviews.length + 2
+    useEffect(() => {
+        fetchReviews();
+    }, [professionalId, offset]);
+
+    // Fetch reviews function
+    const fetchReviews = async () => {
+        setLoading(true);
+        setError("");
+
+        getReviewsByProfessional(professionalId, offset, LIMIT).then(
+            ([data, errorMessage]) => {
+                setLoading(false);
+                if (errorMessage) {
+                    setError(errorMessage);
+                    return;
+                }
+                setReviews((prevReviews) => [
+                    ...prevReviews,
+                    ...(data?.reviews || []),
+                ]);
+                setTotalReviews(data?.total || 0);
+                setShowMore(data?.reviews.length === LIMIT);
+            }
         );
-        setReviews([...reviews, ...moreReviews]);
+    };
+
+    const handleLoadMore = async () => {
+        setOffset((prevOffset) => prevOffset + LIMIT);
     };
 
     const handleAddReview = () => {
-        if (newReview.trim()) {
-            setReviews([
-                ...reviews,
-                {
-                    reviewer: "Anonymous", // Replace with the logged-in user's name if available
-                    timestamp: new Date().toISOString(),
-                    content: newReview.trim(),
-                    rating: rating, // Add rating to the new review
-                },
-            ]);
-            setNewReview("");
-            setRating(1); // Reset rating after adding review
+        const userId = getLoggedInUser()?.id as string;
+        if (!userId) {
+            setError("You must be logged in to add a review.");
+            return;
         }
+        setError(""); // Reset error state
+        addReview({
+            rating,
+            comment: newReview,
+            userId,
+            professionalId,
+        }).then(([data, errorMessage]) => {
+            if (errorMessage) {
+                setError(errorMessage);
+                return;
+            }
+            setReviews((prevReviews) => [...prevReviews, data as Review]);
+            setNewReview("");
+            setRating(1);
+        });
     };
 
     return (
         <div className="bg-white shadow-md rounded-lg p-4 mb-6">
             <h3 className="text-xl font-semibold mb-4">Reviews</h3>
 
+            {/* Show loader when loading */}
+            {loading && (
+                <div className="flex justify-center items-center py-4">
+                    <Loader className="animate-spin w-6 h-6 text-gray-600" />
+                </div>
+            )}
+
+            {/* Error handling */}
+            {error.length > 0 && <p className="text-red-500 mb-4">{error}</p>}
+
             {/* Reviews List */}
             <div className="space-y-4">
-                {reviews.length > 0 ? (
-                    reviews.map((review, index) => (
-                        <div
-                            key={index}
-                            className={`pb-4 ${
-                                reviews.length - 1 === index ? "" : "border-b"
-                            }`}
-                        >
-                            <div className="flex items-center justify-between mb-2">
-                                <div className="flex gap-x-4">
-                                    <p className="font-semibold m-0">
-                                        {review.reviewer}
-                                    </p>
-                                    {/* Star Rating */}
-                                    <div className="flex items-center mb-2">
-                                        {[...Array(review.rating)].map(
-                                            (_, i) => (
-                                                <span
-                                                    key={i}
-                                                    className="text-yellow-500"
-                                                >
-                                                    &#9733;
-                                                </span> // Star rating
-                                            )
-                                        )}
-                                        {[...Array(5 - review.rating)].map(
-                                            (_, i) => (
-                                                <span
-                                                    key={i}
-                                                    className="text-gray-300"
-                                                >
-                                                    &#9733;
-                                                </span>
-                                            )
-                                        )}
-                                    </div>
-                                </div>
-                                <p className="text-sm text-gray-500">
-                                    {new Date(
-                                        review.timestamp
-                                    ).toLocaleDateString()}
-                                </p>
-                            </div>
+                {reviews.length > 0
+                    ? reviews.map((review, index) => (
+                          <div
+                              key={index}
+                              className={`pb-4 ${
+                                  reviews.length - 1 === index ? "" : "border-b"
+                              }`}
+                          >
+                              <div className="flex items-center justify-between mb-2">
+                                  <div className="flex gap-x-4">
+                                      <p className="font-semibold m-0">
+                                          {review.userId}
+                                      </p>
+                                      {/* Star Rating */}
+                                      <div className="flex items-center mb-2">
+                                          {[...Array(review.rating)].map(
+                                              (_, i) => (
+                                                  <span
+                                                      key={i}
+                                                      className="text-yellow-500"
+                                                  >
+                                                      &#9733;
+                                                  </span>
+                                              )
+                                          )}
+                                          {[...Array(5 - review.rating)].map(
+                                              (_, i) => (
+                                                  <span
+                                                      key={i}
+                                                      className="text-gray-300"
+                                                  >
+                                                      &#9733;
+                                                  </span>
+                                              )
+                                          )}
+                                      </div>
+                                  </div>
+                                  <p className="text-sm text-gray-500">
+                                      {new Date(
+                                          review.createdAt
+                                      ).toLocaleDateString()}
+                                  </p>
+                              </div>
 
-                            <p>{review.content}</p>
-                        </div>
-                    ))
-                ) : (
-                    <p className="text-gray-500">No reviews yet.</p>
-                )}
+                              <p>{review.comment}</p>
+                          </div>
+                      ))
+                    : !loading && (
+                          <p className="text-gray-500">No reviews yet.</p>
+                      )}
             </div>
 
             {/* Load More Button */}
-            {showMore && (
+            {showMore && !loading && (
                 <button
                     onClick={handleLoadMore}
                     className="w-full bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"

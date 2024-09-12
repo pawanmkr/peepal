@@ -20,7 +20,7 @@ const NotFound: React.FC = () => (
 );
 
 const TutorProfile: React.FC = () => {
-    const [professional, setTutor] = useState<Professional | null>(null);
+    const [professional, setProfessional] = useState<Professional | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const { id } = useParams<{ id: string }>();
@@ -41,7 +41,7 @@ const TutorProfile: React.FC = () => {
                 if (response) {
                     response.video =
                         "https://www.youtube.com/embed/lyPy_JPaCFs?si=p1VCkuG7ryeJkOmN";
-                    setTutor(response);
+                    setProfessional(response);
                     setError(false);
                 } else {
                     setError(true); // Professional not found
@@ -93,7 +93,7 @@ const TutorProfile: React.FC = () => {
                 )}
                 <SkillsExperience professional={professional} />
                 <Education education={professional.formalEducation} />
-                <Reviews />
+                <Reviews professionalId={professional.id} />
             </div>
 
             {/* Posts by Professional on Toggle */}

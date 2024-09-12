@@ -11,7 +11,7 @@ import { SlotModule } from './modules/slot/slot.module';
 import { SessionModule } from './modules/session/session.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { Cache } from './common/redis.cache';
-import { ReviewModule } from './module/review/review.module';
+import { ReviewModule } from './modules/review/review.module';
 
 // // Workaround for dynamic import
 async function getChalk(): Promise<typeof chalk> {
@@ -56,7 +56,7 @@ async function getChalk(): Promise<typeof chalk> {
                     console.log(chalk.dim(sql));
                 },
                 autoLoadModels: true,
-                synchronize: false, // WARNING: Don't make it true in production
+                synchronize: true, // WARNING: Don't make it true in production
                 retryAttempts: 0,
                 retryDelay: 10000,
             }),
