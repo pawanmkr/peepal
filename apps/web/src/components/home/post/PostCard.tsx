@@ -16,15 +16,14 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
           {/* Post Title */}
           <h5 className="m-0">{post.title}</h5>
 
-          {/* Post Meta */}
-          <PostMeta post={post} />
-
           {/* Post Description */}
-          <p className="text-gray-700 mb-3">{post.description}</p>
-
-          {/* Video Section */}
-          <VideoSection videoUrl={post.tutor.video} height="325" width="100%" />
+          <p className="text-gray-700 m-0">{post.description}</p>
         </div>
+
+        {/* Video Section */}
+        <VideoSection videoUrl={post.tutor.video} height="325" width="100%" />
+        {/* Post Meta */}
+        <PostMeta post={post} />
       </div>
     </div>
   );

@@ -87,6 +87,7 @@ const TutorProfile: React.FC = () => {
               height="486px"
               width="864px"
               autoPlay={true}
+              rounded={true}
             />
           </div>
         )}

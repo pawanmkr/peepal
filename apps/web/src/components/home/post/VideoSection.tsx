@@ -5,19 +5,21 @@ interface VideoSectionProps {
   height: string;
   width: string;
   autoPlay?: boolean; // Optional prop to enable autoplay
+  rounded?: boolean;
 }
 
 const VideoSection: React.FC<VideoSectionProps> = ({
   videoUrl,
   height,
   width,
-  autoPlay = false, // Default to autoplay false
+  autoPlay = false,
+  rounded = false,
 }) => {
   // If autoPlay is enabled, add autoplay and muted parameters to the video URL
   const modifiedUrl = autoPlay ? `${videoUrl}?&autoplay=1&mute=0` : videoUrl;
 
   return (
-    <div className="rounded-md overflow-hidden">
+    <div className={`${rounded ? "rounded-md" : ""} overflow-hidden`}>
       <iframe
         width={width}
         height={height}
