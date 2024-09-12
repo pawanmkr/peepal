@@ -70,7 +70,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ slots, onSlotClick }) => {
   }, [startDate, slots]);
 
   return (
-    <div className="min-w-96 mx-auto p-4 border rounded-lg shadow-sm bg-white">
+    <div className="min-w-96 mx-auto p-4 border rounded-lg shadow-md h-max bg-white">
       {/* Header */}
       <div className="flex justify-between items-center mb-2">
         {/* Date Navigation */}

@@ -23,7 +23,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
           <p className="text-gray-700 mb-3">{post.description}</p>
 
           {/* Video Section */}
-          <VideoSection videoUrl={post.tutor.video} />
+          <VideoSection videoUrl={post.tutor.video} height="325" width="100%" />
         </div>
       </div>
     </div>

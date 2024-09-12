@@ -9,6 +9,8 @@ import { SkillsExperience } from "../components/tutor/profile/SkillExperience";
 import { Tutor, tutorApi } from "../api/tutor";
 import { slots } from "./dummy-data";
 import { Reviews } from "../components/tutor/profile/Reviews";
+import PostFeed from "../components/home/post/PostFeed";
+import VideoSection from "../components/home/post/VideoSection";
 
 // Simple 404 page component
 const NotFound: React.FC = () => (
@@ -22,6 +24,8 @@ const TutorProfile: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const { id } = useParams<{ id: string }>();
+  const [showPosts, setShowPosts] = useState<boolean>(false);
+  const [showDemoVideo, setShowDemoVideo] = useState<boolean>(false);
 
   useEffect(() => {
     if (!id) {
@@ -35,6 +39,8 @@ const TutorProfile: React.FC = () => {
       try {
         const response = await tutorApi.getTutorById(id);
         if (response) {
+          response.video =
+            "https://www.youtube.com/embed/lyPy_JPaCFs?si=p1VCkuG7ryeJkOmN";
           setTutor(response);
           setError(false);
         } else {
@@ -63,19 +69,39 @@ const TutorProfile: React.FC = () => {
   if (!tutor) return <NotFound />;
 
   return (
-    <div className="max-w-6xl flex gap-x-8 mx-auto mb-32">
+    <div className="w-full flex gap-x-4 mx-auto mb-32">
       {/* Left side: Tutor Profile */}
       <div className="w-full flex flex-col gap-y-6">
-        <BasicInfo tutor={tutor} />
+        <BasicInfo
+          tutor={tutor}
+          showPosts={showPosts}
+          setShowPosts={setShowPosts}
+          showDemoVideo={showDemoVideo}
+          setShowDemoVideo={setShowDemoVideo}
+        />
+        {/* Video Section: Conditional rendering */}
+        {showDemoVideo && (
+          <div className="bg-white shadow-md rounded-lg p-2 h-fit w-fit">
+            <VideoSection
+              videoUrl={tutor.video}
+              height="486px"
+              width="864px"
+              autoPlay={true}
+            />
+          </div>
+        )}
         <SkillsExperience tutor={tutor} />
         <Education education={tutor.formalEducation} />
         <Reviews />
       </div>
 
+      {/* Posts by Tutor on Toggle */}
       {/* Right side: Calendar */}
-      <div className="shadow-md h-max">
+      {showPosts ? (
+        <PostFeed query={undefined} tutorId={id} />
+      ) : (
         <CalendarView slots={slots} />
-      </div>
+      )}
     </div>
   );
 };

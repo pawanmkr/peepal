@@ -7,10 +7,11 @@ import { posts as dummyPosts, posts } from "./dummy-data"; // Keep the dummy pos
 import SearchResultReport from "../SearchResultReport";
 
 interface PostFeedProps {
-  query?: string; // Optional query prop
+  query?: string;
+  tutorId?: string;
 }
 
-const PostFeed: React.FC<PostFeedProps> = ({ query }) => {
+const PostFeed: React.FC<PostFeedProps> = ({ query, tutorId }) => {
   const [currentPosts, setCurrentPosts] = useState<any[]>(dummyPosts); // Initialize with dummy posts
   const [currentPostsCount, setCurrentPostsCount] = useState<number>(10); // Display 10 posts initially
   const [loading, setLoading] = useState<boolean>(false); // Loading state for API fetch
@@ -36,11 +37,11 @@ const PostFeed: React.FC<PostFeedProps> = ({ query }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative min-w-full md:min-w-[600px]">
       {/* Search results */}
       {location.pathname === "/search" && query && (
         <SearchResultReport
-          totalResults={posts.length}
+          totalResultsFound={posts.length}
           query={query}
           postParam={true}
         />
