@@ -23,14 +23,15 @@ export class ReviewService {
         if (!professional) {
             throw new NotFoundException('Professional not found');
         }
+
         const user = await this.userServie.findOne(userId);
         if (!user) {
             throw new NotFoundException('User not found');
         }
-        return await this.reviewModel.create({
-            id: uuidv7() as UUID,
-            ...dto,
-        });
+
+        const id = uuidv7() as UUID;
+        let r = await this.reviewModel.create({ id, ...dto });
+        return await this.getReviewById(r.id);
     }
 
     async getReviewsByProfessional(
@@ -40,7 +41,7 @@ export class ReviewService {
     ): Promise<{ reviews: Review[]; total: number }> {
         const total = await this.reviewModel.count({ where: { professionalId } });
         if (total > 0) {
-            const reviews = await this.reviewModel.findAll({
+            let reviews = await this.reviewModel.findAll({
                 where: { professionalId },
                 include: {
                     model: User,
@@ -53,7 +54,10 @@ export class ReviewService {
             if (reviews.length === 0) {
                 throw new NotFoundException('No reviews found for this professional');
             }
-            return { reviews, total: reviews.length };
+            reviews = reviews.map((r) => {
+                return r.toJSON() as Review;
+            });
+            return { reviews, total };
         }
         return { reviews: [], total: 0 };
     }
@@ -78,13 +82,19 @@ export class ReviewService {
             if (reviews.length === 0) {
                 throw new NotFoundException('No reviews found for this user');
             }
-            return { reviews, total: reviews.length };
+            return { reviews, total };
         }
         return { reviews: [], total: 0 };
     }
 
     async getReviewById(reviewId: UUID): Promise<Review> {
-        const review = await this.reviewModel.findByPk(reviewId, { include: [User, Professional] });
+        const review = await this.reviewModel.findByPk(reviewId, {
+            include: {
+                model: User,
+                attributes: ['id', 'username', 'firstName', 'lastName', 'avatar'],
+            },
+            attributes: ['id', 'rating', 'comment', 'createdAt', 'updatedAt'],
+        });
         if (!review) {
             throw new NotFoundException('Review not found');
         }

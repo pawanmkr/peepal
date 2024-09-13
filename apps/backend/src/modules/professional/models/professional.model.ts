@@ -38,7 +38,7 @@ export class Professional extends Model<Professional> {
         example: 'I am a professional professional with 10 years of experience',
         type: 'string',
     })
-    @Column({ type: DataType.STRING, allowNull: false })
+    @Column({ type: DataType.STRING, allowNull: true })
     declare description: string;
 
     @ApiProperty({
@@ -46,7 +46,7 @@ export class Professional extends Model<Professional> {
         example: 3,
         type: 'number',
     })
-    @Column({ type: DataType.INTEGER, allowNull: false })
+    @Column({ type: DataType.INTEGER, allowNull: true })
     declare experience: number;
 
     @ApiProperty({
@@ -54,7 +54,7 @@ export class Professional extends Model<Professional> {
         example: 'Problem solving, Communication, Patience',
         type: 'string',
     })
-    @Column({ type: DataType.STRING, allowNull: false })
+    @Column({ type: DataType.STRING, allowNull: true })
     declare skills: string;
 
     @ApiProperty({
@@ -70,7 +70,7 @@ export class Professional extends Model<Professional> {
         example: 'https://example.com/video.mp4',
         type: 'string',
     })
-    @Column({ type: DataType.STRING, allowNull: false })
+    @Column({ type: DataType.STRING, allowNull: true })
     declare video: string;
 
     @ApiProperty({
@@ -78,7 +78,7 @@ export class Professional extends Model<Professional> {
         example: 'Madhubani, India',
         type: 'string',
     })
-    @Column({ type: DataType.STRING, allowNull: false })
+    @Column({ type: DataType.STRING, allowNull: true })
     declare location: string;
 
     @ApiProperty({
@@ -86,7 +86,7 @@ export class Professional extends Model<Professional> {
         example: 'Maithili, Hindi, English, Punjabi',
         type: 'string',
     })
-    @Column({ type: DataType.STRING, allowNull: false })
+    @Column({ type: DataType.STRING, allowNull: true })
     declare languages: string;
 
     @ApiProperty({
@@ -94,7 +94,7 @@ export class Professional extends Model<Professional> {
         example: 'Available on weekdays',
         type: 'string',
     })
-    @Column({ type: DataType.STRING, allowNull: false })
+    @Column({ type: DataType.STRING, allowNull: true })
     declare availability: string;
 
     @ApiProperty({
@@ -102,7 +102,7 @@ export class Professional extends Model<Professional> {
         example: 'INR',
         type: 'string',
     })
-    @Column({ type: DataType.STRING, allowNull: false })
+    @Column({ type: DataType.STRING, allowNull: true })
     declare currency: string;
 
     @ApiProperty({
@@ -110,7 +110,7 @@ export class Professional extends Model<Professional> {
         example: 50.0,
         type: 'number',
     })
-    @Column({ type: DataType.DECIMAL, allowNull: false })
+    @Column({ type: DataType.DECIMAL, allowNull: true })
     declare charge: number;
 
     @ApiProperty({
@@ -119,32 +119,8 @@ export class Professional extends Model<Professional> {
         type: 'string',
         enum: TutorChargeType,
     })
-    @Column({ type: DataType.STRING, allowNull: false })
+    @Column({ type: DataType.STRING, allowNull: true })
     declare chargeType: TutorChargeType;
-
-    @ApiProperty({
-        description: 'Available days for professionaling',
-        example: 'Monday, Wednesday, Friday',
-        type: 'string',
-    })
-    @Column({ type: DataType.STRING, allowNull: false })
-    declare days: string;
-
-    @ApiProperty({
-        description: 'Start time of availability',
-        example: '09:15:00',
-        type: 'string',
-    })
-    @Column({ type: DataType.STRING, allowNull: false })
-    declare startTime: string;
-
-    @ApiProperty({
-        description: 'End time of availability',
-        example: '05:00:00',
-        type: 'string',
-    })
-    @Column({ type: DataType.STRING, allowNull: false })
-    declare endTime: string;
 
     @HasMany(() => FormalEducation)
     declare formalEducation: FormalEducation[];

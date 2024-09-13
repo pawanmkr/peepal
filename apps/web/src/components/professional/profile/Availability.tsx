@@ -1,4 +1,4 @@
-import { TutorData } from "apps/web/src/pages/TutorProfile";
+import { TutorData } from "apps/web/src/pages/ProfessionalProfile";
 import { InfoItem } from "./InfoItem";
 
 export const Availability: React.FC<{ professional: TutorData }> = ({

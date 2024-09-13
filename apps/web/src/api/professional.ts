@@ -1,12 +1,13 @@
 import http from "./http";
 import { User } from "./user";
 
-type ChargeType =
-    | "hourly"
-    | "per_session"
-    | "per_month"
-    | "per_week"
-    | "per_day";
+export enum ProfessionalChargeType {
+    Hourly = "hourly",
+    PerSession = "per_session",
+    PerMonth = "per_month",
+    PerWeek = "per_week",
+    PerDay = "per_day",
+}
 
 export interface FormalEducation {
     id: string;
@@ -24,19 +25,17 @@ export interface Professional {
     video: string;
     location: string;
     languages: string;
-    availability: string;
     currency: string;
-    charge: string;
-    chargeType: ChargeType;
-    days: string;
-    startTime: string;
-    endTime: string;
+    charge: number;
+    chargeType: ProfessionalChargeType;
     formalEducation: FormalEducation[];
     user: User;
 }
 export interface CreateFormalEducation extends Omit<FormalEducation, "id"> {}
 export interface CreateProfessional
-    extends Omit<Professional, "id" | "rating" | "user"> {}
+    extends Omit<Professional, "id" | "rating" | "user" | "formalEducation"> {
+    formalEducation: CreateFormalEducation[];
+}
 export interface UpdateProfessional extends Partial<CreateProfessional> {}
 
 // Slot export Interfaces
@@ -54,7 +53,7 @@ export interface UpdateSlot {
 }
 
 export const professionalApi = {
-    createTutor: (
+    createProfessional: (
         userId: string,
         data: CreateProfessional
     ): Promise<Professional> => {

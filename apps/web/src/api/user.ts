@@ -1,5 +1,10 @@
 import http from "./http";
 
+export enum UserRole {
+    USER = "user",
+    PROFESSIONAL = "professional",
+}
+
 export interface User {
     id: string;
     username: string;
@@ -10,7 +15,7 @@ export interface User {
     dob: string;
     phoneCode: string;
     phoneNumber: string;
-    role: "professional" | "user";
+    role: UserRole;
 }
 
 export interface CreateUser {

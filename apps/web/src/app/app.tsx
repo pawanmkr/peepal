@@ -2,9 +2,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, Routes } from "react-router-dom";
 
 import Homepage from "../pages/Homepage";
-import TutorProfile from "../pages/TutorProfile";
+import ProfessionalProfile from "../pages/ProfessionalProfile";
 import Landing from "../pages/Landing";
 import Layout from "../components/layout/Layout";
+import { ProfessionalProfileForm } from "../components/professional/profile/Form";
 
 export function App() {
     return (
@@ -22,10 +23,18 @@ export function App() {
                 }
             />
             <Route
+                path="/professional/form"
+                element={
+                    <Layout>
+                        <ProfessionalProfileForm />
+                    </Layout>
+                }
+            />
+            <Route
                 path="/professional/:id"
                 element={
                     <Layout>
-                        <TutorProfile />
+                        <ProfessionalProfile />
                     </Layout>
                 }
             />

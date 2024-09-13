@@ -56,7 +56,7 @@ async function getChalk(): Promise<typeof chalk> {
                     console.log(chalk.dim(sql));
                 },
                 autoLoadModels: true,
-                synchronize: true, // WARNING: Don't make it true in production
+                synchronize: false, // WARNING: Don't make it true in production
                 retryAttempts: 0,
                 retryDelay: 10000,
             }),

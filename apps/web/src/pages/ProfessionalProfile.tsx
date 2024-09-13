@@ -19,7 +19,7 @@ const NotFound: React.FC = () => (
     </div>
 );
 
-const TutorProfile: React.FC = () => {
+const ProfessionalProfile: React.FC = () => {
     const [professional, setProfessional] = useState<Professional | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -107,4 +107,4 @@ const TutorProfile: React.FC = () => {
     );
 };
 
-export default TutorProfile;
+export default ProfessionalProfile;

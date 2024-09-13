@@ -104,33 +104,6 @@ export class CreateProfessionalDto {
     @IsNotEmpty()
     chargeType: TutorChargeType;
 
-    @ApiProperty({
-        description: 'Available days for professionaling',
-        example: 'Monday, Wednesday, Friday',
-        type: 'string',
-    })
-    @IsString()
-    @IsNotEmpty()
-    days: string;
-
-    @ApiProperty({
-        description: 'Start time of availability',
-        example: '09:15:00',
-        type: 'string',
-    })
-    @IsString()
-    @IsNotEmpty()
-    startTime: string;
-
-    @ApiProperty({
-        description: 'End time of availability',
-        example: '05:00:00',
-        type: 'string',
-    })
-    @IsString()
-    @IsNotEmpty()
-    endTime: string;
-
     @ApiProperty({ type: CreateFormalEducationDto, isArray: true })
     @Type(() => CreateFormalEducationDto)
     @ValidateNested()

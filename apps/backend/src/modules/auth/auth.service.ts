@@ -75,6 +75,11 @@ export class AuthService {
         });
     }
 
+    async checkUsername(username: string): Promise<{ available: boolean }> {
+        const user = await this.userModel.findOne({ where: { username } });
+        return { available: !user };
+    }
+
     async verifyToken(token: string): Promise<User> {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
