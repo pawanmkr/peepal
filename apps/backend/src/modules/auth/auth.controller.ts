@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Get, Req } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Req, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
@@ -36,5 +36,25 @@ export class AuthController {
     @ApiResponse({ status: 401, description: 'Unauthorized.' })
     getProfile(@Req() req: Request) {
         return this.authService.getProfile(req.user);
+    }
+
+    @Get('check-username')
+    @ApiOperation({ summary: 'Check if username is available' })
+    @ApiResponse({
+        status: 200,
+        description: 'Username is available.',
+        schema: {
+            type: 'object',
+            properties: {
+                available: {
+                    type: 'boolean',
+                    example: true,
+                },
+            },
+        },
+    })
+    @ApiResponse({ status: 409, description: 'Username already exists.' })
+    checkUsername(@Query('username') username: string) {
+        return this.authService.checkUsername(username);
     }
 }

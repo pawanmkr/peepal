@@ -19,7 +19,6 @@ export class Cache implements OnModuleDestroy {
         // Set up event listeners for Redis client
         this.redis.on('connect', () => this.logger.log('Redis connected successfully'));
         this.redis.on('error', (error) => this.logger.error('Redis error', error));
-        this.redis.on('ready', () => this.logger.log('Redis is ready'));
         this.redis.on('end', () => this.logger.log('Redis connection closed'));
     }
 

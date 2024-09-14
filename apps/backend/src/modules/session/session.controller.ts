@@ -15,26 +15,31 @@ export class SessionController {
     @Post()
     @ApiOperation({ summary: 'Create a new session' })
     @ApiQuery({ name: 'userId', type: String, description: 'User ID' })
-    @ApiQuery({ name: 'tutorId', type: String, description: 'Tutor ID' })
+    @ApiQuery({ name: 'professionalId', type: String, description: 'Professional ID' })
     @ApiBody({ type: CreateSessionDto, description: 'Session creation payload' })
     @ApiResponse({ status: 201, description: 'The session has been successfully created.' })
     @ApiResponse({ status: 400, description: 'Bad Request.' })
     create(
         @Body() dto: CreateSessionDto,
         @ValidateParam('userId') userId: UUID,
-        @ValidateParam('tutorId') tutorId: UUID
+        @ValidateParam('professionalId') professionalId: UUID
     ) {
-        return this.sessionService.create(dto, userId, tutorId);
+        return this.sessionService.create(dto, userId, professionalId);
     }
 
     @Get()
     @ApiOperation({ summary: 'Retrieve all sessions' })
     @ApiQuery({ name: 'userId', type: String, required: false, description: 'Filter by user ID' })
-    @ApiQuery({ name: 'tutorId', type: String, required: false, description: 'Filter by tutor ID' })
+    @ApiQuery({
+        name: 'professionalId',
+        type: String,
+        required: false,
+        description: 'Filter by professional ID',
+    })
     @ApiResponse({ status: 200, description: 'List of sessions retrieved successfully.' })
     @ApiResponse({ status: 400, description: 'Bad Request.' })
-    findAll(@Query('userId') userId?: UUID, @Query('tutorId') tutorId?: UUID) {
-        return this.sessionService.findAll(userId, tutorId);
+    findAll(@Query('userId') userId?: UUID, @Query('professionalId') professionalId?: UUID) {
+        return this.sessionService.findAll(userId, professionalId);
     }
 
     @Get(':id')

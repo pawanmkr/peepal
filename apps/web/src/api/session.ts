@@ -21,7 +21,7 @@ interface PaginationParams {
 }
 
 interface SessionQueryParams {
-  tutorId?: string;
+  professionalId?: string;
   userId?: string;
 }
 

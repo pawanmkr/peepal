@@ -36,14 +36,14 @@ export class CreateSlotDto {
 
     @ApiProperty({
         example: 'd1e2f3g4-h5i6-j7k8-l9m10-n11o12p13q14',
-        description: 'The ID of the tutor associated with this slot (optional).',
+        description: 'The ID of the professional associated with this slot (optional).',
         type: String,
         format: 'uuid',
         required: false,
     })
     @IsOptional()
     @IsUUID()
-    declare tutorId?: string;
+    declare professionalId?: string;
 
     @ApiProperty({
         example: 'e2f3g4h5-i6j7-k8l9-m10n11-o12p13q14r15',
