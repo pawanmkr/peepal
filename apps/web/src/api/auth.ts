@@ -1,4 +1,6 @@
 import axios, { isAxiosError } from "axios";
+import { jwtDecode } from "jwt-decode";
+import { JwtPayload } from "../utils/user";
 
 interface RegisterUser {
     firstName: string;
@@ -78,6 +80,30 @@ export async function loginUser(user: LoginUser): Promise<string> {
             }
         }
         return "Something went wrong. Please try again later.";
+    }
+}
+
+export async function refreshToken() {
+    try {
+        const jwt = localStorage.getItem("token");
+        if (!jwt) throw new Error("User is not loggedIn");
+
+        const res = await axios.post(
+            `${API_URL}/auth/refresh-jwt`,
+            {},
+            {
+                headers: {
+                    authorization: "Bearer " + jwt,
+                },
+            }
+        );
+        // set token to local storage
+        localStorage.setItem("token", res.data.token);
+    } catch (error) {
+        if (isAxiosError(error) && error.response?.status === 401) {
+            return "Invalid credentials";
+        }
+        return "Something went wrong. Failed to refresh the token.";
     }
 }
 

@@ -68,15 +68,6 @@ export class CreateProfessionalDto {
     languages: string;
 
     @ApiProperty({
-        description: 'Professional availability',
-        example: 'Available on weekdays',
-        type: 'string',
-    })
-    @IsString()
-    @IsNotEmpty()
-    availability: string;
-
-    @ApiProperty({
         description: 'Professional charge currency',
         example: 'INR',
         type: 'string',

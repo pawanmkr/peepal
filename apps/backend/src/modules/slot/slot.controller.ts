@@ -38,7 +38,7 @@ export class SlotController {
         @Query('userId') userId?: string,
         @Query('professionalId') professionalId?: string
     ) {
-        if (dto.userType === UserRole.TUTOR && isValidUUID(professionalId)) {
+        if (dto.userType === UserRole.PROFESSIONAL && isValidUUID(professionalId)) {
             dto.professionalId = professionalId;
             dto.userId = null;
         } else if (dto.userType === UserRole.USER && isValidUUID(userId)) {

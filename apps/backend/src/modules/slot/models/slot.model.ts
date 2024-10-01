@@ -56,7 +56,7 @@ export class Slot extends Model<Slot> {
     isAvailable: boolean;
 
     @ApiProperty({
-        example: UserRole.TUTOR,
+        example: UserRole.PROFESSIONAL,
         description: 'The type of user who created this slot.',
         enum: UserRole,
         required: true,

@@ -7,7 +7,6 @@ export interface JwtPayload {
 
 export function getLoggedInUser(): JwtPayload | null {
     const token = localStorage.getItem("token");
-    console.log(token);
     if (token) {
         const decoded = jwtDecode(token) as JwtPayload;
         console.log(decoded);

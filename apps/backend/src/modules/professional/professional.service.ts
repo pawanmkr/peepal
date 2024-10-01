@@ -2,7 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { UUID } from 'crypto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
-import { Op } from 'sequelize';
+import { Op, where } from 'sequelize';
 import { v7 as uuidv7 } from 'uuid';
 
 import { Professional } from './models/professional.model';
@@ -12,6 +12,7 @@ import { FormalEducation } from './models/formal-education.model';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user.model';
 import { Cache } from '../../common/redis.cache';
+import { UserRole } from '../../common/common.enum';
 
 @Injectable()
 export class ProfessionalService {
@@ -34,12 +35,14 @@ export class ProfessionalService {
         private readonly professionalModel: typeof Professional,
         @InjectModel(FormalEducation)
         private readonly formalEducationModel: typeof FormalEducation,
+        @InjectModel(User)
+        private readonly userModel: typeof User,
         private readonly sequelize: Sequelize,
         private readonly userService: UserService,
         private readonly cache: Cache
     ) {}
 
-    async create(dto: CreateProfessionalDto, userId: UUID) {
+    async create(dto: CreateProfessionalDto, userId: UUID): Promise<Professional> {
         const user = await this.userService.findOne(userId);
         if (!user) {
             throw new NotFoundException(`User with id: ${userId} not found`);
@@ -50,6 +53,7 @@ export class ProfessionalService {
                 {
                     id: uuidv7(),
                     ...dto,
+                    availability: 'Available for hire',
                     userId,
                 } as Professional,
                 { transaction: t }
@@ -66,7 +70,14 @@ export class ProfessionalService {
             this.logger.debug(
                 `Created ${professional.formalEducation.length} formal education records for professional with id: ${professional.id}`
             );
-            return await this.findOne(professional.id as UUID);
+            await this.userModel.update(
+                { role: UserRole.PROFESSIONAL },
+                {
+                    where: { id: user.id },
+                    transaction: t,
+                }
+            );
+            return professional;
         });
     }
 

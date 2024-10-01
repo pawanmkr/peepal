@@ -25,7 +25,7 @@ export class CreateSlotDto {
     declare isAvailable: boolean;
 
     @ApiProperty({
-        example: UserRole.TUTOR,
+        example: UserRole.PROFESSIONAL,
         description: 'The type of user who created this slot.',
         type: String,
         enum: UserRole,
