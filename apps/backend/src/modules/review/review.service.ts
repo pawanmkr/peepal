@@ -5,7 +5,6 @@ import { v7 as uuidv7 } from 'uuid';
 
 import { Review } from './review.model';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { Professional } from '../professional/models/professional.model';
 import { User } from '../user/user.model';
 import { UserService } from '../user/user.service';
 
@@ -18,36 +17,37 @@ export class ReviewService {
     ) {}
 
     async createReview(dto: CreateReviewDto): Promise<Review> {
-        const { userId, professionalId } = dto;
-        const professional = await Professional.findByPk(professionalId);
-        if (!professional) {
-            throw new NotFoundException('Professional not found');
-        }
+        const { userId } = dto;
 
         const user = await this.userServie.findOne(userId);
-        if (!user) {
-            throw new NotFoundException('User not found');
-        }
+        if (!user) throw new NotFoundException('User not found');
 
         const id = uuidv7() as UUID;
         let r = await this.reviewModel.create({ id, ...dto });
+
         return await this.getReviewById(r.id);
     }
 
-    async getReviewsByProfessional(
-        professionalId: UUID,
+    async getReviews(
+        userId: UUID,
         offset: number,
         limit: number
     ): Promise<{ reviews: Review[]; total: number }> {
-        const total = await this.reviewModel.count({ where: { professionalId } });
+        const total = await this.reviewModel.count({ where: { userId } });
         if (total > 0) {
             let reviews = await this.reviewModel.findAll({
-                where: { professionalId },
-                include: {
-                    model: User,
-                    attributes: ['id', 'username', 'firstName', 'lastName', 'avatar'],
-                },
-                attributes: ['id', 'rating', 'comment', 'createdAt', 'updatedAt'],
+                where: { userId },
+                attributes: [
+                    'id',
+                    'username',
+                    'firstName',
+                    'lastName',
+                    'avatar',
+                    'rating',
+                    'comment',
+                    'createdAt',
+                    'updatedAt',
+                ],
                 offset,
                 limit,
             });
@@ -62,7 +62,7 @@ export class ReviewService {
         return { reviews: [], total: 0 };
     }
 
-    async getReviewsByUser(
+    async getCurrentUserReviews(
         userId: UUID,
         offset: number,
         limit: number
@@ -71,10 +71,6 @@ export class ReviewService {
         if (total > 0) {
             const reviews = await this.reviewModel.findAll({
                 where: { userId },
-                include: {
-                    model: Professional,
-                    attributes: ['id', 'username', 'firstName', 'lastName', 'avatar'],
-                },
                 attributes: ['id', 'rating', 'comment', 'createdAt', 'updatedAt'],
                 offset,
                 limit,

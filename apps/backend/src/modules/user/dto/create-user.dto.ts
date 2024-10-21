@@ -1,6 +1,16 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {
+    IsString,
+    IsEmail,
+    IsOptional,
+    IsNotEmpty,
+    IsUrl,
+    Matches,
+    IsEnum,
+    IsDecimal,
+} from 'class-validator';
 import { regexPattern } from 'apps/backend/src/common/regex.pattern';
-import { IsString, IsEmail, IsOptional, IsNotEmpty, IsUrl, Matches } from 'class-validator';
+import { ChargeType } from 'apps/backend/src/common/common.enum';
 
 export class CreateUserDto {
     @ApiProperty({
@@ -83,4 +93,77 @@ export class CreateUserDto {
     @IsString()
     @IsNotEmpty()
     declare password: string;
+
+    @ApiProperty({
+        description: 'Professional description',
+        example: 'I am a professional with 10 years of experience',
+        type: 'string',
+    })
+    @IsString()
+    @IsNotEmpty()
+    declare description: string;
+
+    @ApiProperty({
+        description: 'Professional skills',
+        example: 'Problem solving, Communication, Patience',
+        type: 'string',
+    })
+    @IsString()
+    @IsNotEmpty()
+    declare skills: string;
+
+    @ApiProperty({
+        description: 'Professional video URL',
+        example: 'https://example.com/video.mp4',
+        type: 'string',
+    })
+    @IsString()
+    @IsNotEmpty()
+    declare demoVideo: string;
+
+    @ApiProperty({
+        description: 'Professional location',
+        example: 'Madhubani, India',
+        type: 'string',
+    })
+    @IsString()
+    @IsNotEmpty()
+    declare location: string;
+
+    @ApiProperty({
+        description: 'Languages known by the professional',
+        example: 'Maithili, Hindi, English, Punjabi',
+        type: 'string',
+    })
+    @IsString()
+    @IsNotEmpty()
+    declare languages: string;
+
+    @ApiProperty({
+        description: 'Professional charge currency',
+        example: 'INR',
+        type: 'string',
+    })
+    @IsString()
+    @IsNotEmpty()
+    declare currency: string;
+
+    @ApiProperty({
+        description: 'Professional charge amount',
+        example: '50.00',
+        type: 'string',
+    })
+    @IsDecimal()
+    @IsNotEmpty()
+    declare charge: number;
+
+    @ApiProperty({
+        description: 'Charge type (hourly, per session, per month, per week, per day)',
+        example: ChargeType.HOURLY,
+        type: 'string',
+        enum: ChargeType,
+    })
+    @IsEnum(ChargeType)
+    @IsNotEmpty()
+    declare chargeType: ChargeType;
 }

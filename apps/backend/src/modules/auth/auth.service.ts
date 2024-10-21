@@ -1,12 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Op } from 'sequelize';
-import {
-    Injectable,
-    BadRequestException,
-    UnauthorizedException,
-    ConflictException,
-} from '@nestjs/common';
+import { Injectable, BadRequestException, UnauthorizedException, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { UUID } from 'node:crypto';
 import { v7 as uuidv7 } from 'uuid';
@@ -20,6 +15,8 @@ import { UserRole } from '../../common/common.enum';
 
 @Injectable()
 export class AuthService {
+    private readonly logger = new Logger(AuthService.name);
+
     constructor(
         @InjectModel(User)
         private readonly userModel: typeof User
@@ -42,10 +39,9 @@ export class AuthService {
             id: uuidv7() as UUID,
             ...registerDto,
             password: hashedPassword,
-            role: UserRole.USER,
         });
 
-        const token = this.generateToken({ id: user.id, role: user.role });
+        const token = this.generateToken({ id: user.id });
         return { token };
     }
 
@@ -65,7 +61,13 @@ export class AuthService {
         const passwordValid = await bcrypt.compare(password, user.password);
         if (!passwordValid) throw new UnauthorizedException('Invalid credentials');
 
-        const token = this.generateToken({ id: user.id, role: user.role });
+        const token = this.generateToken({ id: user.id });
+        return { token };
+    }
+
+    async refreshJwt(user: User): Promise<{ token: string }> {
+        const existingUser = await this.userModel.findByPk(user.id);
+        const token = this.generateToken({ id: existingUser.id });
         return { token };
     }
 
@@ -87,7 +89,11 @@ export class AuthService {
             if (!user) throw new UnauthorizedException('Invalid token');
             return user;
         } catch (error) {
-            throw new UnauthorizedException('Invalid token');
+            if (error instanceof jwt.JsonWebTokenError) {
+                throw new UnauthorizedException(error.message);
+            } else {
+                throw new UnauthorizedException('Invalid Token');
+            }
         }
     }
 }

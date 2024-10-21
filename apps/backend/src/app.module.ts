@@ -5,7 +5,6 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { AppController } from './app.controller';
 import { env } from './config/env.config';
 import { UserModule } from './modules/user/user.module';
-import { ProfessionalModule } from './modules/professional/professional.module';
 import { LoggerMiddleware } from './middewares/http-logger.middleware';
 import { SlotModule } from './modules/slot/slot.module';
 import { SessionModule } from './modules/session/session.module';
@@ -63,7 +62,6 @@ async function getChalk(): Promise<typeof chalk> {
         }),
         AuthModule,
         UserModule,
-        ProfessionalModule,
         SlotModule,
         SessionModule,
         ReviewModule,

@@ -9,6 +9,7 @@ import {
 } from "../../../api/professional";
 import { getLoggedInUser } from "../../../utils/user";
 import { UserRole } from "../../../api/user";
+import { refreshToken } from "../../../api/auth";
 
 // Main ProfessionalProfileForm Component
 export const ProfessionalProfileForm = () => {
@@ -130,6 +131,8 @@ export const ProfessionalProfileForm = () => {
                 user.id,
                 formData
             );
+            console.log(professional);
+            await refreshToken();
             navigate("/professional/" + professional.id);
         } catch (err) {
             setError("Failed to submit the form. Please try again.");

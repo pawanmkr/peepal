@@ -28,6 +28,16 @@ export class AuthController {
         return this.authService.login(loginDto);
     }
 
+    @Post('refresh-jwt')
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @ApiOperation({ summary: 'Refresh JWT on client side' })
+    @ApiResponse({ status: 200, description: 'New JWT generated successfully' })
+    @ApiResponse({ status: 401, description: 'Invalid credentials.' })
+    refreshJwt(@Req() req: Request) {
+        return this.authService.refreshJwt(req.user);
+    }
+
     @Get('profile')
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
