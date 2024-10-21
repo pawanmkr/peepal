@@ -29,9 +29,7 @@ export class SessionService {
                     id: uuidv7() as UUID,
                     rule: dto.rule,
                     isAvailable: false,
-                    userType: UserRole.USER,
                     userId,
-                    professionalId,
                 },
                 { transaction }
             );

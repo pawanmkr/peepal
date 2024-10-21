@@ -13,7 +13,6 @@ import { UUID } from 'node:crypto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { Slot } from '../slot/models/slot.model';
-import { Professional } from '../professional/models/professional.model';
 
 @Table({ tableName: 'session' })
 export class Session extends Model<Session> {
@@ -75,18 +74,6 @@ export class Session extends Model<Session> {
     @AllowNull(false)
     @Column({ type: DataType.INTEGER })
     declare duration: number;
-
-    @ApiProperty({
-        description: 'Professional Id',
-        example: 'f3g4h5i6-j7k8-l9m10-n11o12-p13q14r15s16',
-        type: String,
-        format: 'uuid',
-        required: true,
-    })
-    @ForeignKey(() => Professional)
-    @AllowNull(false)
-    @Column({ type: DataType.UUID })
-    declare professionalId: UUID;
 
     @ApiPropertyOptional({
         example: 'f4g5h6i7-j8k9-l10m11-n12o13-p14q15r16s17',

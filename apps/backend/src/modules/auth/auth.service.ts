@@ -39,10 +39,9 @@ export class AuthService {
             id: uuidv7() as UUID,
             ...registerDto,
             password: hashedPassword,
-            role: UserRole.USER,
         });
 
-        const token = this.generateToken({ id: user.id, role: user.role });
+        const token = this.generateToken({ id: user.id });
         return { token };
     }
 
@@ -62,13 +61,13 @@ export class AuthService {
         const passwordValid = await bcrypt.compare(password, user.password);
         if (!passwordValid) throw new UnauthorizedException('Invalid credentials');
 
-        const token = this.generateToken({ id: user.id, role: user.role });
+        const token = this.generateToken({ id: user.id });
         return { token };
     }
 
     async refreshJwt(user: User): Promise<{ token: string }> {
         const existingUser = await this.userModel.findByPk(user.id);
-        const token = this.generateToken({ id: existingUser.id, role: existingUser.role });
+        const token = this.generateToken({ id: existingUser.id });
         return { token };
     }
 

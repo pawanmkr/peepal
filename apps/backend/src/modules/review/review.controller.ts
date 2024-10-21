@@ -59,7 +59,7 @@ export class ReviewController {
         @Query('offset') offset: number,
         @Query('limit') limit: number
     ) {
-        return await this.reviewService.getReviewsByProfessional(id, offset, limit);
+        return await this.reviewService.getReviews(id, offset, limit);
     }
 
     @Get('/user/:id')
@@ -81,7 +81,7 @@ export class ReviewController {
         @Query('offset') offset: number = 0,
         @Query('limit') limit: number = 5
     ) {
-        return await this.reviewService.getReviewsByUser(id, offset, limit);
+        return await this.reviewService.getCurrentUserReviews(id, offset, limit);
     }
 
     @Get(':id')

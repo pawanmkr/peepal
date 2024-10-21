@@ -11,7 +11,6 @@ import {
 import { UUID } from 'node:crypto';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { Professional } from '../professional/models/professional.model';
 import { User } from '../user/user.model';
 
 @Table({ tableName: 'review' })
@@ -61,21 +60,6 @@ export class Review extends Model<Review> {
     @AllowNull(false)
     @Column({ type: DataType.UUID })
     declare userId: UUID;
-
-    @ApiProperty({
-        description: 'ID of the professional being reviewed.',
-        example: 'p3f4h5i6-j7k8-l9m10-n11o12-p13q14r15s16',
-        type: String,
-        format: 'uuid',
-        required: true,
-    })
-    @ForeignKey(() => Professional)
-    @AllowNull(false)
-    @Column({ type: DataType.UUID })
-    declare professionalId: UUID;
-
-    @BelongsTo(() => Professional)
-    professional: Professional;
 
     @BelongsTo(() => User)
     user: User;

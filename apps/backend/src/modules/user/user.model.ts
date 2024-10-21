@@ -1,9 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, DataType, HasOne, Model, Table } from 'sequelize-typescript';
-
-import { UserRole } from '../../common/common.enum';
+import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import { UUID } from 'node:crypto';
-import { Professional } from '../professional/models/professional.model';
+import { Slot } from '../slot/models/slot.model';
+import { ChargeType } from '../../common/common.enum';
 
 @Table({ tableName: 'user' })
 export class User extends Model<User> {
@@ -80,15 +79,80 @@ export class User extends Model<User> {
     @Column({ type: DataType.STRING, allowNull: false })
     declare password: string;
 
+    // Professional-related fields
     @ApiProperty({
-        description: 'User role',
-        example: UserRole.USER,
+        description: 'Professional description',
+        example: 'I am a professional with 10 years of experience',
         type: 'string',
-        enum: UserRole,
     })
-    @Column({ type: DataType.STRING, allowNull: false })
-    declare role: UserRole;
+    @Column({ type: DataType.STRING, allowNull: true })
+    declare description: string;
 
-    @HasOne(() => Professional)
-    declare professional: Professional;
+    @ApiProperty({
+        description: 'Professional skills',
+        example: 'Problem solving, Communication, Patience',
+        type: 'string',
+    })
+    @Column({ type: DataType.STRING, allowNull: true })
+    declare skills: string;
+
+    @ApiProperty({
+        description: 'Professional rating',
+        example: 4.5,
+        type: 'number',
+    })
+    @Column({ type: DataType.DECIMAL, allowNull: true, defaultValue: 0 })
+    declare rating: number;
+
+    @ApiProperty({
+        description: 'Professional video URL',
+        example: 'https://example.com/video.mp4',
+        type: 'string',
+    })
+    @Column({ type: DataType.STRING, allowNull: true })
+    declare demoVideo: string;
+
+    @ApiProperty({
+        description: 'Professional location',
+        example: 'Madhubani, India',
+        type: 'string',
+    })
+    @Column({ type: DataType.STRING, allowNull: true })
+    declare location: string;
+
+    @ApiProperty({
+        description: 'Languages known by the professional',
+        example: 'Maithili, Hindi, English, Punjabi',
+        type: 'string',
+    })
+    @Column({ type: DataType.STRING, allowNull: true })
+    declare languages: string;
+
+    @ApiProperty({
+        description: 'Professional charge currency',
+        example: 'INR',
+        type: 'string',
+    })
+    @Column({ type: DataType.STRING, allowNull: true })
+    declare currency: string;
+
+    @ApiProperty({
+        description: 'Professional charge amount',
+        example: 50.0,
+        type: 'number',
+    })
+    @Column({ type: DataType.DECIMAL, allowNull: true })
+    declare charge: number;
+
+    @ApiProperty({
+        description: 'Charge type (hourly, per session, per month, per week, per day)',
+        example: ChargeType.HOURLY,
+        type: 'string',
+        enum: ChargeType,
+    })
+    @Column({ type: DataType.STRING, allowNull: true })
+    declare chargeType: ChargeType;
+
+    @HasMany(() => Slot)
+    declare slots: Slot[];
 }

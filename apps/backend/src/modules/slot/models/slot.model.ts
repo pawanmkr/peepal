@@ -14,8 +14,6 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { v7 as uuidv7 } from 'uuid';
 
 import { User } from '../../user/user.model';
-import { Professional } from '../../professional/models/professional.model';
-import { UserRole } from 'apps/backend/src/common/common.enum';
 
 @Table({ tableName: 'slot' })
 export class Slot extends Model<Slot> {
@@ -54,31 +52,6 @@ export class Slot extends Model<Slot> {
     @AllowNull(false)
     @Column({ type: DataType.BOOLEAN })
     isAvailable: boolean;
-
-    @ApiProperty({
-        example: UserRole.PROFESSIONAL,
-        description: 'The type of user who created this slot.',
-        enum: UserRole,
-        required: true,
-    })
-    @AllowNull(false)
-    @Column({ type: DataType.STRING })
-    declare userType: UserRole;
-
-    @ApiPropertyOptional({
-        example: 'd1e2f3g4-h5i6-j7k8-l9m10-n11o12p13q14',
-        description: 'The ID of the professional associated with this slot.',
-        type: String,
-        format: 'uuid',
-        nullable: true,
-    })
-    @ForeignKey(() => Professional)
-    @AllowNull(true)
-    @Column({ type: DataType.UUID })
-    declare professionalId: UUID;
-
-    @BelongsTo(() => Professional)
-    professional: Professional;
 
     @ApiProperty({
         example: 'e2f3g4h5-i6j7-k8l9-m10n11-o12p13q14r15',
