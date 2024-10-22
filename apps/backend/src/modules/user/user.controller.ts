@@ -26,12 +26,28 @@ import { User } from './user.model';
 import { UUID } from 'node:crypto';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { Request } from 'express';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @ApiTags('User Module')
 @Controller('user')
 export class UserController {
     private readonly logger = new Logger(UserController.name);
     constructor(private readonly userService: UserService) {}
+
+    @Post()
+    // @UseGuards(JwtAuthGuard)
+    // @ApiBearerAuth()
+    @ApiOperation({ summary: 'Create a new user' })
+    @ApiResponse({
+        status: 201,
+        description: 'The user has been successfully created.',
+        type: User,
+    })
+    @ApiResponse({ status: 400, description: 'Bad request.' })
+    create(@Body() createUserDto: CreateUserDto, @Req() req: Request) {
+        this.logger.log(`User ${req.user} is creating a new user`);
+        return this.userService.create(createUserDto);
+    }
 
     @Get()
     @ApiOperation({ summary: 'Get all users' })
@@ -73,8 +89,8 @@ export class UserController {
     }
 
     @Patch(':id')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth()
+    // @UseGuards(JwtAuthGuard)
+    // @ApiBearerAuth()
     @ApiOperation({ summary: 'Update a user by ID' })
     @ApiParam({ name: 'id', description: 'User ID', type: String, format: 'uuid' })
     @ApiResponse({
@@ -84,17 +100,13 @@ export class UserController {
     })
     @ApiResponse({ status: 400, description: 'Bad request.' })
     @ApiResponse({ status: 404, description: 'User not found.' })
-    update(@Param('id') id: UUID, @Body() dto: UpdateUserDto, @Req() req: Request) {
-        if (req.user.id !== id) {
-            this.logger.error(`User ${req.user} is not allowed to update user ${id}`);
-            return;
-        }
+    update(@Param('id') id: UUID, @Body() dto: UpdateUserDto) {
         return this.userService.update(id, dto);
     }
 
     @Delete(':id')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth()
+    // @UseGuards(JwtAuthGuard)
+    // @ApiBearerAuth()
     @ApiOperation({ summary: 'Delete a user by ID' })
     @ApiParam({ name: 'id', description: 'User ID', type: String, format: 'uuid' })
     @ApiResponse({
@@ -104,10 +116,6 @@ export class UserController {
     @ApiResponse({ status: 404, description: 'User not found.' })
     @HttpCode(204)
     remove(@Param('id') id: UUID, @Req() req: Request) {
-        if (req.user.id !== id) {
-            this.logger.error(`User ${req.user} is not allowed to delete user ${id}`);
-            return;
-        }
         this.logger.log(`User ${req.user} is deleting user ${id}`);
         return this.userService.remove(id);
     }
