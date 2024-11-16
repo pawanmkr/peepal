@@ -52,7 +52,7 @@ export class ReviewService {
                 limit,
             });
             if (reviews.length === 0) {
-                throw new NotFoundException('No reviews found for this professional');
+                throw new NotFoundException('No reviews found for this user');
             }
             reviews = reviews.map((r) => {
                 return r.toJSON() as Review;

@@ -28,7 +28,7 @@ export class Review extends Model<Review> {
 
     @ApiProperty({
         example: 5,
-        description: 'The rating given by the user to the professional, on a scale of 1 to 5.',
+        description: 'The rating given by the user to the user, on a scale of 1 to 5.',
         minimum: 1,
         maximum: 5,
         required: true,

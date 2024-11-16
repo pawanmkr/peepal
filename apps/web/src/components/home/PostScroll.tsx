@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-type Professional = {
+type User = {
     id: string;
     userId: string;
     description: string;
@@ -22,12 +22,11 @@ type Professional = {
 
 const PostScroll: React.FC = () => {
     const [currentPosts, setCurrentPosts] = useState<number>(3); // Show 3 posts initially
-    const posts: Professional[] = [
+    const posts: User[] = [
         {
             id: "1",
-            userId: "professional1",
-            description:
-                "I am a professional professional with 10 years of experience.",
+            userId: "user1",
+            description: "I am a user user with 10 years of experience.",
             experience: 10,
             skills: "Problem solving, Communication, Patience",
             rating: 4.8,
@@ -44,7 +43,7 @@ const PostScroll: React.FC = () => {
         },
         {
             id: "2",
-            userId: "professional2",
+            userId: "user2",
             description: "Expert in mathematics with a passion for teaching.",
             experience: 5,
             skills: "Mathematical concepts, Analytical thinking",
@@ -62,7 +61,7 @@ const PostScroll: React.FC = () => {
         },
         {
             id: "3",
-            userId: "professional3",
+            userId: "user3",
             description: "Physics teacher with 7 years of experience.",
             experience: 7,
             skills: "Physics concepts, Practical knowledge",
@@ -80,9 +79,9 @@ const PostScroll: React.FC = () => {
         },
         {
             id: "4",
-            userId: "professional4",
+            userId: "user4",
             description:
-                "Chemistry professional with in-depth knowledge of organic chemistry.",
+                "Chemistry user with in-depth knowledge of organic chemistry.",
             experience: 6,
             skills: "Organic Chemistry, Patience, Communication",
             rating: 4.7,
@@ -99,9 +98,9 @@ const PostScroll: React.FC = () => {
         },
         {
             id: "5",
-            userId: "professional5",
+            userId: "user5",
             description:
-                "Biology professional with a focus on genetics and biotechnology.",
+                "Biology user with a focus on genetics and biotechnology.",
             experience: 8,
             skills: "Genetics, Biotechnology, Research",
             rating: 4.6,
@@ -118,9 +117,9 @@ const PostScroll: React.FC = () => {
         },
         {
             id: "6",
-            userId: "professional5",
+            userId: "user5",
             description:
-                "Biology professional with a focus on genetics and biotechnology.",
+                "Biology user with a focus on genetics and biotechnology.",
             experience: 8,
             skills: "Genetics, Biotechnology, Research",
             rating: 4.6,
@@ -137,9 +136,9 @@ const PostScroll: React.FC = () => {
         },
         {
             id: "7",
-            userId: "professional5",
+            userId: "user5",
             description:
-                "Biology professional with a focus on genetics and biotechnology.",
+                "Biology user with a focus on genetics and biotechnology.",
             experience: 8,
             skills: "Genetics, Biotechnology, Research",
             rating: 4.6,
@@ -197,8 +196,8 @@ const PostScroll: React.FC = () => {
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowFullScreen
                                     />
-                                    {/* Professional Information */}
-                                    <div className="professional-info mt-3">
+                                    {/* User Information */}
+                                    <div className="user-info mt-3">
                                         <h5 className="text-lg font-semibold">
                                             {post.description}
                                         </h5>

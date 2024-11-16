@@ -34,13 +34,4 @@ export class CreateReviewDto {
     })
     @IsUUID()
     declare userId: UUID;
-
-    @ApiProperty({
-        description: 'The ID of the professional being reviewed.',
-        example: 'p3f4h5i6-j7k8-l9m10-n11o12-p13q14r15s16',
-        type: String,
-        format: 'uuid',
-    })
-    @IsUUID()
-    declare professionalId: UUID;
 }

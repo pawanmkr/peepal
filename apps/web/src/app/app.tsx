@@ -2,10 +2,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, Routes } from "react-router-dom";
 
 import Homepage from "../pages/Homepage";
-import ProfessionalProfile from "../pages/ProfessionalProfile";
 import Landing from "../pages/Landing";
 import Layout from "../components/layout/Layout";
-import { ProfessionalProfileForm } from "../components/professional/profile/Form";
+// import { UserProfileForm } from "../components/user/profile/Form";
+import UserProfile from "../pages/UserProfile";
 
 export function App() {
     return (
@@ -23,18 +23,26 @@ export function App() {
                 }
             />
             <Route
-                path="/professional/form"
+                path="/profile"
                 element={
                     <Layout>
-                        <ProfessionalProfileForm />
+                        <UserProfile />
                     </Layout>
                 }
             />
-            <Route
-                path="/professional/:id"
+            {/* <Route
+                path="/user/form"
                 element={
                     <Layout>
-                        <ProfessionalProfile />
+                        <UserProfileForm />
+                    </Layout>
+                }
+            /> */}
+            <Route
+                path="/user/:id"
+                element={
+                    <Layout>
+                        <UserProfile />
                     </Layout>
                 }
             />

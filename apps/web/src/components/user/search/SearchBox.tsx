@@ -17,7 +17,7 @@ export const Search: React.FC<{ onSearch: (query: string) => void }> = ({
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search for professionals..."
+                    placeholder="Search for users..."
                     className="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <button

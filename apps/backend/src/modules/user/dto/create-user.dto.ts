@@ -95,8 +95,8 @@ export class CreateUserDto {
     declare password: string;
 
     @ApiProperty({
-        description: 'Professional description',
-        example: 'I am a professional with 10 years of experience',
+        description: 'User description',
+        example: 'I am a user with 10 years of experience',
         type: 'string',
     })
     @IsString()
@@ -104,7 +104,7 @@ export class CreateUserDto {
     declare description: string;
 
     @ApiProperty({
-        description: 'Professional skills',
+        description: 'User skills',
         example: 'Problem solving, Communication, Patience',
         type: 'string',
     })
@@ -113,7 +113,7 @@ export class CreateUserDto {
     declare skills: string;
 
     @ApiProperty({
-        description: 'Professional video URL',
+        description: 'User video URL',
         example: 'https://example.com/video.mp4',
         type: 'string',
     })
@@ -122,7 +122,7 @@ export class CreateUserDto {
     declare demoVideo: string;
 
     @ApiProperty({
-        description: 'Professional location',
+        description: 'User location',
         example: 'Madhubani, India',
         type: 'string',
     })
@@ -131,7 +131,7 @@ export class CreateUserDto {
     declare location: string;
 
     @ApiProperty({
-        description: 'Languages known by the professional',
+        description: 'Languages known by the user',
         example: 'Maithili, Hindi, English, Punjabi',
         type: 'string',
     })
@@ -140,7 +140,7 @@ export class CreateUserDto {
     declare languages: string;
 
     @ApiProperty({
-        description: 'Professional charge currency',
+        description: 'User charge currency',
         example: 'INR',
         type: 'string',
     })
@@ -149,7 +149,7 @@ export class CreateUserDto {
     declare currency: string;
 
     @ApiProperty({
-        description: 'Professional charge amount',
+        description: 'User charge amount',
         example: '50.00',
         type: 'string',
     })

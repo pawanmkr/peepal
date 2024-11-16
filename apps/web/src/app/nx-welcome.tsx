@@ -569,10 +569,7 @@ export function NxWelcome({ title }: { title: string }) {
                                     </svg>
                                     <span>
                                         YouTube channel
-                                        <span>
-                                            {" "}
-                                            Nx Show, talks & professionalials{" "}
-                                        </span>
+                                        <span> Nx Show, talks & userials </span>
                                     </span>
                                     <svg
                                         fill="none"
@@ -589,7 +586,7 @@ export function NxWelcome({ title }: { title: string }) {
                                     </svg>
                                 </a>
                                 <a
-                                    href="https://nx.dev/react-professionalial/1-code-generation?utm_source=nx-project"
+                                    href="https://nx.dev/react-userial/1-code-generation?utm_source=nx-project"
                                     target="_blank"
                                     rel="noreferrer"
                                     className="list-item-link"
@@ -608,7 +605,7 @@ export function NxWelcome({ title }: { title: string }) {
                                         />
                                     </svg>
                                     <span>
-                                        Interactive professionalials
+                                        Interactive userials
                                         <span>
                                             {" "}
                                             Create an app, step-by-step{" "}

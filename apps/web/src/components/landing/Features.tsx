@@ -31,10 +31,9 @@ const FeaturesSection: React.FC = () => {
                     <span className="text-yellow-600 font-semibold">
                         career guidance
                     </span>
-                    , Peepal connects you with professionals who can provide
-                    real-time insights and actionable advice. No more searching
-                    through endless online professionalials—find the right
-                    people and{" "}
+                    , Peepal connects you with users who can provide real-time
+                    insights and actionable advice. No more searching through
+                    endless online userials—find the right people and{" "}
                     <span className="font-semibold text-blue-600">
                         start a conversation
                     </span>{" "}
@@ -47,7 +46,7 @@ const FeaturesSection: React.FC = () => {
                             Find Experts
                         </h3>
                         <p className="text-center">
-                            Search for professionals and mentors in your area of
+                            Search for users and mentors in your area of
                             interest.
                         </p>
                     </div>
@@ -77,8 +76,7 @@ const FeaturesSection: React.FC = () => {
                             Engage in Discussions
                         </h3>
                         <p className="text-center">
-                            Have meaningful conversations with industry
-                            professionals.
+                            Have meaningful conversations with industry users.
                         </p>
                     </div>
                 </div>

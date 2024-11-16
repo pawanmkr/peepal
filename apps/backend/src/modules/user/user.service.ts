@@ -58,6 +58,15 @@ export class UserService {
         });
     }
 
+    // TODO: work on user recommendation
+    async getRecommendedUsers(userId: string, offset: number, limit: number): Promise<User[]> {
+        return this.userModel.findAll({
+            ...this.queryConfig,
+            offset,
+            limit,
+        });
+    }
+
     async findOne(id: UUID): Promise<User> {
         const user = await this.userModel.findByPk(id, this.queryConfig);
         if (!user) throw new NotFoundException(`User with ID ${id} not found`);
@@ -81,37 +90,61 @@ export class UserService {
         await user.destroy();
     }
 
+    // async search(
+    //     query: string,
+    //     offset: number,
+    //     limit: number
+    // ): Promise<{ users: User[]; total: number }> {
+    //     // add keyword to cache for showing recent searches
+    //     await this.cache.addKeyword(query);
+
+    //     // firstly, get all the matching ids and then fetch full details
+    //     // todo: improve this search later
+    //     const matchingIds = await this.userModel.findAll({
+    //         where: {
+    //             [Op.or]: [
+    //                 { skills: { [Op.iLike]: `%${query}%` } },
+    //                 { description: { [Op.iLike]: `%${query}%` } },
+    //                 { '$user.first_name$': { [Op.iLike]: `%${query}%` } },
+    //                 { '$user.last_name$': { [Op.iLike]: `%${query}%` } },
+    //             ],
+    //         },
+    //         subQuery: false,
+    //     });
+    //     const userIds = matchingIds.map((user) => user.id);
+    //     const users = await this.userModel.findAll({
+    //         where: {
+    //             id: {
+    //                 [Op.in]: userIds,
+    //             },
+    //         },
+    //         offset,
+    //         limit,
+    //     });
+    //     return { users, total: matchingIds.length };
+    // }
+
     async search(
-        keyword: string,
+        query: string,
         offset: number,
         limit: number
     ): Promise<{ users: User[]; total: number }> {
-        // add keyword to cache for showing recent searches
-        await this.cache.addKeyword(keyword);
+        // Add keyword to cache for showing recent searches
+        await this.cache.addKeyword(query);
 
-        // firstly, get all the matching ids and then fetch full details
-        // todo: improve this search later
-        const matchingIds = await this.userModel.findAll({
+        const { count, rows: users } = await this.userModel.findAndCountAll({
             where: {
                 [Op.or]: [
-                    { skills: { [Op.iLike]: `%${keyword}%` } },
-                    { description: { [Op.iLike]: `%${keyword}%` } },
-                    { '$user.first_name$': { [Op.iLike]: `%${keyword}%` } },
-                    { '$user.last_name$': { [Op.iLike]: `%${keyword}%` } },
+                    { skills: { [Op.iLike]: `%${query}%` } },
+                    { description: { [Op.iLike]: `%${query}%` } },
+                    { firstName: { [Op.iLike]: `%${query}%` } },
+                    { lastName: { [Op.iLike]: `%${query}%` } },
                 ],
-            },
-            subQuery: false,
-        });
-        const userIds = matchingIds.map((user) => user.id);
-        const users = await this.userModel.findAll({
-            where: {
-                id: {
-                    [Op.in]: userIds,
-                },
             },
             offset,
             limit,
         });
-        return { users, total: matchingIds.length };
+
+        return { users, total: count };
     }
 }
