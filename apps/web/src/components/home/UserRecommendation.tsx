@@ -14,7 +14,12 @@ const UserRecommendations: React.FC = () => {
 
     const fetchRecommendations = async (offset: number, limit: number) => {
         setLoading(true);
-        const CURRENT_USER = getLoggedInUser();
+        let CURRENT_USER;
+        try {
+            CURRENT_USER = getLoggedInUser();
+        } catch (error) {
+            CURRENT_USER = null;
+        }
         let users = await userApi.getRecommededUsers(
             CURRENT_USER ? CURRENT_USER.id : null,
             (currentPage - 1) * LIMIT, // Calculate offset for pagination

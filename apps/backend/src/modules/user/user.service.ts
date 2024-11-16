@@ -60,11 +60,50 @@ export class UserService {
 
     // TODO: work on user recommendation
     async getRecommendedUsers(userId: string, offset: number, limit: number): Promise<User[]> {
-        return this.userModel.findAll({
-            ...this.queryConfig,
-            offset,
-            limit,
-        });
+        if (userId) {
+            return await this.userModel.findAll({
+                ...this.queryConfig,
+                offset,
+                limit,
+                where: {
+                    id: {
+                        [Op.ne]: userId,
+                    },
+                    description: {
+                        [Op.ne]: null,
+                    },
+                    skills: {
+                        [Op.ne]: null,
+                    },
+                    charge: {
+                        [Op.ne]: null,
+                    },
+                    chargeType: {
+                        [Op.ne]: null,
+                    },
+                },
+            });
+        } else {
+            return await this.userModel.findAll({
+                ...this.queryConfig,
+                offset,
+                limit,
+                where: {
+                    description: {
+                        [Op.ne]: null,
+                    },
+                    skills: {
+                        [Op.ne]: null,
+                    },
+                    charge: {
+                        [Op.ne]: null,
+                    },
+                    chargeType: {
+                        [Op.ne]: null,
+                    },
+                },
+            });
+        }
     }
 
     async findOne(id: UUID): Promise<User> {

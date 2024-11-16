@@ -13,9 +13,14 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
     onClose,
 }) => {
     const navigate = useNavigate();
-    const user = getLoggedInUser();
+    let CURRENT_USER;
+    try {
+        CURRENT_USER = getLoggedInUser();
+    } catch (error) {
+        CURRENT_USER = null;
+    }
 
-    if (!isOpen || !user) return null; // Return null if dropdown is not open or no user is logged in
+    if (!isOpen || !CURRENT_USER) return null; // Return null if dropdown is not open or no user is logged in
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -39,7 +44,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
                 <li
                     className="p-2 hover:bg-gray-200 rounded-sm cursor-pointer border-b"
                     onClick={() => {
-                        navigate(`/user/${user.id}`); // Navigate to user's profile page
+                        navigate(`/user/${CURRENT_USER.id}`); // Navigate to user's profile page
                     }}
                 >
                     Profile

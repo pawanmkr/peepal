@@ -3,8 +3,8 @@ import { UserCard } from "./UserCard";
 
 export const UserList: React.FC<{ users: User[] }> = ({ users }) => (
     <div>
-        {users.map((User) => (
-            <UserCard key={User.id} user={User} />
+        {users.map((user) => (
+            <UserCard key={user.id} user={user} />
         ))}
     </div>
 );

@@ -5,12 +5,11 @@ export interface JwtPayload {
     role: string;
 }
 
-export function getLoggedInUser(): JwtPayload | null {
+export function getLoggedInUser(): JwtPayload {
     const token = localStorage.getItem("token");
     if (token) {
         const decoded = jwtDecode(token) as JwtPayload;
-        console.log(decoded);
         return decoded;
     }
-    return null;
+    throw new Error("User not logged in");
 }
