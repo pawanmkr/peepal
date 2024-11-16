@@ -2,25 +2,25 @@ import React, { useState, useEffect } from "react";
 import { Loader } from "lucide-react";
 import { useParams } from "react-router-dom";
 
-import CalendarView from "../components/professional/profile/CalendarView";
-import { BasicInfo } from "../components/professional/profile/BasicInfo";
-import { Education } from "../components/professional/profile/Education";
-import { SkillsExperience } from "../components/professional/profile/SkillExperience";
-import { Professional, professionalApi } from "../api/professional";
+import CalendarView from "../components/user/profile/CalendarView";
+import { BasicInfo } from "../components/user/profile/BasicInfo";
+import { Education } from "../components/user/profile/Education";
+import { SkillsExperience } from "../components/user/profile/SkillExperience";
+import { User, userApi } from "../api/user";
 import { slots } from "./dummy-data";
-import { Reviews } from "../components/professional/profile/Reviews";
-import PostFeed from "../components/home/post/PostFeed";
+import { Reviews } from "../components/user/profile/Reviews";
+// import PostFeed from "../components/home/post/PostFeed";
 import VideoSection from "../components/home/post/VideoSection";
 
 // Simple 404 page component
 const NotFound: React.FC = () => (
     <div className="flex items-center justify-center h-screen">
-        <h1 className="text-4xl font-bold">404 - Professional Not Found</h1>
+        <h1 className="text-4xl font-bold">404 - User Not Found</h1>
     </div>
 );
 
-const ProfessionalProfile: React.FC = () => {
-    const [professional, setProfessional] = useState<Professional | null>(null);
+const UserProfile: React.FC = () => {
+    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const { id } = useParams<{ id: string }>();
@@ -34,21 +34,21 @@ const ProfessionalProfile: React.FC = () => {
             return;
         }
 
-        // Fetch professional data
+        // Fetch user data
         const fetchTutor = async () => {
             try {
-                const response = await professionalApi.getProfessionalById(id);
+                const response = await userApi.getUserById(id);
                 if (response) {
-                    response.video =
+                    response.demoVideo =
                         "https://www.youtube.com/embed/lyPy_JPaCFs?si=p1VCkuG7ryeJkOmN";
-                    setProfessional(response);
+                    setUser(response);
                     setError(false);
                 } else {
-                    setError(true); // Professional not found
+                    setError(true); // User not found
                 }
             } catch (err) {
                 console.error(err);
-                setError(true); // Error fetching professional data
+                setError(true); // Error fetching user data
             } finally {
                 setLoading(false);
             }
@@ -66,14 +66,14 @@ const ProfessionalProfile: React.FC = () => {
     }
 
     if (error) return <NotFound />;
-    if (!professional) return <NotFound />;
+    if (!user) return <NotFound />;
 
     return (
         <div className="max-w-7xl flex gap-x-4 mx-auto mb-32">
-            {/* Left side: Professional Profile */}
+            {/* Left side: User Profile */}
             <div className="w-full flex flex-col gap-y-6">
                 <BasicInfo
-                    professional={professional}
+                    user={user}
                     showPosts={showPosts}
                     setShowPosts={setShowPosts}
                     showDemoVideo={showDemoVideo}
@@ -83,7 +83,7 @@ const ProfessionalProfile: React.FC = () => {
                 {showDemoVideo && (
                     <div className="bg-white shadow-md rounded-lg p-2 h-fit w-fit">
                         <VideoSection
-                            videoUrl={professional.video}
+                            videoUrl={user.demoVideo}
                             height="486px"
                             width="864px"
                             autoPlay={true}
@@ -91,20 +91,21 @@ const ProfessionalProfile: React.FC = () => {
                         />
                     </div>
                 )}
-                <SkillsExperience professional={professional} />
-                <Education education={professional.formalEducation} />
-                <Reviews professionalId={professional.id} />
+                <SkillsExperience user={user} />
+                {/* <Education education={user.formalEducation} /> Formal Education removed */}
+                <Reviews userId={user.id} />
             </div>
 
-            {/* Posts by Professional on Toggle */}
+            {/* Posts by User on Toggle */}
             {/* Right side: Calendar */}
-            {showPosts ? (
-                <PostFeed query={undefined} professionalId={id} />
+            {/* {showPosts ? (
+                // <PostFeed query={undefined} userId={id} />
+                <CalendarView slots={slots} />
             ) : (
                 <CalendarView slots={slots} />
-            )}
+            )} */}
         </div>
     );
 };
 
-export default ProfessionalProfile;
+export default UserProfile;

@@ -1,7 +1,7 @@
 import React, { createContext, useState, ReactNode } from "react";
 
 enum UserRole {
-    TUTOR = "professional",
+    TUTOR = "user",
     USER = "user",
 }
 type User = {

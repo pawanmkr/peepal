@@ -1,18 +1,14 @@
 import { getLoggedInUser } from "../../../utils/user";
-import {
-    addReview,
-    getReviewsByProfessional,
-    Review,
-} from "../../../api/review";
+import { addReview, getReviewsByUser, Review } from "../../../api/review";
 import React, { useEffect, useState } from "react";
 import { Loader } from "lucide-react";
 
 interface ReviewProps {
-    professionalId: string;
+    userId: string;
 }
 const LIMIT = 5;
 
-export const Reviews = ({ professionalId }: ReviewProps) => {
+export const Reviews = ({ userId }: ReviewProps) => {
     const [reviews, setReviews] = useState<Review[]>([]);
     const [newReview, setNewReview] = useState("");
     const [rating, setRating] = useState(1);
@@ -25,28 +21,26 @@ export const Reviews = ({ professionalId }: ReviewProps) => {
 
     useEffect(() => {
         fetchReviews();
-    }, [professionalId, offset]);
+    }, [userId, offset]);
 
     const fetchReviews = async () => {
         setLoading(true);
         setError("");
-        getReviewsByProfessional(professionalId, offset, LIMIT).then(
-            ([data, errorMessage]) => {
-                setLoading(false);
-                if (errorMessage) {
-                    setError(errorMessage);
-                    return;
-                }
-                if (data && data.reviews && data.total) {
-                    const uniqueReviews = Array.from(new Set(data.reviews));
-                    setReviews([...uniqueReviews]);
-                    setTotalReviews(data.total || 0);
-                    setShowMore(data.total > uniqueReviews.length);
-                } else {
-                    setError("Failed to fetch reviews.");
-                }
+        getReviewsByUser(userId, offset, LIMIT).then(([data, errorMessage]) => {
+            setLoading(false);
+            if (errorMessage) {
+                setError(errorMessage);
+                return;
             }
-        );
+            if (data && data.reviews && data.total) {
+                const uniqueReviews = Array.from(new Set(data.reviews));
+                setReviews([...uniqueReviews]);
+                setTotalReviews(data.total || 0);
+                setShowMore(data.total > uniqueReviews.length);
+            } else {
+                setError("Failed to fetch reviews.");
+            }
+        });
     };
 
     const handleLoadMore = async () => {
@@ -65,7 +59,6 @@ export const Reviews = ({ professionalId }: ReviewProps) => {
             rating,
             comment: newReview,
             userId,
-            professionalId,
         })
             .then(([data, errorMessage]) => {
                 if (errorMessage) {

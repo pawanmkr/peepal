@@ -34,6 +34,81 @@ export class UserController {
     private readonly logger = new Logger(UserController.name);
     constructor(private readonly userService: UserService) {}
 
+    @Get('/recommendations')
+    @ApiOperation({ summary: 'Get recommended users for a specific user' })
+    @ApiQuery({
+        name: 'userId',
+        type: 'uuid',
+        description: 'user for which the recommendation needs to be fetched',
+        required: false,
+    })
+    @ApiQuery({
+        name: 'offset',
+        type: 'number',
+        description: 'Offset of the recommendations list',
+        required: true,
+        example: 0,
+    })
+    @ApiQuery({
+        name: 'limit',
+        type: 'number',
+        description: 'Limit of the recommendations list',
+        required: true,
+        example: 25,
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'List of recommended users.',
+        type: [User],
+    })
+    @ApiResponse({ status: 404, description: 'User or recommendations not found.' })
+    recommendedUsers(
+        @Query('userId') userId: UUID,
+        @Query('offset') offset: number,
+        @Query('limit') limit: number
+    ) {
+        if (userId) this.logger.log(`Fetching recommendations for user ${userId}`);
+        return this.userService.getRecommendedUsers(userId, offset, limit);
+    }
+
+    @Get('/search')
+    @ApiOperation({ summary: 'Search for users based on a query string' })
+    @ApiQuery({
+        name: 'q',
+        type: 'string',
+        description: 'Search query to match user data',
+        required: true,
+        example: 'John',
+    })
+    @ApiQuery({
+        name: 'offset',
+        type: 'number',
+        description: 'Offset of the search results list',
+        required: true,
+        example: 0,
+    })
+    @ApiQuery({
+        name: 'limit',
+        type: 'number',
+        description: 'Limit of the search results list',
+        required: true,
+        example: 10,
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'List of users matching the search query.',
+        type: [User],
+    })
+    @ApiResponse({ status: 404, description: 'No users found matching the query.' })
+    search(
+        @Query('q') query: string,
+        @Query('offset') offset: number,
+        @Query('limit') limit: number
+    ) {
+        this.logger.log(`Searching for users with query: ${query}`);
+        return this.userService.search(query, offset, limit);
+    }
+
     @Post()
     // @UseGuards(JwtAuthGuard)
     // @ApiBearerAuth()

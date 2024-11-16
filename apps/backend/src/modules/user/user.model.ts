@@ -79,17 +79,17 @@ export class User extends Model<User> {
     @Column({ type: DataType.STRING, allowNull: false })
     declare password: string;
 
-    // Professional-related fields
+    // User-related fields
     @ApiProperty({
-        description: 'Professional description',
-        example: 'I am a professional with 10 years of experience',
+        description: 'User description',
+        example: 'I am a user with 10 years of experience',
         type: 'string',
     })
     @Column({ type: DataType.STRING, allowNull: true })
     declare description: string;
 
     @ApiProperty({
-        description: 'Professional skills',
+        description: 'User skills',
         example: 'Problem solving, Communication, Patience',
         type: 'string',
     })
@@ -97,7 +97,7 @@ export class User extends Model<User> {
     declare skills: string;
 
     @ApiProperty({
-        description: 'Professional rating',
+        description: 'User rating',
         example: 4.5,
         type: 'number',
     })
@@ -105,7 +105,7 @@ export class User extends Model<User> {
     declare rating: number;
 
     @ApiProperty({
-        description: 'Professional video URL',
+        description: 'User video URL',
         example: 'https://example.com/video.mp4',
         type: 'string',
     })
@@ -113,7 +113,7 @@ export class User extends Model<User> {
     declare demoVideo: string;
 
     @ApiProperty({
-        description: 'Professional location',
+        description: 'User location',
         example: 'Madhubani, India',
         type: 'string',
     })
@@ -121,7 +121,7 @@ export class User extends Model<User> {
     declare location: string;
 
     @ApiProperty({
-        description: 'Languages known by the professional',
+        description: 'Languages known by the user',
         example: 'Maithili, Hindi, English, Punjabi',
         type: 'string',
     })
@@ -129,7 +129,7 @@ export class User extends Model<User> {
     declare languages: string;
 
     @ApiProperty({
-        description: 'Professional charge currency',
+        description: 'User charge currency',
         example: 'INR',
         type: 'string',
     })
@@ -137,7 +137,7 @@ export class User extends Model<User> {
     declare currency: string;
 
     @ApiProperty({
-        description: 'Professional charge amount',
+        description: 'User charge amount',
         example: 50.0,
         type: 'number',
     })

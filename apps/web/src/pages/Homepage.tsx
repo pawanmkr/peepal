@@ -6,9 +6,9 @@ import TopSearches from "../components/home/TopSearches";
 import UserProfile from "../components/user/UserProfile";
 import { dummyUser, dummySessions } from "./dummy-data";
 import AuthComponent from "../components/home/login-register/AuthComponent";
-import TutorSearch from "../components/home/TutorSearch";
-import PostFeed from "../components/home/post/PostFeed";
-import ProfessionalRecommendations from "../components/home/ProfessionalRecommendation";
+import UserSearch from "../components/home/UserSearch";
+// import PostFeed from "../components/home/post/PostFeed";
+import UserRecommendations from "../components/home/UserRecommendation";
 
 const Homepage: React.FC = () => {
     const location = useLocation();
@@ -62,18 +62,19 @@ const Homepage: React.FC = () => {
                 <div className={isMobile ? "col-12 mb-4" : "col-lg-6 mb-4"}>
                     {location.pathname === "/search" && query ? (
                         post ? (
-                            <PostFeed query={query} />
+                            // <PostFeed query={query} /> this is the original line
+                            <UserRecommendations /> // this line is added just to avoid errors for now
                         ) : (
-                            <TutorSearch query={query} />
+                            <UserSearch query={query} />
                         )
                     ) : (
                         // Hiding the PostFeed component for now
                         // <PostFeed query={undefined} />
-                        <ProfessionalRecommendations />
+                        <UserRecommendations />
                     )}
                 </div>
 
-                {/* Trending Skills and Professionals - Hidden on mobile */}
+                {/* Trending Skills and Users - Hidden on mobile */}
                 {!isMobile && (
                     <div className="col-lg-3">
                         {/* <TopicOfTheDay /> */}

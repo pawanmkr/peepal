@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { Loader } from "lucide-react";
 
-import { ProfessionalList } from "../professional/search/ProfessionalList";
-import { Professional, professionalApi } from "../../api/professional";
+import { UserList } from "../user/search/UserList";
+import { User, userApi } from "../../api/user";
+import { getLoggedInUser } from "../../utils/user";
 
-const ProfessionalRecommendations: React.FC = () => {
+const UserRecommendations: React.FC = () => {
     const LIMIT = 25; // Number of results per page
-    const [professionals, setProfessionals] = useState<Professional[]>([]); // State to store the list of professionals
+    const [users, setUsers] = useState<User[]>([]); // State to store the list of users
     const [currentPage, setCurrentPage] = useState(1); // State to keep track of the current page
     const [loading, setLoading] = useState(false); // State to handle loading status
     const [offset, setOffset] = useState(0);
 
     const fetchRecommendations = async (offset: number, limit: number) => {
         setLoading(true);
-        let professionals = await professionalApi.getRecommendedProfessionals(
+        const CURRENT_USER = getLoggedInUser();
+        let users = await userApi.getRecommededUsers(
+            CURRENT_USER ? CURRENT_USER.id : null,
             (currentPage - 1) * LIMIT, // Calculate offset for pagination
             LIMIT // Limit the number of results per page
         );
-        if (professionals) {
-            setProfessionals(
-                professionals.map((p) => {
+        if (users) {
+            setUsers(
+                users.map((user) => {
                     return {
-                        ...p,
+                        ...user,
                         rating: (Math.random() * 5).toString(),
                         currency: "INR",
-                        user: {
-                            ...p.user,
-                            avatar: `https://i.pravatar.cc/150?u=${p.user.email}`,
-                        },
+                        avatar: `https://i.pravatar.cc/150?img=3`,
                     };
                 })
             );
@@ -48,11 +48,11 @@ const ProfessionalRecommendations: React.FC = () => {
                         <Loader className="animate-spin" size={24} />
                     </div>
                 ) : (
-                    <ProfessionalList professionals={professionals} />
+                    <UserList users={users} />
                 )}
             </div>
         </div>
     );
 };
 
-export default ProfessionalRecommendations;
+export default UserRecommendations;
