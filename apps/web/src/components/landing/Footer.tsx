@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -34,14 +35,12 @@ const Footer = () => {
               Terms of Service
             </a>{" "}
             -{" "}
-            <a
-              href="/feature-request"
-              className="text-yellow-500 hover:underline no-underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Feature Request
-            </a>{" "}
+            <Link
+  to="/feature-request"
+  className="text-yellow-500 hover:underline no-underline"
+>
+  Feature Request
+</Link>{" "}
             -{" "}
             <a
               href="/feedback"

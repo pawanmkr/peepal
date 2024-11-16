@@ -6,6 +6,8 @@ import Landing from "../pages/Landing";
 import Layout from "../components/layout/Layout";
 // import { UserProfileForm } from "../components/user/profile/Form";
 import UserProfile from "../pages/UserProfile";
+import FeatureRequest from "../components/landing/FeatureRequest";
+import Footer from "../components/landing/Footer";
 
 export function App() {
     return (
@@ -54,7 +56,15 @@ export function App() {
                     </Layout>
                 }
             />
+            <Route  
+                path="/feature-request" 
+                element={
+                    <Layout>
+                        <FeatureRequest />
+                    </Layout>} />
+
         </Routes>
+        
     );
 }
 
