@@ -9,11 +9,18 @@ import AuthComponent from "../components/home/login-register/AuthComponent";
 import UserSearch from "../components/home/UserSearch";
 // import PostFeed from "../components/home/post/PostFeed";
 import UserRecommendations from "../components/home/UserRecommendation";
+import { getLoggedInUser } from "../utils/user";
 
 const Homepage: React.FC = () => {
     const location = useLocation();
     const [isMobile, setIsMobile] = useState(false);
-    let jwt = localStorage.getItem("token");
+    // checks if user is logged in ?
+    let CURRENT_USER;
+    try {
+        CURRENT_USER = getLoggedInUser();
+    } catch (error) {
+        CURRENT_USER = null;
+    }
 
     // Helper function to get query parameters from URL
     const getQueryParams = (search: string) => {
@@ -47,14 +54,7 @@ const Homepage: React.FC = () => {
                 {/* User Profile Card - Hidden on mobile */}
                 {!isMobile && (
                     <div className="col-lg-3 mb-4">
-                        {jwt ? (
-                            <UserProfile
-                                user={dummyUser}
-                                sessions={dummySessions}
-                            />
-                        ) : (
-                            <AuthComponent />
-                        )}
+                        {CURRENT_USER ? <UserProfile /> : <AuthComponent />}
                     </div>
                 )}
 
