@@ -176,6 +176,7 @@ export class UserController {
     @ApiResponse({ status: 400, description: 'Bad request.' })
     @ApiResponse({ status: 404, description: 'User not found.' })
     update(@Param('id') id: UUID, @Body() dto: UpdateUserDto) {
+        console.log(dto);
         return this.userService.update(id, dto);
     }
 

@@ -5,6 +5,7 @@ import {
     InternalServerErrorException,
     Logger,
     NotFoundException,
+    UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { v7 as uuidv7 } from 'uuid';
@@ -113,12 +114,34 @@ export class UserService {
         return user;
     }
 
+    // findOne method is not giving password so this the replacement wherever required
+    async getUserWithPassword(id: UUID): Promise<User> {
+        const user = await this.userModel.findByPk(id);
+        if (!user) throw new NotFoundException(`User with ID ${id} not found`);
+        return user;
+    }
+
     async update(id: UUID, dto: UpdateUserDto): Promise<User> {
-        const user = await this.findOne(id);
+        const user = await this.getUserWithPassword(id);
         if (!user) throw new NotFoundException(`User with ID ${id} not found`);
 
-        // Only update the fields that are provided in the DTO
-        Object.assign(user, dto);
+        if (dto.currentPassword && dto.newPassword) {
+            this.logger.log(dto.currentPassword, dto.newPassword);
+            console.log(user.password);
+            console.log(1);
+            const passwordValid = await bcrypt.compare(dto.currentPassword, user.password);
+            console.log(2);
+            if (!passwordValid) throw new UnauthorizedException('Wrong password provided');
+            console.log(3);
+            // Only update the fields that are provided in the DTO
+            Object.assign(user, dto);
+            console.log(4);
+            user.password = await bcrypt.hash(dto.newPassword, 10);
+        } else {
+            console.log(5);
+            Object.assign(user, dto);
+        }
+        console.log(6);
         return user.save();
     }
 

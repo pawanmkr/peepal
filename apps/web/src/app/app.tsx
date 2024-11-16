@@ -6,6 +6,7 @@ import Landing from "../pages/Landing";
 import Layout from "../components/layout/Layout";
 // import { UserProfileForm } from "../components/user/profile/Form";
 import UserProfile from "../pages/UserProfile";
+import EditProfileForm from "../components/user/profile/EditProfileForm";
 
 export function App() {
     return (
@@ -30,14 +31,14 @@ export function App() {
                     </Layout>
                 }
             />
-            {/* <Route
-                path="/user/form"
+            <Route
+                path="/profile/edit"
                 element={
                     <Layout>
-                        <UserProfileForm />
+                        <EditProfileForm />
                     </Layout>
                 }
-            /> */}
+            />
             <Route
                 path="/user/:id"
                 element={

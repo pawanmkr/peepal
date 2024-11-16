@@ -21,7 +21,7 @@ export type User = {
     password: string;
     description: string;
     skills: string;
-    rating: string;
+    rating: number;
     demoVideo: string;
     location: string;
     languages: string;
@@ -42,16 +42,27 @@ export interface CreateUser {
     password: string;
 }
 
-export interface UpdateUser {
-    username?: string;
-    firstName?: string;
-    lastName?: string;
-    email?: string;
+export type UpdateUserDto = {
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
     avatar?: string;
     dob?: string;
     phoneCode?: string;
     phoneNumber?: string;
-}
+    currentPassword: string;
+    newPassword: string;
+    description: string;
+    skills: string;
+    rating: number;
+    demoVideo: string;
+    location: string;
+    languages: string;
+    currency: string;
+    charge: number;
+    chargeType: ChargeType;
+};
 
 export const userApi = {
     createUser: (data: CreateUser): Promise<User> => {
@@ -66,8 +77,8 @@ export const userApi = {
         return http.get<User>(`/user/${id}`);
     },
 
-    updateUser: (id: string, data: UpdateUser): Promise<User> => {
-        return http.patch<User>(`/user/${id}`, data);
+    updateUser: (id: string, formData: Partial<User>): Promise<User> => {
+        return http.patch<User>(`/user/${id}`, formData);
     },
 
     deleteUser: (id: string): Promise<void> => {

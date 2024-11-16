@@ -44,14 +44,6 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
                 <li
                     className="p-2 hover:bg-gray-200 rounded-sm cursor-pointer border-b"
                     onClick={() => {
-                        navigate(`/user/${CURRENT_USER.id}`); // Navigate to user's profile page
-                    }}
-                >
-                    Profile
-                </li>
-                <li
-                    className="p-2 hover:bg-gray-200 rounded-sm cursor-pointer border-b"
-                    onClick={() => {
                         navigate("/settings"); // Redirect to a settings page if applicable
                     }}
                 >
