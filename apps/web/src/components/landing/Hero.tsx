@@ -2,14 +2,16 @@ import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { Loader } from "lucide-react"; // Import Loader from lucide-react
 import Logo from "../header/Logo";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleClick = () => {
         setLoading(true);
         setTimeout(() => {
-            window.location.href = "/home";
+            navigate("/home");
         }, 1000);
     };
 
