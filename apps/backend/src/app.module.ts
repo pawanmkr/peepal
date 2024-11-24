@@ -1,7 +1,5 @@
-import chalk from 'chalk';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-
 import { AppController } from './app.controller';
 import { env } from './config/env.config';
 import { UserModule } from './modules/user/user.module';
@@ -11,12 +9,8 @@ import { SessionModule } from './modules/session/session.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { Cache } from './common/redis.cache';
 import { ReviewModule } from './modules/review/review.module';
-
-// // Workaround for dynamic import
-async function getChalk(): Promise<typeof chalk> {
-    const module = await (eval(`import('chalk')`) as Promise<any>);
-    return module.default;
-}
+import { ChatGateway } from './modules/chat/chat.gateway';
+import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
     imports: [
@@ -49,11 +43,7 @@ async function getChalk(): Promise<typeof chalk> {
                 },
                 logQueryParameters: true,
                 benchmark: true,
-                logging: async (sql, timing) => {
-                    const chalk = await getChalk();
-                    console.log(chalk.green(`\nElapsed Time: ${timing}ms`));
-                    console.log(chalk.dim(sql));
-                },
+                logging: true,
                 autoLoadModels: true,
                 synchronize: true, // WARNING: Don't make it true in production
                 retryAttempts: 0,
@@ -65,9 +55,10 @@ async function getChalk(): Promise<typeof chalk> {
         SlotModule,
         SessionModule,
         ReviewModule,
+        ChatModule,
     ],
     controllers: [AppController],
-    providers: [Cache],
+    providers: [Cache, ChatGateway], // Register WebSocket gateway service here
 })
 export class AppModule {
     configure(consumer: MiddlewareConsumer) {
