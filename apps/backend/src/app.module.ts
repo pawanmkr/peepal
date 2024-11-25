@@ -11,6 +11,8 @@ import { SessionModule } from './modules/session/session.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { Cache } from './common/redis.cache';
 import { ReviewModule } from './modules/review/review.module';
+import { ChatModule } from './modules/chat/chat.module';
+import { ChatGateway } from './modules/chat/chat.gateway';
 
 // // Workaround for dynamic import
 async function getChalk(): Promise<typeof chalk> {
@@ -65,9 +67,10 @@ async function getChalk(): Promise<typeof chalk> {
         SlotModule,
         SessionModule,
         ReviewModule,
+        ChatModule,
     ],
     controllers: [AppController],
-    providers: [Cache],
+    providers: [Cache, ChatGateway],
 })
 export class AppModule {
     configure(consumer: MiddlewareConsumer) {
