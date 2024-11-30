@@ -1,7 +1,5 @@
-import chalk from 'chalk';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-
 import { AppController } from './app.controller';
 import { env } from './config/env.config';
 import { UserModule } from './modules/user/user.module';
@@ -51,11 +49,7 @@ async function getChalk(): Promise<typeof chalk> {
                 },
                 logQueryParameters: true,
                 benchmark: true,
-                logging: async (sql, timing) => {
-                    const chalk = await getChalk();
-                    console.log(chalk.green(`\nElapsed Time: ${timing}ms`));
-                    console.log(chalk.dim(sql));
-                },
+                logging: true,
                 autoLoadModels: true,
                 synchronize: true, // WARNING: Don't make it true in production
                 retryAttempts: 0,
@@ -70,7 +64,7 @@ async function getChalk(): Promise<typeof chalk> {
         ChatModule,
     ],
     controllers: [AppController],
-    providers: [Cache, ChatGateway],
+    providers: [Cache],
 })
 export class AppModule {
     configure(consumer: MiddlewareConsumer) {
