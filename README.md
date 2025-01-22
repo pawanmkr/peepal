@@ -8,11 +8,5 @@
 -   **Convenient Learning:** Skip the generic online searches and get the specific advice you need, all from the comfort of your own space.
 -   **Freelancers:** You can find people with specific skillset to work for you.
 
-### Pitch Version
-
-**Imagine a platform where you can:**
-
--   **Find Personalized Guidance:** Get one-on-one sessions with a diverse pool of individuals—whether you need legal advice, want to learn about plants, improve your chess skills, or seek personal support.
--   **Access Varied Expertise:** Connect with seasoned users, passionate hobbyists, and experienced individuals ready to share their unique insights.
--   **Receive Tailored Advice:** Skip the generic online searches and get specific, actionable advice that caters to your individual needs.
--   **Enjoy Convenience:** All from the comfort of your own space, without the limitations of traditional learning methods.
+Hosted Link: https://peepal-mu.vercel.app/
+It may not work properly
